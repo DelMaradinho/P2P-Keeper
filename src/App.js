@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import Calculator from "./pages/calculator";
 import Formulas from "./pages/formulas";
 import History from "./pages/history";
