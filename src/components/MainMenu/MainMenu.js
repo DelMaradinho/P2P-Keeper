@@ -16,12 +16,7 @@ const MainMenu = () => {
     setCollapsed(!collapsed);
   };
   return (
-    <div
-      className={styles.menu__container}
-      style={{
-        width: 244,
-      }}
-    >
+    <div className={styles.menu__container}>
       <Button
         type="primary"
         shape="round"
@@ -29,7 +24,6 @@ const MainMenu = () => {
         classNames="menu__button__burger"
         onClick={toggleCollapsed}
         style={{
-          marginLeft: -168,
           marginBottom: 200,
           backgroundColor: "rgba(8, 31, 73, 1)",
         }}
