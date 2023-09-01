@@ -3,10 +3,13 @@
         position: absolute;
         top: 25px;
         left: 5px;
+        & > ul {
+            & > li {
+                & > span {
+                    display: flex;
+                }
+            }
+        }
     }
-    // &__button {
-    //     &__burger {
-    //         background-color: green !important;
-    //     }
-    // }
+    
 }

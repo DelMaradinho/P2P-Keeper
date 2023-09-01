@@ -8,26 +8,8 @@ import {
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import styles from "./MainMenu.module.scss";
+import { Link } from "react-router-dom";
 
-function getItem(label, key, icon, children, type) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  };
-}
-const items = [
-  getItem(
-    "Калькулятор спреда",
-    "1",
-    <CalculatorOutlined style={{ fontSize: 20 }} />
-  ),
-  getItem("Создание формул", "2", <DesktopOutlined style={{ fontSize: 20 }} />),
-  getItem("История сделок", "3", <CarryOutOutlined style={{ fontSize: 20 }} />),
-  getItem("Команда", "4", <TeamOutlined style={{ fontSize: 20 }} />),
-];
 const MainMenu = () => {
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapsed = () => {
@@ -69,8 +51,31 @@ const MainMenu = () => {
           color: "rgba(8, 31, 73, 1)",
         }}
         inlineCollapsed={collapsed}
-        items={items}
-      />
+      >
+        <Menu.Item key="1">
+          <Link to="/calculator">
+            <CalculatorOutlined style={{ fontSize: 20 }} />{" "}
+            <span>Калькулятор спреда</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Link to="/formulas">
+            <DesktopOutlined style={{ fontSize: 20 }} />{" "}
+            <span>Создание формул</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <Link to="/history">
+            <CarryOutOutlined style={{ fontSize: 20 }} />{" "}
+            <span>История сделок</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="4">
+          <Link to="/team">
+            <TeamOutlined style={{ fontSize: 20 }} /> <span>Команда</span>
+          </Link>
+        </Menu.Item>
+      </Menu>
     </div>
   );
 };
