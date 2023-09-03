@@ -1,45 +1,25 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import { Input, InputNumber, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
 import "react-resizable/css/styles.css";
+import AutoComplete from "../AutoComplete/AutoComplete";
+import { DatePicker } from "antd";
+import moment from "moment";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import localeData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
 
-const data = [
-  {
-    key: 1,
-    currency: "BTC",
-    buy_price: 12345,
-    buy_amount: 100,
-    exchange: "",
-    sell_price: 12350,
-    sell_amount: 99,
-    spread: "",
-    net_profit: "",
-    date: "21.03.2022",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
-  },
-  {
-    key: 2,
-    currency: "BTC",
-    buy_price: 12345,
-    buy_amount: 100,
-    exchange: "",
-    sell_price: 12350,
-    sell_amount: 99,
-    spread: "",
-    net_profit: "",
-    date: "21.03.2022",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
-  },
-];
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
 
 const ResizableTitle = (props) => {
   const { onResize, width, ...restProps } = props;
@@ -59,7 +39,100 @@ const ResizableTitle = (props) => {
   );
 };
 
+const dateFormat = "YYYY-MM-DD";
+
 const CustomTable = () => {
+  const [data, setData] = useState([
+    {
+      key: 1,
+      currency: "BTC",
+      buy_price: 12345,
+      buy_amount: 100,
+      exchange: "",
+      sell_price: 12350,
+      sell_amount: 99,
+      spread: "",
+      net_profit: "",
+      date: "2022-03-21",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      description:
+        "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
+    },
+    {
+      key: 2,
+      currency: "USDT",
+      buy_price: 12345,
+      buy_amount: 100,
+      exchange: "",
+      sell_price: 12350,
+      sell_amount: 99,
+      spread: "",
+      net_profit: "",
+      date: "2022-02-01",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      description:
+        "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
+    },
+  ]);
+
+  const cryptoCurrencies = [
+    { value: "BTC", label: "BTC" },
+    { value: "USDT", label: "USDT" },
+    { value: "DOGE", label: "DOGE" },
+    { value: "ETH", label: "ETH" },
+  ];
+
+  function handleChange(key, fieldName, value) {
+    // Найдем объект по ключу
+    const objIndex = data.findIndex((obj) => obj.key === key);
+
+    // Если объект не найден, выходим из функции
+    if (objIndex === -1) return;
+
+    // Создаем копию данных для иммутабельности
+    const newData = [...data];
+
+    // Обновляем значение для конкретного поля
+    newData[objIndex][fieldName] = value;
+
+    // Обновляем состояние
+    setData(newData);
+    console.log(value);
+  }
+
+  function handleChangeNumber(key, fieldName, value) {
+    const re = /^[0-9\b]+$/;
+
+    // if value is not blank, then test the regex
+
+    if (value === "" || re.test(value)) {
+      // Найдем объект по ключу
+      const objIndex = data.findIndex((obj) => obj.key === key);
+
+      // Если объект не найден, выходим из функции
+      if (objIndex === -1) return;
+
+      // Создаем копию данных для иммутабельности
+      const newData = [...data];
+
+      // Обновляем значение для конкретного поля
+      newData[objIndex][fieldName] = value;
+
+      // Обновляем состояние
+      setData(newData);
+      console.log(value);
+    }
+  }
+  console.log(data);
+
+  const onChangeDate = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   const [columns, setColumns] = useState([
     {
       title: "Монета",
@@ -67,6 +140,13 @@ const CustomTable = () => {
       key: "currency",
       sticky: true,
       width: 75,
+      render: (text, record) => (
+        <AutoComplete
+          defaultOptions={cryptoCurrencies}
+          defaultValue={text}
+          handleSelect={(value) => handleChange(record.key, "currency", value)}
+        />
+      ),
     },
     {
       title: "Цена покупки",
@@ -74,6 +154,16 @@ const CustomTable = () => {
       key: "buy_price",
       sticky: true,
       width: 110,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "buy_price", event.target.value)
+          }
+        />
+      ),
+      sorter: (a, b) => a.buy_price - b.buy_price,
     },
     {
       title: "Количество",
@@ -81,6 +171,15 @@ const CustomTable = () => {
       key: "buy_amount",
       sticky: true,
       width: 97,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "buy_amount", event.target.value)
+          }
+        />
+      ),
     },
     {
       title: "Обмен",
@@ -88,6 +187,15 @@ const CustomTable = () => {
       key: "exchange",
       sticky: true,
       width: 72,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "exchange", event.target.value)
+          }
+        />
+      ),
     },
     {
       title: "Цена продажи",
@@ -95,6 +203,15 @@ const CustomTable = () => {
       key: "sell_price",
       sticky: true,
       width: 115,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "sell_price", event.target.value)
+          }
+        />
+      ),
     },
     {
       title: "Количество",
@@ -102,6 +219,15 @@ const CustomTable = () => {
       key: "sell_amount",
       sticky: true,
       width: 97,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "sell_amount", event.target.value)
+          }
+        />
+      ),
     },
     {
       title: "Спред",
@@ -109,6 +235,15 @@ const CustomTable = () => {
       key: "spread",
       sticky: true,
       width: 70,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "spread", event.target.value)
+          }
+        />
+      ),
     },
     {
       title: "Чистая прибыль",
@@ -116,6 +251,16 @@ const CustomTable = () => {
       key: "net_profit",
       sticky: true,
       width: 110,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          controls={false}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "net_profit", event.target.value)
+          }
+        />
+      ),
     },
     {
       title: "Дата",
@@ -123,6 +268,15 @@ const CustomTable = () => {
       key: "date",
       sticky: true,
       width: 130,
+      render: (text, record) => (
+        <DatePicker
+          defaultValue={dayjs(text, dateFormat)}
+          format={dateFormat}
+          onChange={(dayjsDate, stringDate) =>
+            handleChange(record.key, "date", stringDate)
+          }
+        />
+      ),
     },
   ]);
   // const [top, setTop] = useState("topLeft");
@@ -163,6 +317,7 @@ const CustomTable = () => {
         dataSource={data}
         rowClassName="table__row__custom"
         sticky
+        showSorterTooltip={true}
         pagination={{
           position: ["bottomCenter"],
         }}
