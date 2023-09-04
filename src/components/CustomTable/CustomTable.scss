@@ -20,10 +20,13 @@
         }
       }
     }
-    .ant-table-tbody & > tr {
-      & > td {
-        border-bottom: none;
-        padding: 10px !important;
+    .ant-table-tbody {
+      margin: -10px 0 0 0;
+      & > tr {
+        & > td {
+          border-bottom: none;
+          padding: 10px !important;
+        }
       }
     }
   }
@@ -71,4 +74,24 @@
     .ant-table-row-expand-icon-cell
   ):not([colspan])::before {
   display: none;
+}
+
+.custom-resizable-handle {
+  background: #e3e9f6;       
+  width: 1px;              
+  height: 50%;
+  cursor: col-resize;
+  position: absolute;
+  top: 13px;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.ant-table-measure-row {
+  display: none;
+}
+
+.ant-pagination, .ant-table-pagination, .ant-table-pagination-center {
+  margin: 5px 0 !important;
 }

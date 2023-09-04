@@ -50,7 +50,7 @@ export const tableData = [
   {
     key: 2,
     currency: "USDT",
-    buy_price: 12345,
+    buy_price: 3456,
     buy_amount: 100,
     exchange: "",
     sell_price: 12350,

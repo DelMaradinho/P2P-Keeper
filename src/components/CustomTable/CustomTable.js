@@ -34,7 +34,7 @@ const ResizableTitle = (props) => {
     <Resizable
       width={width}
       height={0}
-      handle={<span className="react-resizable-handle" />}
+      handle={<div className="custom-resizable-handle" />}
       onResize={onResize}
     >
       <th {...restProps} />
@@ -279,6 +279,12 @@ const CustomTable = () => {
     (e, { size }) => {
       setColumns((prev) => {
         const nextColumns = [...prev];
+
+        // Проверка ключа столбца
+        if (nextColumns[index].key === "action") {
+          return prev; // Если это столбец "action", просто верните предыдущие столбцы без изменений
+        }
+
         nextColumns[index] = {
           ...nextColumns[index],
           width: size.width,
@@ -293,13 +299,18 @@ const CustomTable = () => {
     },
   };
 
-  const resizableColumns = columns.map((col, index) => ({
-    ...col,
-    onHeaderCell: (column) => ({
-      width: column.width,
-      onResize: handleResize(index),
-    }),
-  }));
+  const resizableColumns = columns.map((col, index) => {
+    if (col.key === "action") {
+      return col; // Для столбца "action" возвращаем столбец без изменений
+    }
+    return {
+      ...col,
+      onHeaderCell: (column) => ({
+        width: column.width,
+        onResize: handleResize(index),
+      }),
+    };
+  });
 
   const onFilterChange = (filter) => {
     setData(filterDataByCriteria(filter, tableData));
@@ -317,6 +328,9 @@ const CustomTable = () => {
         showSorterTooltip={true}
         pagination={{
           position: ["bottomCenter"],
+          showSizeChanger: true,
+          pageSizeOptions: ["5", "10", "20", "30", "50"], // опции для количества записей на странице
+          defaultPageSize: 5, // количество записей на странице по умолчанию
         }}
       />
     </div>

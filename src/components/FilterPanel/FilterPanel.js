@@ -43,7 +43,7 @@ const FilterPanel = ({ onFilterChange }) => {
         maxHeight: 400,
         overflow: "auto",
       }}
-      placeholder="Выбери фильтр"
+      placeholder="Выберите фильтр"
       allowClear
       multiple
       treeDefaultExpandAll
