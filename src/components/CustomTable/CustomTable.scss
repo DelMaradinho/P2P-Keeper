@@ -1,63 +1,67 @@
 .table {
-    &__container {
-        width: 1144px;
-        margin: 30px 114px;
-        border-collapse: collapse;
-        .ant-table-thead {
-          border-bottom: none;
+  &__container {
+    width: 1144px;
+    margin: 30px 114px;
+    border-collapse: collapse;
+    .ant-table-thead {
+      border-bottom: none;
+      background-color: white;
+      tr {
+        border-bottom: none;
+        th {
           background-color: white;
-          tr {
-            border-bottom: none;
-            th {
-              background-color: white;
-              border-bottom: none;
-              padding: 5px 5px;
-              text-align: center;
-              vertical-align: middle;
-            }
-          }
-        }
-        .ant-table-tbody 
-        & > tr {
-          & > td {
-            border-bottom: none;
-          }
-        } 
-    }
-    &__row {
-      &__custom {
-        border-radius: 18px;
-        background-color: white;
-        & > td {
-          margin: 5px 0;
-          border: 1px solid #E3E9F6 !important;
-          border-right: none !important;
-          border-left: none !important;
-        }
-        & > td:first-child {
-          border: 1px solid #E3E9F6 !important;
-          border-right: none !important;
-          border-top-left-radius: 18px;
-          border-bottom-left-radius: 18px;
-        }
-        & > td:last-child {
-          border: 1px solid #E3E9F6 !important;
-          border-left: none !important;
-          border-top-right-radius: 18px;
-          border-bottom-right-radius: 18px;
+          border-bottom: none;
+          padding: 5px 5px;
+          text-align: center;
+          vertical-align: middle;
         }
       }
     }
-  }
-
-  .ant-table {
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    & table {
-      border-spacing: 0 10px;
+    .ant-table-tbody & > tr {
+      & > td {
+        border-bottom: none;
+      }
     }
   }
-
-  .ant-table-wrapper .ant-table-thead >tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
-    display: none;
+  &__row {
+    &__custom {
+      border-radius: 18px;
+      background-color: white;
+      & > td {
+        margin: 5px 0;
+        border: 1px solid #e3e9f6 !important;
+        border-right: none !important;
+        border-left: none !important;
+      }
+      & > td:first-child {
+        border: 1px solid #e3e9f6 !important;
+        border-right: none !important;
+        border-top-left-radius: 18px;
+        border-bottom-left-radius: 18px;
+      }
+      & > td:last-child {
+        border: 1px solid #e3e9f6 !important;
+        border-left: none !important;
+        border-top-right-radius: 18px;
+        border-bottom-right-radius: 18px;
+      }
+    }
   }
+}
+
+.ant-table {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  & table {
+    border-spacing: 0 10px;
+  }
+}
+
+.ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before {
+  display: none;
+}

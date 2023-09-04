@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Input, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
@@ -78,6 +78,8 @@ const CustomTable = () => {
         "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
     },
   ]);
+
+  const lastKeyRef = useRef(data.length);
 
   const cryptoCurrencies = [
     { value: "BTC", label: "BTC" },
@@ -282,7 +284,7 @@ const CustomTable = () => {
       width: 40,
       render: (text, record) => (
         <p>
-          <a onClick={() => handleDuplicate(record.key)}>
+          <a onClick={() => handleDuplicate(record)}>
             <RollbackOutlined />
           </a>{" "}
           <a onClick={() => handleDelete(record.key)}>
@@ -294,20 +296,14 @@ const CustomTable = () => {
   ]);
 
   const handleDelete = (key) => {
-    const filteredData = data.filter((item) => item.key !== key);
-    setData(filteredData);
+    setData((prevData) => prevData.filter((item) => item.key !== key));
   };
 
-  const handleDuplicate = (key) => {
-    const index = data.findIndex((item) => item.key === key);
-    if (index !== -1) {
-      const itemToDuplicate = data[index];
-      const newKey = `${Date.now()}-${Math.random()}`;
-      const newItem = { ...itemToDuplicate, key: newKey };
-      const newData = [...data];
-      newData.splice(index, 0, newItem);
-      setData(newData);
-    }
+  const handleDuplicate = (record) => {
+    const itemToDuplicate = record;
+    lastKeyRef.current += 1; // Увеличиваем значение ключа
+    const newItem = { ...itemToDuplicate, key: lastKeyRef.current };
+    setData((prevData) => [...prevData, newItem]);
   };
 
   const handleResize =
