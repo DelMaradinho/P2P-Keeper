@@ -34,6 +34,12 @@
     &__custom {
       border-radius: 18px;
       background-color: white;
+      &:hover {
+        background-color: rgb(240, 243, 249) !important;
+        & > td {
+          background-color: rgb(240, 243, 249) !important;
+        }
+      }
       & > td {
         margin: 5px 0;
         border: 1px solid #e3e9f6 !important;
