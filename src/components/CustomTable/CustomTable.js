@@ -13,6 +13,9 @@ import localeData from "dayjs/plugin/localeData";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
+import FilterPanel from "../FilterPanel/FilterPanel";
+import { tableData } from "../../constants/constants";
+import { filterDataByCriteria } from "../../helpers/helpers";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -42,42 +45,7 @@ const ResizableTitle = (props) => {
 const dateFormat = "YYYY-MM-DD";
 
 const CustomTable = () => {
-  const [data, setData] = useState([
-    {
-      key: 1,
-      currency: "BTC",
-      buy_price: 12345,
-      buy_amount: 100,
-      exchange: "",
-      sell_price: 12350,
-      sell_amount: 99,
-      spread: "",
-      net_profit: "",
-      date: "2022-03-21",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      description:
-        "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
-    },
-    {
-      key: 2,
-      currency: "USDT",
-      buy_price: 12345,
-      buy_amount: 100,
-      exchange: "",
-      sell_price: 12350,
-      sell_amount: 99,
-      spread: "",
-      net_profit: "",
-      date: "2022-02-01",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      description:
-        "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
-    },
-  ]);
+  const [data, setData] = useState(tableData);
 
   const lastKeyRef = useRef(data.length);
 
@@ -333,8 +301,13 @@ const CustomTable = () => {
     }),
   }));
 
+  const onFilterChange = (filter) => {
+    setData(filterDataByCriteria(filter, tableData));
+  };
+
   return (
     <div className="table__container">
+      <FilterPanel onFilterChange={onFilterChange} />
       <Table
         components={components}
         columns={resizableColumns}
