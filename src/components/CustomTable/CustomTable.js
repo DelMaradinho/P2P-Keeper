@@ -302,7 +302,7 @@ const CustomTable = () => {
   }));
 
   const onFilterChange = (filter) => {
-    setData((prevData) => filterDataByCriteria(prevData, filter, tableData));
+    setData(filterDataByCriteria(filter, tableData));
   };
 
   return (
