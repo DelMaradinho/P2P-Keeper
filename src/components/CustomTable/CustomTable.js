@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Input, InputNumber, Table } from "antd";
+import { Input, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
 import "react-resizable/css/styles.css";
 import AutoComplete from "../AutoComplete/AutoComplete";
 import { DatePicker } from "antd";
-import moment from "moment";
+import { RollbackOutlined, DeleteOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -105,7 +105,7 @@ const CustomTable = () => {
   }
 
   function handleChangeNumber(key, fieldName, value) {
-    const re = /^[0-9\b]+$/;
+    const re = /^(?!.*,,)\d*(,\d*)?$/;
 
     // if value is not blank, then test the regex
 
@@ -129,17 +129,13 @@ const CustomTable = () => {
   }
   console.log(data);
 
-  const onChangeDate = (date, dateString) => {
-    console.log(date, dateString);
-  };
-
   const [columns, setColumns] = useState([
     {
       title: "Монета",
       dataIndex: "currency",
       key: "currency",
       sticky: true,
-      width: 75,
+      width: 85,
       render: (text, record) => (
         <AutoComplete
           defaultOptions={cryptoCurrencies}
@@ -278,9 +274,41 @@ const CustomTable = () => {
         />
       ),
     },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      sticky: true,
+      width: 40,
+      render: (text, record) => (
+        <p>
+          <a onClick={() => handleDuplicate(record.key)}>
+            <RollbackOutlined />
+          </a>{" "}
+          <a onClick={() => handleDelete(record.key)}>
+            <DeleteOutlined />
+          </a>
+        </p>
+      ),
+    },
   ]);
-  // const [top, setTop] = useState("topLeft");
-  // const [bottom, setBottom] = useState("bottomRight");
+
+  const handleDelete = (key) => {
+    const filteredData = data.filter((item) => item.key !== key);
+    setData(filteredData);
+  };
+
+  const handleDuplicate = (key) => {
+    const index = data.findIndex((item) => item.key === key);
+    if (index !== -1) {
+      const itemToDuplicate = data[index];
+      const newKey = `${Date.now()}-${Math.random()}`;
+      const newItem = { ...itemToDuplicate, key: newKey };
+      const newData = [...data];
+      newData.splice(index, 0, newItem);
+      setData(newData);
+    }
+  };
 
   const handleResize =
     (index) =>
@@ -325,4 +353,5 @@ const CustomTable = () => {
     </div>
   );
 };
+
 export default CustomTable;

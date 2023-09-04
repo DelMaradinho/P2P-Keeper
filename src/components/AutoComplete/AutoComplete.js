@@ -37,7 +37,7 @@ function AutoComplete({ defaultOptions, handleSelect, defaultValue }) {
       filterOption={(inputValue, option) =>
         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
       }
-      placeholder="type here"
+      placeholder="USDT"
     />
   );
 }

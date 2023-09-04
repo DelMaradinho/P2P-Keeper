@@ -5,6 +5,9 @@ import {
   TeamOutlined,
   MenuOutlined,
   CalculatorOutlined,
+  PieChartOutlined,
+  ApartmentOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import styles from "./MainMenu.module.scss";
@@ -24,7 +27,7 @@ const MainMenu = () => {
         classNames="menu__button__burger"
         onClick={toggleCollapsed}
         style={{
-          marginBottom: 150,
+          marginBottom: 50,
           backgroundColor: "rgba(8, 31, 73, 1)",
         }}
       >
@@ -65,8 +68,24 @@ const MainMenu = () => {
           </Link>
         </Menu.Item>
         <Menu.Item key="4">
+          <Link to="#">
+            <PieChartOutlined style={{ fontSize: 20 }} />{" "}
+            <span>Анализ сделок</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="5">
           <Link to="/team">
             <TeamOutlined style={{ fontSize: 20 }} /> <span>Команда</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="6">
+          <Link to="#">
+            <ApartmentOutlined style={{ fontSize: 20 }} /> <span>Ресурсы</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="7">
+          <Link to="#">
+            <SettingOutlined style={{ fontSize: 20 }} /> <span>Настройки</span>
           </Link>
         </Menu.Item>
       </Menu>
