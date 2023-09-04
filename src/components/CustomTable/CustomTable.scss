@@ -20,6 +20,7 @@
     .ant-table-tbody & > tr {
       & > td {
         border-bottom: none;
+        padding: 10px !important;
       }
     }
   }
@@ -54,6 +55,9 @@
   border-spacing: 0 10px;
   & table {
     border-spacing: 0 10px;
+  }
+  &-cell {
+    padding: 10px !important;
   }
 }
 

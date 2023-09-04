@@ -281,14 +281,14 @@ const CustomTable = () => {
       dataIndex: "action",
       key: "action",
       sticky: true,
-      width: 40,
+      width: 50,
       render: (text, record) => (
-        <p>
-          <a onClick={() => handleDuplicate(record)}>
-            <RollbackOutlined />
+        <p style={{ margin: 0 }}>
+          <a onClick={() => handleDuplicate(record)} title="Повторить формулу">
+            <RollbackOutlined style={{ fontSize: 14 }} />
           </a>{" "}
-          <a onClick={() => handleDelete(record.key)}>
-            <DeleteOutlined />
+          <a onClick={() => handleDelete(record.key)} title="Удалить формулу">
+            <DeleteOutlined style={{ fontSize: 14 }} />
           </a>
         </p>
       ),
@@ -303,7 +303,7 @@ const CustomTable = () => {
     const itemToDuplicate = record;
     lastKeyRef.current += 1; // Увеличиваем значение ключа
     const newItem = { ...itemToDuplicate, key: lastKeyRef.current };
-    setData((prevData) => [...prevData, newItem]);
+    setData((prevData) => [newItem, ...prevData]);
   };
 
   const handleResize =
