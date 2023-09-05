@@ -9,7 +9,7 @@ import MainMenu from "./components/MainMenu/MainMenu";
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route exact path="/" element={<MainMenu />} />
         <Route path="/calculator" element={<Calculator />} />
