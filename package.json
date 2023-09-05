@@ -2,7 +2,7 @@
   "name": "p2p-keeper",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://delmaradinho.github.io/P2P-Keeper/",
+  "homepage": "https://delmaradinho.github.io/P2P-Keeper",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
