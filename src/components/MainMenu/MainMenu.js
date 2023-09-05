@@ -27,7 +27,9 @@ const MainMenu = () => {
         classNames="menu__button__burger"
         onClick={toggleCollapsed}
         style={{
+          width: 80,
           marginBottom: 50,
+          borderRadius: 12,
           backgroundColor: "rgba(8, 31, 73, 1)",
         }}
       >
