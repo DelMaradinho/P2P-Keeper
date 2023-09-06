@@ -44,7 +44,7 @@ const ResizableTitle = (props) => {
 
 const dateFormat = "YYYY-MM-DD";
 
-const CustomTable = () => {
+const CustomTable = (tableData) => {
   const [data, setData] = useState(tableData);
 
   const lastKeyRef = useRef(data.length);
