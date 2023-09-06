@@ -2,14 +2,20 @@ import MainMenu from "../../components/MainMenu/MainMenu";
 import CustomTable from "../../components/CustomTable/CustomTable";
 import "./history.scss";
 import NewFormulaButton from "../../components/NewFormulaButton/NewFormulaButton";
-import { tableData } from "../../constants/constants";
+import { dateFormat, tableData } from "../../constants/constants";
 import { React, useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 function History() {
-  console.log("tableData", tableData);
   const [data, setData] = useState([]);
-  useEffect(() => setData([...tableData]), [tableData]);
-  console.log("data", data);
+
+  useEffect(() => {
+    setData(tableData);
+
+    return () => {
+      setData([]);
+    };
+  }, []);
 
   const handleAddRow = () => {
     const newRow = {
@@ -22,10 +28,10 @@ function History() {
       sell_amount: "",
       spread: "",
       net_profit: "",
-      date: "",
+      date: dayjs(new Date().toISOString().slice(0, 10), dateFormat),
       description: "",
     };
-    setData([newRow, ...data]);
+    setData((prevData) => [newRow, ...prevData]);
   };
   return (
     <div className="App">

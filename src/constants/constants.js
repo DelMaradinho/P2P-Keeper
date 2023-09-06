@@ -73,3 +73,5 @@ export const tableData = [
       "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
   },
 ];
+
+export const dateFormat = "YYYY-MM-DD";

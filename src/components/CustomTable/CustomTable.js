@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
@@ -14,7 +14,7 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import FilterPanel from "../FilterPanel/FilterPanel";
-import { tableData } from "../../constants/constants";
+import { dateFormat, tableData } from "../../constants/constants";
 import { filterDataByCriteria } from "../../helpers/helpers";
 
 dayjs.extend(customParseFormat);
@@ -42,10 +42,16 @@ const ResizableTitle = (props) => {
   );
 };
 
-const dateFormat = "YYYY-MM-DD";
-
-const CustomTable = (tableData) => {
+const CustomTable = ({ tableData }) => {
   const [data, setData] = useState(tableData);
+
+  useEffect(() => {
+    setData(tableData);
+
+    return () => {
+      setData([]);
+    };
+  }, [tableData]);
 
   const lastKeyRef = useRef(data.length);
 
@@ -97,7 +103,6 @@ const CustomTable = (tableData) => {
       console.log(value);
     }
   }
-  console.log(data);
 
   const [columns, setColumns] = useState([
     {
