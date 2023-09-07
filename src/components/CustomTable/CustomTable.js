@@ -350,6 +350,7 @@ const CustomTable = ({ tableData }) => {
           sticky
           showSorterTooltip={true}
           expandable={{
+            showExpandColumn: false,
             expandedRowRender: (record) => (
               <p>Содержимое для строки с ключом {record.key}</p>
             ),
