@@ -62,34 +62,45 @@ const CustomTable = ({ tableData }) => {
     };
   }, [tableData]);
 
-  function handleChange(key, fieldName, value) {
-    // Найдем объект по ключу
-    const objIndex = data.findIndex((obj) => obj.key === key);
+  function handleChangeNested(
+    parentKey,
+    childKey,
+    fieldName,
+    value,
+    isNumber = false
+  ) {
+    // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
+    const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
+    if (isNumber && value !== "" && !re.test(value)) return;
 
-    // Если объект не найден, выходим из функции
-    if (objIndex === -1) return;
+    const newValue = isNumber ? value.replace(",", ".") : value;
 
-    // Создаем копию данных для иммутабельности
-    const newData = [...data];
+    setNestedData((prevNestedData) => {
+      const nestedArray = prevNestedData[parentKey] || [];
+      const nestedObjIndex = nestedArray.findIndex(
+        (obj) => obj.key === childKey
+      );
 
-    // Обновляем значение для конкретного поля
-    newData[objIndex][fieldName] = value;
+      if (nestedObjIndex === -1) return prevNestedData; // если объект не найден, вернем неизмененное состояние
 
-    // Обновляем состояние
-    setData(newData);
+      const newNestedArray = [...nestedArray];
+      newNestedArray[nestedObjIndex][fieldName] = newValue;
+
+      return { ...prevNestedData, [parentKey]: newNestedArray };
+    });
   }
 
-  function handleChangeNumber(key, fieldName, value) {
+  function handleChange(key, fieldName, value, isNumber = false) {
+    // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
     const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
+    if (isNumber && value !== "" && !re.test(value)) return;
 
-    // Если значение не пусто и не соответствует регулярному выражению, выходим из функции
-    if (value !== "" && !re.test(value)) return;
-
-    const newValue = value.replace(",", ".");
+    const newValue = isNumber ? value.replace(",", ".") : value;
 
     setData((prevData) => {
       const newData = [...prevData];
       const objIndex = newData.findIndex((obj) => obj.key === key);
+
       if (objIndex === -1) return prevData; // если объект не найден, вернем неизмененное состояние
 
       newData[objIndex][fieldName] = newValue;
@@ -98,9 +109,13 @@ const CustomTable = ({ tableData }) => {
   }
 
   const handleRowExpand = (record) => {
-    console.log("record :>> ", record);
     setNestedData((prevNestedData) => {
-      return { ...prevNestedData, [record.key]: [record] };
+      if (prevNestedData[record.key]) return prevNestedData;
+
+      return {
+        ...prevNestedData,
+        [record.key]: [{ ...record, key: `${record.key}-1` }],
+      };
     });
     setExpandedRowKeys((prevKeys) => {
       if (prevKeys.includes(record.key)) {
@@ -109,8 +124,6 @@ const CustomTable = ({ tableData }) => {
       return [...prevKeys, record.key];
     });
   };
-
-  console.log("nestedData :>> ", nestedData);
 
   const [columns, setColumns] = useState([
     {
@@ -138,7 +151,7 @@ const CustomTable = ({ tableData }) => {
           type="text"
           value={text}
           onChange={(event) =>
-            handleChangeNumber(record.key, "buy_price", event.target.value)
+            handleChange(record.key, "buy_price", event.target.value, true)
           }
         />
       ),
@@ -155,7 +168,7 @@ const CustomTable = ({ tableData }) => {
           type="text"
           value={text}
           onChange={(event) =>
-            handleChangeNumber(record.key, "buy_amount", event.target.value)
+            handleChange(record.key, "buy_amount", event.target.value, true)
           }
         />
       ),
@@ -195,7 +208,7 @@ const CustomTable = ({ tableData }) => {
           type="text"
           value={text}
           onChange={(event) =>
-            handleChangeNumber(record.key, "sell_price", event.target.value)
+            handleChange(record.key, "sell_price", event.target.value, true)
           }
         />
       ),
@@ -211,7 +224,7 @@ const CustomTable = ({ tableData }) => {
           type="text"
           value={text}
           onChange={(event) =>
-            handleChangeNumber(record.key, "spread", event.target.value)
+            handleChange(record.key, "spread", event.target.value, true)
           }
         />
       ),
@@ -228,7 +241,7 @@ const CustomTable = ({ tableData }) => {
           value={text}
           controls={false}
           onChange={(event) =>
-            handleChangeNumber(record.key, "net_profit", event.target.value)
+            handleChange(record.key, "net_profit", event.target.value, true)
           }
         />
       ),
@@ -279,7 +292,14 @@ const CustomTable = ({ tableData }) => {
         <AutoComplete
           defaultOptions={cryptoCurrencies}
           defaultValue={text}
-          handleSelect={(value) => handleChange(record.key, "currency", value)}
+          handleSelect={(value) =>
+            handleChangeNested(
+              record.key.split("-")[0],
+              record.key,
+              "currency",
+              value
+            )
+          }
         />
       ),
     },
@@ -294,7 +314,13 @@ const CustomTable = ({ tableData }) => {
           type="text"
           value={text}
           onChange={(event) =>
-            handleChangeNumber(record.key, "buy_price", event.target.value)
+            handleChangeNested(
+              record.key.split("-")[0],
+              record.key,
+              "buy_price",
+              event.target.value,
+              true
+            )
           }
         />
       ),
@@ -310,7 +336,13 @@ const CustomTable = ({ tableData }) => {
           type="text"
           value={text}
           onChange={(event) =>
-            handleChangeNumber(record.key, "buy_amount", event.target.value)
+            handleChangeNested(
+              record.key.split("-")[0],
+              record.key,
+              "buy_amount",
+              event.target.value,
+              true
+            )
           }
         />
       ),
