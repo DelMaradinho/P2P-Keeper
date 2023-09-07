@@ -14,7 +14,8 @@
         th {
           background-color: white;
           border-bottom: none;
-          padding: 0 5px !important;
+          padding: 0 10px !important;
+          box-sizing: border-box;
           text-align: center;
           vertical-align: middle;
         }
@@ -24,6 +25,7 @@
       margin: -10px 0 0 0;
       & > tr {
         & > td {
+          box-sizing: border-box !important;
           border-bottom: none;
           padding: 10px !important;
         }
@@ -68,9 +70,6 @@
   & table {
     border-spacing: 0 10px;
   }
-  &-cell {
-    padding: 10px !important;
-  }
 }
 
 .ant-table-wrapper
@@ -85,10 +84,10 @@
 .custom-resizable-handle {
   background: #e3e9f6;       
   width: 1px;              
-  height: 50%;
+  height: 60%;
   cursor: col-resize;
   position: absolute;
-  top: 13px;
+  top: 7px;
   right: 0;
   bottom: 0;
   z-index: 2;

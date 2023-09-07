@@ -81,27 +81,21 @@ const CustomTable = ({ tableData }) => {
   }
 
   function handleChangeNumber(key, fieldName, value) {
-    const re = /^(?!.*,,)\d*(,\d*)?$/;
+    const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
 
-    // if value is not blank, then test the regex
+    // Если значение не пусто и не соответствует регулярному выражению, выходим из функции
+    if (value !== "" && !re.test(value)) return;
 
-    if (value === "" || re.test(value)) {
-      // Найдем объект по ключу
-      const objIndex = data.findIndex((obj) => obj.key === key);
+    const newValue = value.replace(",", ".");
 
-      // Если объект не найден, выходим из функции
-      if (objIndex === -1) return;
+    setData((prevData) => {
+      const newData = [...prevData];
+      const objIndex = newData.findIndex((obj) => obj.key === key);
+      if (objIndex === -1) return prevData; // если объект не найден, вернем неизмененное состояние
 
-      // Создаем копию данных для иммутабельности
-      const newData = [...data];
-
-      // Обновляем значение для конкретного поля
-      newData[objIndex][fieldName] = value;
-
-      // Обновляем состояние
-      setData(newData);
-      console.log(value);
-    }
+      newData[objIndex][fieldName] = newValue;
+      return newData;
+    });
   }
 
   const [columns, setColumns] = useState([
@@ -180,22 +174,6 @@ const CustomTable = ({ tableData }) => {
           value={text}
           onChange={(event) =>
             handleChangeNumber(record.key, "sell_price", event.target.value)
-          }
-        />
-      ),
-    },
-    {
-      title: "Количество",
-      dataIndex: "sell_amount",
-      key: "sell_amount",
-      sticky: true,
-      width: 97,
-      render: (text, record) => (
-        <Input
-          type="text"
-          value={text}
-          onChange={(event) =>
-            handleChangeNumber(record.key, "sell_amount", event.target.value)
           }
         />
       ),
