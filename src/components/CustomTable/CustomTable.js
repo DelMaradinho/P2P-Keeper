@@ -46,6 +46,7 @@ const ResizableTitle = (props) => {
 
 const CustomTable = ({ tableData }) => {
   const [data, setData] = useState(tableData);
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   useEffect(() => {
     setData(tableData);
@@ -99,6 +100,15 @@ const CustomTable = ({ tableData }) => {
       return newData;
     });
   }
+
+  const handleRowExpand = (recordKey) => {
+    setExpandedRowKeys((prevKeys) => {
+      if (prevKeys.includes(recordKey)) {
+        return prevKeys.filter((key) => key !== recordKey);
+      }
+      return [...prevKeys, recordKey];
+    });
+  };
 
   const [columns, setColumns] = useState([
     {
@@ -160,7 +170,8 @@ const CustomTable = ({ tableData }) => {
             type="default"
             shape="round"
             size="large"
-            classNames="menu__button__burger"
+            onClick={() => handleRowExpand(record.key)}
+            // classNames="menu__button__burger"
             // onClick={toggleCollapsed}
             style={{
               borderRadius: 12,
@@ -319,6 +330,18 @@ const CustomTable = ({ tableData }) => {
           rowClassName="table__row__custom"
           sticky
           showSorterTooltip={true}
+          expandable={{
+            expandedRowRender: (record) => (
+              <p>Содержимое для строки с ключом {record.key}</p>
+            ),
+            expandedRowKeys: expandedRowKeys,
+            expandIcon: () => <></>,
+            onExpand: (expanded, record) => {
+              if (expanded) {
+                handleRowExpand(record.key);
+              }
+            },
+          }}
           pagination={{
             position: ["bottomCenter"],
             showSizeChanger: true,

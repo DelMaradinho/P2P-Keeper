@@ -106,3 +106,10 @@
   justify-content: center;
   margin: 0;
 }
+
+.ant-table-row-expand-icon-cell {
+  width: 0 !important;
+  padding: 0 !important;
+  border: none;
+  overflow: hidden !important;
+}
