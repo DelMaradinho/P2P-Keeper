@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ConfigProvider, Input, Table } from "antd";
+import { Button, ConfigProvider, Input, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
 import "react-resizable/css/styles.css";
@@ -16,6 +16,7 @@ import weekYear from "dayjs/plugin/weekYear";
 import FilterPanel from "../FilterPanel/FilterPanel";
 import { dateFormat, tableData } from "../../constants/constants";
 import { filterDataByCriteria } from "../../helpers/helpers";
+import { SyncOutlined } from "@ant-design/icons";
 import ruRU from "antd/lib/locale/ru_RU";
 
 dayjs.extend(customParseFormat);
@@ -154,13 +155,20 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 72,
       render: (text, record) => (
-        <Input
-          type="text"
-          value={text}
-          onChange={(event) =>
-            handleChangeNumber(record.key, "exchange", event.target.value)
-          }
-        />
+        <p className="button__exchange">
+          <Button
+            type="default"
+            shape="round"
+            size="large"
+            classNames="menu__button__burger"
+            // onClick={toggleCollapsed}
+            style={{
+              borderRadius: 12,
+            }}
+          >
+            <SyncOutlined style={{ fontSize: 24 }} />
+          </Button>
+        </p>
       ),
     },
     {
