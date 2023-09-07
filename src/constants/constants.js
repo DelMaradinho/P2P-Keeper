@@ -72,3 +72,10 @@ export const tableData = [
 ];
 
 export const dateFormat = "YYYY-MM-DD";
+
+export   const cryptoCurrencies = [
+  { value: "BTC", label: "BTC" },
+  { value: "USDT", label: "USDT" },
+  { value: "DOGE", label: "DOGE" },
+  { value: "ETH", label: "ETH" },
+];

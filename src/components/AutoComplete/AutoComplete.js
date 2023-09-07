@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AutoComplete as AutoCompleteAntD } from "antd";
+import { cryptoCurrencies } from "../../constants/constants";
 
 function AutoComplete({ defaultOptions, handleSelect, defaultValue }) {
   const [options, setOptions] = useState(defaultOptions);
@@ -15,6 +16,7 @@ function AutoComplete({ defaultOptions, handleSelect, defaultValue }) {
       !options.some((option) => option.value === currentValue)
     ) {
       setOptions((prevOptions) => [...prevOptions, { value: currentValue }]);
+      cryptoCurrencies.push({ value: currentValue });
     }
   };
 

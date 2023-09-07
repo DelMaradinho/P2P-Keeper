@@ -14,7 +14,7 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import FilterPanel from "../FilterPanel/FilterPanel";
-import { dateFormat, tableData } from "../../constants/constants";
+import { cryptoCurrencies, dateFormat, tableData } from "../../constants/constants";
 import { filterDataByCriteria } from "../../helpers/helpers";
 import { SyncOutlined } from "@ant-design/icons";
 import ruRU from "antd/lib/locale/ru_RU";
@@ -57,13 +57,6 @@ const CustomTable = ({ tableData }) => {
     };
   }, [tableData]);
 
-  const cryptoCurrencies = [
-    { value: "BTC", label: "BTC" },
-    { value: "USDT", label: "USDT" },
-    { value: "DOGE", label: "DOGE" },
-    { value: "ETH", label: "ETH" },
-  ];
-
   function handleChange(key, fieldName, value) {
     // Найдем объект по ключу
     const objIndex = data.findIndex((obj) => obj.key === key);
@@ -79,7 +72,6 @@ const CustomTable = ({ tableData }) => {
 
     // Обновляем состояние
     setData(newData);
-    console.log(value);
   }
 
   function handleChangeNumber(key, fieldName, value) {
