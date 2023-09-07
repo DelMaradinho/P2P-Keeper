@@ -57,8 +57,6 @@ const CustomTable = ({ tableData }) => {
     };
   }, [tableData]);
 
-  const lastKeyRef = useRef(data.length);
-
   const cryptoCurrencies = [
     { value: "BTC", label: "BTC" },
     { value: "USDT", label: "USDT" },
@@ -273,9 +271,10 @@ const CustomTable = ({ tableData }) => {
 
   const handleDuplicate = (record) => {
     const itemToDuplicate = record;
-    lastKeyRef.current += 1; // Увеличиваем значение ключа
-    const newItem = { ...itemToDuplicate, key: lastKeyRef.current };
-    setData((prevData) => [newItem, ...prevData]);
+    setData((prevData) => {
+      const newItem = { ...itemToDuplicate, key: prevData.length + 1 };
+      return [newItem, ...prevData];
+    });
   };
 
   const handleResize =
@@ -330,13 +329,11 @@ const CustomTable = ({ tableData }) => {
         }
       });
 
+      setData(filterDataByCriteria(updatedFilter, tableData));
+
       return updatedFilter;
     });
   };
-
-  useEffect(() => {
-    setData(filterDataByCriteria(filter, tableData));
-  }, [filter]);
 
   return (
     <div className="table__container">
