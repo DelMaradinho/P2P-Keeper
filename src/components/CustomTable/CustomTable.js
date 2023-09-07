@@ -219,15 +219,10 @@ const CustomTable = ({ tableData }) => {
       key: "spread",
       sticky: true,
       width: 70,
-      render: (text, record) => (
-        <Input
-          type="text"
-          value={text}
-          onChange={(event) =>
-            handleChange(record.key, "spread", event.target.value, true)
-          }
-        />
-      ),
+      render: (text, record) => {
+        const calculatedSpread = record.sell_price / (record.buy_price - 1);
+        return <Input type="text" value={calculatedSpread} readOnly />;
+      },
     },
     {
       title: "Чистая прибыль",
@@ -235,16 +230,12 @@ const CustomTable = ({ tableData }) => {
       key: "net_profit",
       sticky: true,
       width: 110,
-      render: (text, record) => (
-        <Input
-          type="text"
-          value={text}
-          controls={false}
-          onChange={(event) =>
-            handleChange(record.key, "net_profit", event.target.value, true)
-          }
-        />
-      ),
+      render: (text, record) => {
+        const calculatedProfit =
+          record.sell_price * record.buy_amount -
+          record.buy_price * record.buy_amount;
+        return <Input type="text" value={calculatedProfit} readOnly />;
+      },
     },
     {
       title: "Дата",
@@ -283,9 +274,9 @@ const CustomTable = ({ tableData }) => {
 
   const [columnsExtra, setColumnsExtra] = useState([
     {
-      title: "Монета",
-      dataIndex: "currency",
-      key: "currency",
+      title: "Меняемая валюта",
+      dataIndex: "exchanging_currency",
+      key: "exchanging_currency",
       sticky: true,
       width: 85,
       render: (text, record) => (
@@ -305,8 +296,8 @@ const CustomTable = ({ tableData }) => {
     },
     {
       title: "Цена покупки",
-      dataIndex: "buy_price",
-      key: "buy_price",
+      dataIndex: "exchanging_buy_price",
+      key: "exchanging_buy_price",
       sticky: true,
       width: 110,
       render: (text, record) => (
@@ -327,8 +318,8 @@ const CustomTable = ({ tableData }) => {
     },
     {
       title: "Количество",
-      dataIndex: "buy_amount",
-      key: "buy_amount",
+      dataIndex: "exchanging_buy_amount",
+      key: "exchanging_buy_amount",
       sticky: true,
       width: 97,
       render: (text, record) => (
