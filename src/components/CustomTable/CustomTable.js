@@ -46,6 +46,7 @@ const ResizableTitle = (props) => {
 
 const CustomTable = ({ tableData }) => {
   const [data, setData] = useState(tableData);
+  const [filter, setFilter] = useState({});
 
   useEffect(() => {
     setData(tableData);
@@ -304,9 +305,27 @@ const CustomTable = ({ tableData }) => {
     };
   });
 
-  const onFilterChange = (filter) => {
-    setData(filterDataByCriteria(filter, tableData));
+  const onFilterChange = (incomingFilter) => {
+    setFilter((prevFilter) => {
+      const updatedFilter = { ...prevFilter, ...incomingFilter };
+
+      // Удаление ключей с пустыми массивами
+      Object.keys(updatedFilter).forEach((key) => {
+        if (
+          Array.isArray(updatedFilter[key]) &&
+          updatedFilter[key].length === 0
+        ) {
+          delete updatedFilter[key];
+        }
+      });
+
+      return updatedFilter;
+    });
   };
+
+  useEffect(() => {
+    setData(filterDataByCriteria(filter, tableData));
+  }, [filter]);
 
   return (
     <div className="table__container">
