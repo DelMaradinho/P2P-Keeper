@@ -1,4 +1,9 @@
 export const filterDataByCriteria = (filter, initialData) => {
+  // Проверка на пустой объект фильтра
+  if (Object.keys(filter).length === 0) {
+    return initialData;
+  }
+
   let filteredData = [...initialData];
 
   // Фильтрация по дате

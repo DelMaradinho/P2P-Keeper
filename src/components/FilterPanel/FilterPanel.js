@@ -10,27 +10,31 @@ const FilterPanel = ({ onFilterChange }) => {
   const [dateRange, setDateRange] = useState([]);
 
   const onChange = (newValue) => {
-    const formattedValue = newValue.reduce((acc, currentValue) => {
+    // Инициализация formattedValue ключами из filterData и пустыми массивами
+    const formattedValue = filterData.reduce((acc, category) => {
+      acc[category.value] = [];
+      return acc;
+    }, {});
+
+    newValue.forEach((currentValue) => {
       // Проверяем, является ли currentValue родительским элементом
       const parent = filterData.find(
         (category) => category.value === currentValue
       );
       if (parent) {
-        acc[currentValue] = parent.children.map((child) => child.value);
+        formattedValue[currentValue] = parent.children.map(
+          (child) => child.value
+        );
       } else {
         // Если это не родительский элемент, ищем родительскую категорию для текущего элемента
         for (let category of filterData) {
           if (category.children.some((child) => child.value === currentValue)) {
-            if (!acc[category.value]) {
-              acc[category.value] = [];
-            }
-            acc[category.value].push(currentValue);
+            formattedValue[category.value].push(currentValue);
             break; // Если значение найдено, прекращаем поиск в этой категории
           }
         }
       }
-      return acc;
-    }, {});
+    });
 
     onFilterChange(formattedValue);
     setValue(newValue);
@@ -38,11 +42,11 @@ const FilterPanel = ({ onFilterChange }) => {
 
   const onDateChange = (dates, dateStrings) => {
     setDateRange(dates);
-    onFilterChange({
-      filters: value,
-      startDate: dateStrings[0],
-      endDate: dateStrings[1],
-    });
+    const formattedFilter = {
+      startDate: dateStrings[0] || "",
+      endDate: dateStrings[1] || "",
+    };
+    onFilterChange(formattedFilter);
   };
 
   return (
