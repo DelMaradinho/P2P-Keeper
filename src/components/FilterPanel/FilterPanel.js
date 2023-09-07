@@ -1,9 +1,13 @@
 import { TreeSelect } from "antd";
 import { useState } from "react";
 import { filterData } from "../../constants/constants";
+import { DatePicker } from "antd";
+import "./FilterPanel.scss";
 
+const { RangePicker } = DatePicker;
 const FilterPanel = ({ onFilterChange }) => {
   const [value, setValue] = useState();
+  const [dateRange, setDateRange] = useState([]);
 
   const onChange = (newValue) => {
     const formattedValue = newValue.reduce((acc, currentValue) => {
@@ -32,25 +36,43 @@ const FilterPanel = ({ onFilterChange }) => {
     setValue(newValue);
   };
 
+  const onDateChange = (dates, dateStrings) => {
+    setDateRange(dates);
+    onFilterChange({
+      filters: value,
+      startDate: dateStrings[0],
+      endDate: dateStrings[1],
+    });
+  };
+
   return (
-    <TreeSelect
-      showSearch
-      style={{
-        width: "200px",
-      }}
-      value={value}
-      dropdownStyle={{
-        maxHeight: 400,
-        overflow: "auto",
-      }}
-      placeholder="Выберите фильтр"
-      allowClear
-      multiple
-      treeDefaultExpandAll
-      onChange={onChange}
-      treeData={filterData}
-      treeCheckable={true}
-    />
+    <div className="filter__container">
+      <RangePicker
+        onChange={onDateChange}
+        placeholder={["Дата начальная", "Дата конечная"]}
+        style={{
+          width: "290px",
+        }}
+      />
+      <TreeSelect
+        showSearch
+        style={{
+          width: "200px",
+        }}
+        value={value}
+        dropdownStyle={{
+          maxHeight: 400,
+          overflow: "auto",
+        }}
+        placeholder="Выберите фильтр"
+        allowClear
+        multiple
+        treeDefaultExpandAll
+        onChange={onChange}
+        treeData={filterData}
+        treeCheckable={true}
+      />
+    </div>
   );
 };
 export default FilterPanel;

@@ -1,17 +1,30 @@
 export const filterDataByCriteria = (filter, initialData) => {
-  // Проверка на пустой объект фильтра
-  if (Object.keys(filter).length === 0) {
-    return initialData;
+  let filteredData = [...initialData];
+
+  // Фильтрация по дате
+  if (filter.startDate || filter.endDate) {
+    const startDate = filter.startDate ? new Date(filter.startDate) : null;
+    const endDate = filter.endDate ? new Date(filter.endDate) : null;
+
+    filteredData = filteredData.filter((item) => {
+      const itemDate = new Date(item.date); // предполагая, что дата записи хранится в поле 'date'
+      return (
+        (!startDate || itemDate >= startDate) &&
+        (!endDate || itemDate <= endDate)
+      );
+    });
   }
 
-  return initialData.filter((item) => {
-    for (let key of Object.keys(filter)) {
+  // Фильтрация по другим критериям
+  for (let key of Object.keys(filter)) {
+    if (key !== "startDate" && key !== "endDate") {
       if (Array.isArray(filter[key])) {
-        if (!filter[key].includes(String(item[key]).toLowerCase())) {
-          return false;
-        }
+        filteredData = filteredData.filter((item) =>
+          filter[key].includes(String(item[key]).toLowerCase())
+        );
       }
     }
-    return true;
-  });
+  }
+
+  return filteredData;
 };

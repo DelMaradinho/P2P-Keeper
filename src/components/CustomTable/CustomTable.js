@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Input, Table } from "antd";
+import { ConfigProvider, Input, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
 import "react-resizable/css/styles.css";
@@ -16,6 +16,7 @@ import weekYear from "dayjs/plugin/weekYear";
 import FilterPanel from "../FilterPanel/FilterPanel";
 import { dateFormat, tableData } from "../../constants/constants";
 import { filterDataByCriteria } from "../../helpers/helpers";
+import ruRU from "antd/lib/locale/ru_RU";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -301,21 +302,23 @@ const CustomTable = ({ tableData }) => {
 
   return (
     <div className="table__container">
-      <FilterPanel onFilterChange={onFilterChange} />
-      <Table
-        components={components}
-        columns={resizableColumns}
-        dataSource={data}
-        rowClassName="table__row__custom"
-        sticky
-        showSorterTooltip={true}
-        pagination={{
-          position: ["bottomCenter"],
-          showSizeChanger: true,
-          pageSizeOptions: ["5", "10", "20", "30", "50"], // опции для количества записей на странице
-          defaultPageSize: 5, // количество записей на странице по умолчанию
-        }}
-      />
+      <ConfigProvider locale={ruRU}>
+        <FilterPanel onFilterChange={onFilterChange} />
+        <Table
+          components={components}
+          columns={resizableColumns}
+          dataSource={data}
+          rowClassName="table__row__custom"
+          sticky
+          showSorterTooltip={true}
+          pagination={{
+            position: ["bottomCenter"],
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "30", "50"], // опции для количества записей на странице
+            defaultPageSize: 5, // количество записей на странице по умолчанию
+          }}
+        />
+      </ConfigProvider>
     </div>
   );
 };
