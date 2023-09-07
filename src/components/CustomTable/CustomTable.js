@@ -268,6 +268,55 @@ const CustomTable = ({ tableData }) => {
     },
   ]);
 
+  const [columnsExtra, setColumnsExtra] = useState([
+    {
+      title: "Монета",
+      dataIndex: "currency",
+      key: "currency",
+      sticky: true,
+      width: 85,
+      render: (text, record) => (
+        <AutoComplete
+          defaultOptions={cryptoCurrencies}
+          defaultValue={text}
+          handleSelect={(value) => handleChange(record.key, "currency", value)}
+        />
+      ),
+    },
+    {
+      title: "Цена покупки",
+      dataIndex: "buy_price",
+      key: "buy_price",
+      sticky: true,
+      width: 110,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "buy_price", event.target.value)
+          }
+        />
+      ),
+    },
+    {
+      title: "Количество",
+      dataIndex: "buy_amount",
+      key: "buy_amount",
+      sticky: true,
+      width: 97,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChangeNumber(record.key, "buy_amount", event.target.value)
+          }
+        />
+      ),
+    },
+  ]);
+
   const handleDelete = (key) => {
     setData((prevData) => prevData.filter((item) => item.key !== key));
   };
@@ -353,7 +402,7 @@ const CustomTable = ({ tableData }) => {
             showExpandColumn: false,
             expandedRowRender: (record) => (
               <Table
-                columns={columns.slice(0, 3)}
+                columns={columnsExtra}
                 dataSource={nestedData[record.key]}
                 rowClassName="table__row__custom"
                 pagination={false}
