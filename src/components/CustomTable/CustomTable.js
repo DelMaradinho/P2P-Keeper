@@ -14,7 +14,11 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import weekYear from "dayjs/plugin/weekYear";
 import FilterPanel from "../FilterPanel/FilterPanel";
-import { cryptoCurrencies, dateFormat, tableData } from "../../constants/constants";
+import {
+  cryptoCurrencies,
+  dateFormat,
+  tableData,
+} from "../../constants/constants";
 import { filterDataByCriteria } from "../../helpers/helpers";
 import { SyncOutlined } from "@ant-design/icons";
 import ruRU from "antd/lib/locale/ru_RU";
@@ -46,6 +50,7 @@ const ResizableTitle = (props) => {
 
 const CustomTable = ({ tableData }) => {
   const [data, setData] = useState(tableData);
+  const [nestedData, setNestedData] = useState({});
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [filter, setFilter] = useState({});
 
@@ -92,14 +97,20 @@ const CustomTable = ({ tableData }) => {
     });
   }
 
-  const handleRowExpand = (recordKey) => {
+  const handleRowExpand = (record) => {
+    console.log("record :>> ", record);
+    setNestedData((prevNestedData) => {
+      return { ...prevNestedData, [record.key]: [record] };
+    });
     setExpandedRowKeys((prevKeys) => {
-      if (prevKeys.includes(recordKey)) {
-        return prevKeys.filter((key) => key !== recordKey);
+      if (prevKeys.includes(record.key)) {
+        return prevKeys.filter((key) => key !== record.key);
       }
-      return [...prevKeys, recordKey];
+      return [...prevKeys, record.key];
     });
   };
+
+  console.log("nestedData :>> ", nestedData);
 
   const [columns, setColumns] = useState([
     {
@@ -161,7 +172,7 @@ const CustomTable = ({ tableData }) => {
             type="default"
             shape="round"
             size="large"
-            onClick={() => handleRowExpand(record.key)}
+            onClick={() => handleRowExpand(record)}
             // classNames="menu__button__burger"
             // onClick={toggleCollapsed}
             style={{
@@ -341,13 +352,18 @@ const CustomTable = ({ tableData }) => {
           expandable={{
             showExpandColumn: false,
             expandedRowRender: (record) => (
-              <p>Содержимое для строки с ключом {record.key}</p>
+              <Table
+                columns={columns.slice(0, 3)}
+                dataSource={nestedData[record.key]}
+                rowClassName="table__row__custom"
+                pagination={false}
+              />
             ),
             expandedRowKeys: expandedRowKeys,
             expandIcon: () => <></>,
             onExpand: (expanded, record) => {
               if (expanded) {
-                handleRowExpand(record.key);
+                handleRowExpand(record);
               }
             },
           }}
