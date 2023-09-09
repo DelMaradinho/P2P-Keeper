@@ -261,10 +261,10 @@ const CustomTable = ({ tableData }) => {
       width: 50,
       render: (text, record) => (
         <p style={{ margin: 0 }}>
-          <a onClick={() => handleDuplicate(record)} title="Повторить формулу">
+          <a onClick={() => handleDuplicate(record)} title="Повторить сделку">
             <RollbackOutlined style={{ fontSize: 14 }} />
           </a>{" "}
-          <a onClick={() => handleDelete(record.key)} title="Удалить формулу">
+          <a onClick={() => handleDelete(record.key)} title="Удалить сделку">
             <DeleteOutlined style={{ fontSize: 14 }} />
           </a>
         </p>
@@ -379,7 +379,7 @@ const CustomTable = ({ tableData }) => {
 
   const resizableColumns = columns.map((col, index) => {
     if (col.key === "action") {
-      return col; // Для столбца "action" возвращаем столбец без изменений
+      return col;
     }
     return {
       ...col,
