@@ -39,9 +39,11 @@ function History() {
         <MainMenu />
       </div>
       <div className="right">
-        <h1>История сделок</h1>
+        <h1 className="right__header">История сделок</h1>
         <CustomTable tableData={data} />
-        <NewFormulaButton handleAddRow={handleAddRow} />
+        <div className="right__button__container">
+          <NewFormulaButton handleAddRow={handleAddRow} />
+        </div>
       </div>
     </div>
   );
