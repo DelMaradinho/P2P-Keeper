@@ -13,15 +13,17 @@ const NewFormulaButton = ({ handleAddRow }) => {
         icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
         onClick={handleAddRow}
         style={{
+          height: 80,
           zIndex: 100,
           borderRadius: 12,
           paddingTop: 5,
           paddingBottom: 5,
-          // transform: "rotate(90deg)",
           backgroundColor: "rgba(8, 31, 73, 1)",
         }}
       >
-        Добавить сделку
+        Добавить
+        <br />
+        сделку
       </Button>
     </div>
   );

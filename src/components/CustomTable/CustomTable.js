@@ -186,8 +186,6 @@ const CustomTable = ({ tableData }) => {
             shape="round"
             size="large"
             onClick={() => handleRowExpand(record)}
-            // classNames="menu__button__burger"
-            // onClick={toggleCollapsed}
             style={{
               borderRadius: 12,
             }}
@@ -220,7 +218,9 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        const calculatedSpread = record.sell_price / (record.buy_price - 1);
+        const calculatedSpread = `${
+          record.sell_price / (record.buy_price - 1)
+        } %`;
         return <Input type="text" value={calculatedSpread} readOnly />;
       },
     },
@@ -278,7 +278,7 @@ const CustomTable = ({ tableData }) => {
       dataIndex: "exchanging_currency",
       key: "exchanging_currency",
       sticky: true,
-      width: 85,
+      width: 50,
       render: (text, record) => (
         <AutoComplete
           defaultOptions={cryptoCurrencies}
@@ -419,7 +419,7 @@ const CustomTable = ({ tableData }) => {
           columns={resizableColumns}
           dataSource={data}
           rowClassName="table__row__custom"
-          sticky
+          // sticky
           showSorterTooltip={true}
           expandable={{
             showExpandColumn: false,
