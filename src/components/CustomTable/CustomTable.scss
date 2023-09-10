@@ -6,8 +6,9 @@
     display: flex;
     flex-direction: column;
     .ant-table-thead {
-      //not working
-      // position: sticky !important;
+      position: sticky !important;
+      top: 0;
+      z-index: 50;
       border-bottom: none;
       background-color: white;
       tr {
@@ -15,7 +16,7 @@
         th {
           background-color: white;
           border-bottom: none;
-          padding: 0 10px !important;
+          padding: 5px 10px !important;
           box-sizing: border-box;
           text-align: center;
           vertical-align: middle;
