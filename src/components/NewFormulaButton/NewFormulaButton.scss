@@ -1,6 +1,10 @@
 .newFormula {
   position: fixed;
   top: 180px;
+  & > button {
+    display: flex !important;
+    align-items: center !important;
+  }
 }
 
 .ant-btn.ant-btn-round.ant-btn-lg {
