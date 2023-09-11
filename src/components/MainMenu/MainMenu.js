@@ -13,7 +13,7 @@ import { Button, Menu } from "antd";
 import styles from "./MainMenu.module.scss";
 import { Link } from "react-router-dom";
 
-const MainMenu = () => {
+const MainMenu = ({ selectedKey }) => {
   const [collapsed, setCollapsed] = useState(true);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -36,7 +36,7 @@ const MainMenu = () => {
         <MenuOutlined />
       </Button>
       <Menu
-        defaultSelectedKeys={["3"]}
+        defaultSelectedKeys={selectedKey}
         mode="inline"
         theme="light"
         style={{

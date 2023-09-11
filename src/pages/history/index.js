@@ -43,7 +43,7 @@ function History() {
   return (
     <div className="App">
       <div className="left">
-        <MainMenu />
+        <MainMenu selectedKey={["3"]} />
       </div>
       <div className="right">
         <h1 className="right__header">История сделок</h1>

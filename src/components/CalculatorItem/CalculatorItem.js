@@ -25,23 +25,15 @@ const CalculatorItem = () => {
     }
   }, [priceBuy, commissionBuy]);
 
-  // function handleChange(key, fieldName, value, isNumber = false) {
-  //   // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
-  //   const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
-  //   if (isNumber && value !== "" && !re.test(value)) return;
+  function handleChange(value, setFunc) {
+    // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
+    const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
+    if (value !== "" && !re.test(value)) return;
 
-  //   const newValue = isNumber ? value.replace(",", ".") : value;
+    const newValue = value.replace(",", ".");
 
-  //   setdata((prevData) => {
-  //     const newData = [...prevData];
-  //     const objIndex = newData.findIndex((obj) => obj.key === key);
-
-  //     if (objIndex === -1) return prevData; // если объект не найден, вернем неизмененное состояние
-
-  //     newData[objIndex][fieldName] = newValue;
-  //     return newData;
-  //   });
-  // }
+    setFunc(newValue);
+  }
 
   return (
     <div className="calculator__container">
@@ -50,25 +42,28 @@ const CalculatorItem = () => {
       <div className="calculator__sell">Продал</div>
       <div className="calculator__price">Цена</div>
       <div className="calculator__price__buy">
-        <Input value={priceBuy} onChange={(e) => setPriceBuy(e.target.value)} />
+        <Input
+          value={priceBuy}
+          onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+        />
       </div>
       <div className="calculator__price__sell">
         <Input
           value={priceSell}
-          onChange={(e) => setPriceSell(e.target.value)}
+          onChange={(e) => handleChange(e.target.value, setPriceSell)}
         />
       </div>
       <div className="calculator__commission">Комиссия</div>
       <div className="calculator__commission__buy">
         <Input
           value={commissionBuy}
-          onChange={(e) => setCommissionBuy(e.target.value)}
+          onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
         />
       </div>
       <div className="calculator__commission__sell">
         <Input
           value={commissionSell}
-          onChange={(e) => setCommissionSell(e.target.value)}
+          onChange={(e) => handleChange(e.target.value, setCommissionSell)}
         />
       </div>
       <div className="calculator__priceWithCommission">Цена с комиссией</div>

@@ -22,7 +22,7 @@ function Calculator() {
   return (
     <div className="App">
       <div className="left">
-        <MainMenu />
+        <MainMenu selectedKey={["1"]} />
       </div>
       <div className="right">
         <h1 className="right__header">Калькулятор спреда</h1>
