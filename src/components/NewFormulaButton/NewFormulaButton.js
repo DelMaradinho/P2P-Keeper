@@ -3,7 +3,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import "./NewFormulaButton.scss";
 
-const NewFormulaButton = ({ handleAddRow }) => {
+const NewFormulaButton = ({ addFunction, buttonText }) => {
   return (
     <div className="newFormula">
       <Button
@@ -11,7 +11,7 @@ const NewFormulaButton = ({ handleAddRow }) => {
         shape="round"
         size="large"
         icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
-        onClick={handleAddRow}
+        onClick={addFunction}
         style={{
           height: 80,
           zIndex: 100,
@@ -21,9 +21,7 @@ const NewFormulaButton = ({ handleAddRow }) => {
           backgroundColor: "rgba(8, 31, 73, 1)",
         }}
       >
-        Добавить
-        <br />
-        сделку
+        {buttonText}
       </Button>
     </div>
   );

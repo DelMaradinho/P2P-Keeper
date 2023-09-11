@@ -8,6 +8,13 @@ import dayjs from "dayjs";
 
 function History() {
   const [data, setData] = useState([]);
+  const buttonText = (
+    <span>
+      Добавить
+      <br />
+      сделку
+    </span>
+  );
 
   useEffect(() => {
     setData(tableData);
@@ -42,7 +49,10 @@ function History() {
         <h1 className="right__header">История сделок</h1>
         <CustomTable tableData={data} />
         <div className="right__button__container">
-          <NewFormulaButton handleAddRow={handleAddRow} />
+          <NewFormulaButton
+            handleAddRow={handleAddRow}
+            buttonText={buttonText}
+          />
         </div>
       </div>
     </div>

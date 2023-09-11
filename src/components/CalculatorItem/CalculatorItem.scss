@@ -1,0 +1,82 @@
+.calculator{
+    &__container {
+        display: grid;
+        align-content: center;
+        grid-template:
+        "blank buy sell"
+        "price price__buy price__sell"
+        "commission commission__buy commission__sell"
+        "priceWithCommission priceWithCommission__buy priceWithCommission__sell"
+        "spread spread__amount spread__amount"
+        "turnover turnover__amount turnover__amount"
+        "netProfit netProfit__amount netProfit__amount"
+        ;
+        width: 368px;
+        gap: 5px;
+        padding: 10px;
+        border: 1px solid #e3e9f6;
+        box-sizing: border-box;
+        border-radius: 18px;
+        line-height: 30px;
+        &:hover {
+            background-color: rgb(240, 243, 249);
+        }
+    }
+    &__blank{
+        grid-area: blank;
+    }
+    &__buy{
+        grid-area: buy;
+        text-align: center;
+    }
+    &__sell{
+        grid-area: sell;
+        text-align: center;
+    }
+    &__price{
+        grid-area: price;
+        &__buy{
+            grid-area: price__buy;
+        }
+        &__sell{
+            grid-area: price__sell;
+        }
+    }
+    &__commission{
+        grid-area: commission;
+        &__buy{
+            grid-area: commission__buy;
+        }
+        &__sell{
+            grid-area: commission__sell;
+        }
+    }
+    &__priceWithCommission{
+        grid-area: priceWithCommission;
+        &__buy{
+            grid-area: priceWithCommission__buy;
+        }
+        &__sell{
+            grid-area: priceWithCommission__sell;
+        }
+    }
+    &__spread{
+        grid-area: spread;
+        &__amount{
+            grid-area: spread__amount;
+        }
+    }
+    &__turnover{
+        grid-area: turnover;
+        &__amount{
+            grid-area: turnover__amount;
+        }
+    }
+    &__netProfit{
+        grid-area: netProfit;
+        &__amount{
+            grid-area: netProfit__amount;
+        }
+    }
+
+}
