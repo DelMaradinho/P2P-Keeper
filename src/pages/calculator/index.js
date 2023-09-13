@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import CalculatorItem from "../../components/CalculatorItem/CalculatorItem";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import "./calculator.scss";
@@ -12,11 +12,17 @@ function Calculator() {
       формулу
     </span>
   );
-  const [items, setItems] = useState([<CalculatorItem key={0} />]);
+
+  const deleteItem = (key) => {
+    setItemKeys((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
+    console.log(itemKeys);
+  };
+
+  const [itemKeys, setItemKeys] = useState([0]);
 
   const addItem = () => {
-    const newItem = <CalculatorItem key={items.length} />;
-    setItems([newItem, ...items]);
+    setItemKeys((prevKeys) => [prevKeys.length, ...prevKeys]);
+    console.log(itemKeys);
   };
 
   return (
@@ -26,7 +32,15 @@ function Calculator() {
       </div>
       <div className="right">
         <h1 className="right__header">Калькулятор спреда</h1>
-        <div className="calculators__container">{items}</div>
+        <div className="calculators__container">
+          {itemKeys.length !== 0 &&
+            itemKeys.map((key) => (
+              <CalculatorItem
+                key={key}
+                deleteFunction={() => deleteItem(key)}
+              />
+            ))}
+        </div>
         <div className="right__button__container">
           <NewFormulaButton addFunction={addItem} buttonText={buttonText} />
         </div>

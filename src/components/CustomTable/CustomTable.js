@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, ConfigProvider, Input, Table } from "antd";
+import { Button, ConfigProvider, Input, Modal, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
 import "react-resizable/css/styles.css";
@@ -264,7 +264,26 @@ const CustomTable = ({ tableData }) => {
           <a onClick={() => handleDuplicate(record)} title="Повторить сделку">
             <RollbackOutlined style={{ fontSize: 14 }} />
           </a>{" "}
-          <a onClick={() => handleDelete(record.key)} title="Удалить сделку">
+          <a
+            onClick={() => {
+              Modal.confirm({
+                content: "Вы правда хотите удалить эту сделку?",
+                okText: "Да",
+                cancelText: "Нет",
+                okButtonProps: {
+                  style: {
+                    backgroundColor: "rgba(8, 31, 73, 1)",
+                    color: "white",
+                  },
+                },
+                onCancel() {},
+                onOk() {
+                  handleDelete(record.key);
+                },
+              });
+            }}
+            title="Удалить сделку"
+          >
             <DeleteOutlined style={{ fontSize: 14 }} />
           </a>
         </p>

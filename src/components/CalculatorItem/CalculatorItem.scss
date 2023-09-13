@@ -1,4 +1,9 @@
 .calculator{
+    &__outer{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+    }
     &__container {
         display: grid;
         align-content: center;

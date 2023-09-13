@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Menu } from "antd";
+import { Button, Input, Modal, Space } from "antd";
 import "./CalculatorItem.scss";
+import { CloseCircleOutlined, EditOutlined } from "@ant-design/icons";
 
-const CalculatorItem = () => {
+const CalculatorItem = ({ deleteFunction }) => {
   const [data, setData] = useState([]);
   const [priceSell, setPriceSell] = useState("");
   const [commissionSell, setCommissionSell] = useState("");
@@ -10,6 +11,14 @@ const CalculatorItem = () => {
   const [priceBuy, setPriceBuy] = useState("");
   const [commissionBuy, setCommissionBuy] = useState("");
   const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleOk = () => {
+    setOpen(false);
+  };
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (priceSell && commissionSell) {
@@ -36,54 +45,99 @@ const CalculatorItem = () => {
   }
 
   return (
-    <div className="calculator__container">
-      <div className="calculator__blank"></div>
-      <div className="calculator__buy">Купил</div>
-      <div className="calculator__sell">Продал</div>
-      <div className="calculator__price">Цена</div>
-      <div className="calculator__price__buy">
+    <div>
+      <div className="calculator__outer">
         <Input
-          value={priceBuy}
-          onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+          bordered={false}
+          suffix={<EditOutlined style={{ fontSize: 16 }} />}
+          placeholder="USDT"
+          style={{
+            width: 100,
+            borderBottom: "1px solid #e3e9f6",
+            borderRadius: 0,
+          }}
         />
+        <Space>
+          <Button
+            type="text"
+            shape="round"
+            size="middle"
+            icon={<CloseCircleOutlined style={{ fontSize: 16 }} />}
+            onClick={() => {
+              Modal.confirm({
+                content: "Вы правда хотите удалить эту формулу?",
+                okText: "Да",
+                cancelText: "Нет",
+                okButtonProps: {
+                  style: {
+                    backgroundColor: "rgba(8, 31, 73, 1)",
+                    color: "white", // Задаем цвет текста для кнопки подтверждения
+                  },
+                },
+                onCancel() {},
+                onOk() {
+                  // Handle the item deletion
+                  deleteFunction();
+                },
+              });
+            }}
+            style={{
+              zIndex: 100,
+              padding: 5,
+              borderRadius: 18,
+            }}
+          />
+        </Space>
       </div>
-      <div className="calculator__price__sell">
-        <Input
-          value={priceSell}
-          onChange={(e) => handleChange(e.target.value, setPriceSell)}
-        />
-      </div>
-      <div className="calculator__commission">Комиссия</div>
-      <div className="calculator__commission__buy">
-        <Input
-          value={commissionBuy}
-          onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
-        />
-      </div>
-      <div className="calculator__commission__sell">
-        <Input
-          value={commissionSell}
-          onChange={(e) => handleChange(e.target.value, setCommissionSell)}
-        />
-      </div>
-      <div className="calculator__priceWithCommission">Цена с комиссией</div>
-      <div className="calculator__priceWithCommission__buy">
-        <Input value={priceWithCommissionBuy} readOnly />
-      </div>
-      <div className="calculator__priceWithCommission__sell">
-        <Input value={priceWithCommissionSell} readOnly />
-      </div>
-      <div className="calculator__spread">Спред</div>
-      <div className="calculator__spread__amount">
-        <Input />
-      </div>
-      <div className="calculator__turnover">Оборот</div>
-      <div className="calculator__turnover__amount">
-        <Input />
-      </div>
-      <div className="calculator__netProfit">Чистая прибыль</div>
-      <div className="calculator__netProfit__amount">
-        <Input />
+      <div className="calculator__container">
+        <div className="calculator__blank"></div>
+        <div className="calculator__buy">Купил</div>
+        <div className="calculator__sell">Продал</div>
+        <div className="calculator__price">Цена</div>
+        <div className="calculator__price__buy">
+          <Input
+            value={priceBuy}
+            onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+          />
+        </div>
+        <div className="calculator__price__sell">
+          <Input
+            value={priceSell}
+            onChange={(e) => handleChange(e.target.value, setPriceSell)}
+          />
+        </div>
+        <div className="calculator__commission">Комиссия</div>
+        <div className="calculator__commission__buy">
+          <Input
+            value={commissionBuy}
+            onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
+          />
+        </div>
+        <div className="calculator__commission__sell">
+          <Input
+            value={commissionSell}
+            onChange={(e) => handleChange(e.target.value, setCommissionSell)}
+          />
+        </div>
+        <div className="calculator__priceWithCommission">Цена с комиссией</div>
+        <div className="calculator__priceWithCommission__buy">
+          <Input value={priceWithCommissionBuy} readOnly />
+        </div>
+        <div className="calculator__priceWithCommission__sell">
+          <Input value={priceWithCommissionSell} readOnly />
+        </div>
+        <div className="calculator__spread">Спред</div>
+        <div className="calculator__spread__amount">
+          <Input />
+        </div>
+        <div className="calculator__turnover">Оборот</div>
+        <div className="calculator__turnover__amount">
+          <Input />
+        </div>
+        <div className="calculator__netProfit">Чистая прибыль</div>
+        <div className="calculator__netProfit__amount">
+          <Input />
+        </div>
       </div>
     </div>
   );
