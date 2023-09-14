@@ -429,7 +429,22 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
-  console.log("expandedRowKeys :>> ", expandedRowKeys);
+  const handleDocumentClick = (e) => {
+    // Получите DOM-узел таблицы
+    const tableNode = document.querySelector(".ant-table");
+    if (tableNode && !tableNode.contains(e.target)) {
+      // Если клик был вне таблицы, закройте все раскрывающиеся строки
+      setExpandedRowKeys([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleDocumentClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleDocumentClick);
+    };
+  }, []);
 
   return (
     <div className="table__container">
