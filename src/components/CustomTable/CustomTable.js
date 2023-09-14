@@ -318,7 +318,7 @@ const CustomTable = ({ tableData }) => {
       dataIndex: "exchanging_buy_price",
       key: "exchanging_buy_price",
       sticky: true,
-      width: 110,
+      width: 50,
       render: (text, record) => (
         <Input
           type="text"
@@ -340,7 +340,7 @@ const CustomTable = ({ tableData }) => {
       dataIndex: "exchanging_buy_amount",
       key: "exchanging_buy_amount",
       sticky: true,
-      width: 97,
+      width: 50,
       render: (text, record) => (
         <Input
           type="text"
@@ -438,6 +438,26 @@ const CustomTable = ({ tableData }) => {
     }
   };
 
+  const onAddConvert = (record) => {
+    console.log("record :>> ", record);
+    setNestedData((prevNestedData) => {
+      return {
+        ...prevNestedData,
+        [record.key]: [
+          ...prevNestedData[record.key],
+          {
+            currency: "",
+            buy_price: "",
+            buy_amount: "",
+            key: `${record.key}-${prevNestedData[record.key].length + 1}`,
+          },
+        ],
+      };
+    });
+  };
+
+  console.log("nestedData :>> ", nestedData);
+
   useEffect(() => {
     document.addEventListener("mousedown", handleDocumentClick);
 
@@ -464,12 +484,18 @@ const CustomTable = ({ tableData }) => {
           expandable={{
             showExpandColumn: false,
             expandedRowRender: (record) => (
-              <Table
-                columns={columnsExtra}
-                dataSource={nestedData[record.key]}
-                rowClassName="table__row__custom"
-                pagination={false}
-              />
+              <div className="expanded_wrapper">
+                <Table
+                  columns={columnsExtra}
+                  dataSource={nestedData[record.key]}
+                  rowClassName="table__row__custom"
+                  pagination={false}
+                  tableLayout="fixed"
+                />
+                <Button onClick={() => onAddConvert(record)}>
+                  Добавить конвертацию
+                </Button>
+              </div>
             ),
             expandedRowKeys: expandedRowKeys,
             expandIcon: () => <></>,
