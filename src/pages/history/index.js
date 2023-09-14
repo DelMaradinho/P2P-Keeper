@@ -50,7 +50,7 @@ function History() {
         <CustomTable tableData={data} />
         <div className="right__button__container">
           <NewFormulaButton
-            handleAddRow={handleAddRow}
+            addFunction={handleAddRow}
             buttonText={buttonText}
           />
         </div>
