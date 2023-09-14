@@ -429,6 +429,8 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
+  console.log("expandedRowKeys :>> ", expandedRowKeys);
+
   return (
     <div className="table__container">
       <ConfigProvider locale={ruRU}>
@@ -437,7 +439,11 @@ const CustomTable = ({ tableData }) => {
           components={components}
           columns={resizableColumns}
           dataSource={data}
-          rowClassName="table__row__custom"
+          rowClassName={(record) =>
+            expandedRowKeys.includes(record.key)
+              ? "table__row__parent__expanded table__row__custom"
+              : "table__row__custom"
+          }
           // sticky
           showSorterTooltip={true}
           expandable={{
