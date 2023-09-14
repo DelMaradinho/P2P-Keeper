@@ -38,6 +38,7 @@
     &__custom {
       border-radius: 18px;
       background-color: white;
+      border: none;
       &:hover {
         background-color: rgb(240, 243, 249) !important;
         & > td {
@@ -65,13 +66,15 @@
     }
     &__parent {
       &__expanded {
-        background-color: #f0f3f9 !important;
+        background-color: rgb(240, 243, 249) !important;
         border: none;
         & > td:first-child {
           border-bottom-left-radius: 0;
+          background-color: rgb(240, 243, 249) !important;
         }
         & > td:last-child {
           border-bottom-right-radius: 0;
+          background-color: rgb(240, 243, 249) !important;
         }
       }
     }
@@ -88,7 +91,7 @@
     transform: translateY(-11px);
     .ant-table {
       width: 500px;
-      background-color: #f0f3f9 !important;
+      background-color: rgb(240, 243, 249) !important;
     }
   }
 }
@@ -140,10 +143,12 @@
 .ant-table-expanded-row {
   margin-top: -10px !important;
   border-radius: 18px;
-  background-color: rgb(240, 243, 249) !important;
   & > .ant-table-cell {
     padding: 0 !important;
     margin-top: -10px !important;
+    background-color: rgb(240, 243, 249) !important;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
   }
 }
 
@@ -156,6 +161,19 @@
       & .ant-table-content {
         & table {
           border-radius: 18px;
+            & > .ant-table-thead{
+              & > tr {
+                & > th {
+                  &:first-of-type{
+                    border-bottom-left-radius: 8px;
+                  }
+                  &:last-of-type{
+                    border-bottom-right-radius: 8px;
+                  }
+                }
+              }
+            }
+          
         }
       }
     }
@@ -170,4 +188,6 @@
 .expanded_wrapper {
   display: flex;
   align-items: center;
+  border-spacing: 0;
+  border-bottom-left-radius: 18px;
 }
