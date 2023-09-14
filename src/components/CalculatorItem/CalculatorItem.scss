@@ -23,7 +23,7 @@
         box-sizing: border-box;
         border-radius: 18px;
         line-height: 30px;
-        &:hover {
+        &:hover, &.focused {
             background-color: rgb(240, 243, 249);
         }
     }
@@ -69,18 +69,27 @@
         grid-area: spread;
         &__amount{
             grid-area: spread__amount;
+            & > input {
+                text-align: center;
+            }
         }
     }
     &__turnover{
         grid-area: turnover;
         &__amount{
             grid-area: turnover__amount;
+            & > input {
+                text-align: center;
+            }
         }
     }
     &__netProfit{
         grid-area: netProfit;
         &__amount{
             grid-area: netProfit__amount;
+            & > input {
+                text-align: center;
+            }
         }
     }
 

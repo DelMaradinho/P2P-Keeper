@@ -9,7 +9,7 @@ function Calculator() {
     <span>
       Добавить
       <br />
-      формулу
+      калькулятор
     </span>
   );
 
@@ -21,7 +21,7 @@ function Calculator() {
   const [itemKeys, setItemKeys] = useState([0]);
 
   const addItem = () => {
-    setItemKeys((prevKeys) => [prevKeys.length, ...prevKeys]);
+    setItemKeys((prevKeys) => [...prevKeys, prevKeys.length]);
     console.log(itemKeys);
   };
 
@@ -40,9 +40,11 @@ function Calculator() {
                 deleteFunction={() => deleteItem(key)}
               />
             ))}
-        </div>
-        <div className="right__button__container">
-          <NewFormulaButton addFunction={addItem} buttonText={buttonText} />
+          <NewFormulaButton
+            addFunction={addItem}
+            buttonText={buttonText}
+            fixed={false}
+          />
         </div>
       </div>
     </div>

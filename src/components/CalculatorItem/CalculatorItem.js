@@ -4,21 +4,24 @@ import "./CalculatorItem.scss";
 import { CloseCircleOutlined, EditOutlined } from "@ant-design/icons";
 
 const CalculatorItem = ({ deleteFunction }) => {
-  const [data, setData] = useState([]);
   const [priceSell, setPriceSell] = useState("");
   const [commissionSell, setCommissionSell] = useState("");
   const [priceWithCommissionSell, setPriceWithCommissionSell] = useState("");
   const [priceBuy, setPriceBuy] = useState("");
   const [commissionBuy, setCommissionBuy] = useState("");
   const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState("");
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const handleOk = () => {
-    setOpen(false);
-  };
-  const handleCancel = () => {
-    setOpen(false);
-  };
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
+  // const handleOk = () => {
+  //   setOpen(false);
+  // };
+  // const handleCancel = () => {
+  //   setOpen(false);
+  // };
 
   useEffect(() => {
     if (priceSell && commissionSell) {
@@ -51,6 +54,8 @@ const CalculatorItem = ({ deleteFunction }) => {
           bordered={false}
           suffix={<EditOutlined style={{ fontSize: 16 }} />}
           placeholder="USDT"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           style={{
             width: 100,
             borderBottom: "1px solid #e3e9f6",
@@ -65,7 +70,7 @@ const CalculatorItem = ({ deleteFunction }) => {
             icon={<CloseCircleOutlined style={{ fontSize: 16 }} />}
             onClick={() => {
               Modal.confirm({
-                content: "Вы правда хотите удалить эту формулу?",
+                content: "Вы правда хотите удалить этот калькулятор?",
                 okText: "Да",
                 cancelText: "Нет",
                 okButtonProps: {
@@ -89,7 +94,7 @@ const CalculatorItem = ({ deleteFunction }) => {
           />
         </Space>
       </div>
-      <div className="calculator__container">
+      <div className={`calculator__container ${isFocused ? "focused" : ""}`}>
         <div className="calculator__blank"></div>
         <div className="calculator__buy">Купил</div>
         <div className="calculator__sell">Продал</div>
@@ -98,12 +103,16 @@ const CalculatorItem = ({ deleteFunction }) => {
           <Input
             value={priceBuy}
             onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
         <div className="calculator__price__sell">
           <Input
             value={priceSell}
             onChange={(e) => handleChange(e.target.value, setPriceSell)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
         <div className="calculator__commission">Комиссия</div>
@@ -111,12 +120,16 @@ const CalculatorItem = ({ deleteFunction }) => {
           <Input
             value={commissionBuy}
             onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
         <div className="calculator__commission__sell">
           <Input
             value={commissionSell}
             onChange={(e) => handleChange(e.target.value, setCommissionSell)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
         <div className="calculator__priceWithCommission">Цена с комиссией</div>
@@ -128,15 +141,15 @@ const CalculatorItem = ({ deleteFunction }) => {
         </div>
         <div className="calculator__spread">Спред</div>
         <div className="calculator__spread__amount">
-          <Input />
+          <Input onFocus={handleFocus} onBlur={handleBlur} />
         </div>
         <div className="calculator__turnover">Оборот</div>
         <div className="calculator__turnover__amount">
-          <Input />
+          <Input onFocus={handleFocus} onBlur={handleBlur} />
         </div>
         <div className="calculator__netProfit">Чистая прибыль</div>
         <div className="calculator__netProfit__amount">
-          <Input />
+          <Input onFocus={handleFocus} onBlur={handleBlur} />
         </div>
       </div>
     </div>

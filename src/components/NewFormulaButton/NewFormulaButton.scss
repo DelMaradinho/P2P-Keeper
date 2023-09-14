@@ -1,6 +1,12 @@
 .newFormula {
-  position: fixed;
-  top: 180px;
+  &__fixed{
+    position: fixed;
+    top: 180px;
+  }
+  &__notFixed {
+    align-self: center; /* для вертикального выравнивания */
+    justify-self: center; /* для горизонтального выравнивания */
+  }
   & > button {
     display: flex !important;
     align-items: center !important;
