@@ -10,6 +10,9 @@ const CalculatorItem = ({ deleteFunction }) => {
   const [priceBuy, setPriceBuy] = useState("");
   const [commissionBuy, setCommissionBuy] = useState("");
   const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState("");
+  const [spread, setSpread] = useState("");
+  const [turnover, SetTurnover] = useState("");
+  const [netProfit, setNetProfit] = useState("");
   // const [open, setOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -141,15 +144,30 @@ const CalculatorItem = ({ deleteFunction }) => {
         </div>
         <div className="calculator__spread">Спред</div>
         <div className="calculator__spread__amount">
-          <Input onFocus={handleFocus} onBlur={handleBlur} />
+          <Input
+            value={spread}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={(e) => handleChange(e.target.value, setSpread)}
+          />
         </div>
         <div className="calculator__turnover">Оборот</div>
         <div className="calculator__turnover__amount">
-          <Input onFocus={handleFocus} onBlur={handleBlur} />
+          <Input
+            value={turnover}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={(e) => handleChange(e.target.value, SetTurnover)}
+          />
         </div>
         <div className="calculator__netProfit">Чистая прибыль</div>
         <div className="calculator__netProfit__amount">
-          <Input onFocus={handleFocus} onBlur={handleBlur} />
+          <Input
+            value={netProfit}
+            onChange={(e) => handleChange(e.target.value, setNetProfit)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
         </div>
       </div>
     </div>

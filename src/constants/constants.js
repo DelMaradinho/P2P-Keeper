@@ -40,8 +40,6 @@ export const tableData = [
     spread: "",
     net_profit: "",
     date: "2023-08-29",
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
   },
   {
     key: 2,
@@ -53,8 +51,6 @@ export const tableData = [
     spread: "",
     net_profit: "",
     date: "2022-02-01",
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
   },
   {
     key: 3,
@@ -66,14 +62,12 @@ export const tableData = [
     spread: "",
     net_profit: "",
     date: "2021-01-25",
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
   },
 ];
 
 export const dateFormat = "YYYY-MM-DD";
 
-export   const cryptoCurrencies = [
+export const cryptoCurrencies = [
   { value: "BTC", label: "BTC" },
   { value: "USDT", label: "USDT" },
   { value: "DOGE", label: "DOGE" },

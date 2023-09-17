@@ -69,6 +69,7 @@ const CustomTable = ({ tableData }) => {
     value,
     isNumber = false
   ) {
+    console.log("function start");
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
     const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
     if (isNumber && value !== "" && !re.test(value)) return;
@@ -306,7 +307,7 @@ const CustomTable = ({ tableData }) => {
             handleChangeNested(
               record.key.split("-")[0],
               record.key,
-              "currency",
+              "exchanging_currency",
               value
             )
           }
@@ -327,7 +328,7 @@ const CustomTable = ({ tableData }) => {
             handleChangeNested(
               record.key.split("-")[0],
               record.key,
-              "buy_price",
+              "exchanging_buy_price",
               event.target.value,
               true
             )
@@ -349,7 +350,7 @@ const CustomTable = ({ tableData }) => {
             handleChangeNested(
               record.key.split("-")[0],
               record.key,
-              "buy_amount",
+              "exchanging_buy_amount",
               event.target.value,
               true
             )
