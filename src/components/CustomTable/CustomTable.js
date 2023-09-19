@@ -73,7 +73,7 @@ const CustomTable = ({ tableData }) => {
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
     const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
     if (isNumber && value !== "" && !re.test(value)) return;
-
+    console.log("function 1");
     const newValue = isNumber ? value.replace(",", ".") : value;
 
     setNestedData((prevNestedData) => {
@@ -322,7 +322,7 @@ const CustomTable = ({ tableData }) => {
       width: 50,
       render: (text, record) => (
         <Input
-          type="text"
+          type="number"
           value={text}
           onChange={(event) =>
             handleChangeNested(
@@ -344,7 +344,7 @@ const CustomTable = ({ tableData }) => {
       width: 50,
       render: (text, record) => (
         <Input
-          type="text"
+          type="number"
           value={text}
           onChange={(event) =>
             handleChangeNested(
