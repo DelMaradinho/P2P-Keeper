@@ -22,13 +22,18 @@ const initialItems = [
     closable: true,
   },
 ];
-const CustomTabs = () => {
+const CustomTabs = ({ onTabChange }) => {
   const [activeKey, setActiveKey] = useState(initialItems[0].key);
   const [items, setItems] = useState(initialItems);
   const newTabIndex = useRef(0);
+  //   const onChange = (newActiveKey) => {
+  //     setActiveKey(newActiveKey);
+  //   };
   const onChange = (newActiveKey) => {
     setActiveKey(newActiveKey);
+    if (onTabChange) onTabChange(newActiveKey); // добавлено
   };
+
   const add = () => {
     const newActiveKey = `newTab${newTabIndex.current++}`;
     const newPanes = [...items];

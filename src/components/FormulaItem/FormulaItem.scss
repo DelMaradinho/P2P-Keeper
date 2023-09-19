@@ -1,0 +1,25 @@
+.formula{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+    box-sizing: border-box;
+    max-width: 1144px;
+    padding: 10px;
+    background-color: rgb(240, 243, 249);
+    border-radius: 18px;
+    border: 1px solid #e3e9f6;
+    &__outer{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+    }
+    &__variable{
+        // width: 100%;
+        padding: 0 10px;
+        background-color: white;
+        border: 1px solid #e3e9f6;
+        border-radius: 6px;
+        text-align: center;
+        line-height: 2;
+    }
+}

@@ -73,3 +73,35 @@ export const cryptoCurrencies = [
   { value: "DOGE", label: "DOGE" },
   { value: "ETH", label: "ETH" },
 ];
+
+export const favoriteFormulas = [
+  {
+    key: "formula_1",
+    name: "Формула 1",
+    variable1: "Цена покупки",
+    variable2: "Умножить",
+    variable3: "Кол-во",
+    variable4: "Разделить",
+    variable5: "Цена продажи",
+  },
+  {
+    key: "formula_2",
+    name: "Формула 2",
+    variable1: "Цена покупки",
+    variable2: "Умножить",
+    variable3: "Количество",
+  },
+  {
+    key: "formula_3",
+    name: "Формула 3",
+    variable1: "Спред",
+    variable2: "Плюс",
+    variable3: "Цена продажи",
+    variable4: "Минус",
+    variable5: "Количество",
+    variable6: "Разделить",
+    variable7: "Цена покупки",
+    variable8: "Плюс",
+    variable9: "Прибыль",
+  },
+];
