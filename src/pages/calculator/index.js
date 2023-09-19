@@ -3,6 +3,7 @@ import CalculatorItem from "../../components/CalculatorItem/CalculatorItem";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import "./calculator.scss";
 import NewFormulaButton from "../../components/NewFormulaButton/NewFormulaButton";
+import CustomTabs from "../../components/CustomTabs/CustomTabs";
 
 function Calculator() {
   const buttonText = (
@@ -46,6 +47,7 @@ function Calculator() {
             fixed={false}
           />
         </div>
+        <CustomTabs />
       </div>
     </div>
   );
