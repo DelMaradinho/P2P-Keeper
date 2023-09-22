@@ -2,6 +2,9 @@
   &__fixed{
     position: fixed;
     top: 180px;
+    &-outside{
+      left: 1258px;
+    }
   }
   &__notFixed {
     align-self: center;

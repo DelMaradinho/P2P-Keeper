@@ -3,12 +3,17 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import "./NewFormulaButton.scss";
 
-const NewFormulaButton = ({ addFunction, buttonText, fixed = true }) => {
+const NewFormulaButton = ({
+  addFunction,
+  buttonText,
+  fixed = true,
+  formulasPage = false,
+}) => {
   return (
     <div
       className={`newFormula ${
         fixed ? "newFormula__fixed" : "newFormula__notFixed"
-      }`}
+      } ${formulasPage ? "newFormula__fixed-outside" : ""}`}
     >
       <Button
         type="primary"
