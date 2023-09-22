@@ -1,49 +1,53 @@
 import React, { useRef, useState } from "react";
-import { Tabs } from "antd";
+import { Button, Tabs } from "antd";
 import "./CustomTabs.scss";
 
 const initialItems = [
   {
     label: "Калькулятор",
     // children: "Content of Tab 1",
-    key: "1",
+    key: "tab1",
     closable: false,
   },
   {
     label: "Мои формулы",
     // children: "Content of Tab 2",
-    key: "2",
+    key: "tab2",
     closable: false,
   },
   {
     label: "Tab 3",
     // children: "Content of Tab 3",
-    key: "3",
+    key: "tab3",
     closable: true,
   },
 ];
 const CustomTabs = ({ onTabChange }) => {
   const [activeKey, setActiveKey] = useState(initialItems[0].key);
   const [items, setItems] = useState(initialItems);
-  const newTabIndex = useRef(0);
-  //   const onChange = (newActiveKey) => {
-  //     setActiveKey(newActiveKey);
-  //   };
+  const [tabsNumber, setTabsNumber] = useState(initialItems.length);
+  const newTabIndex = useRef(3);
+
   const onChange = (newActiveKey) => {
     setActiveKey(newActiveKey);
     if (onTabChange) onTabChange(newActiveKey); // добавлено
   };
 
   const add = () => {
-    const newActiveKey = `newTab${newTabIndex.current++}`;
+    const newActiveKey = `tab${++newTabIndex.current}`; // преинкремент перед использованием
     const newPanes = [...items];
     newPanes.push({
-      label: "New Tab",
+      label: `Tab ${newTabIndex.current}`,
       key: newActiveKey,
+      content: <Button type="primary">Click me</Button>,
     });
     setItems(newPanes);
     setActiveKey(newActiveKey);
+    setTabsNumber(tabsNumber + 1);
   };
+
+  console.log(items, "items");
+  console.log(tabsNumber, "tabsNumber");
   const remove = (targetKey) => {
     let newActiveKey = activeKey;
     let lastIndex = -1;

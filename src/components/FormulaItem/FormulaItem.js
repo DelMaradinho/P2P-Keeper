@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./FormulaItem.scss";
-import { Button, Input, Space } from "antd";
+import { Button, Input, Modal, Space } from "antd";
 import { CloseCircleOutlined, EditOutlined } from "@ant-design/icons";
 
-const FormulaItem = ({ formulaData }) => {
+const FormulaItem = ({ formulaData, deleteFunction }) => {
   const [formulaName, setFormulaName] = useState("");
+
+  useEffect(() => {
+    console.log(
+      "deleteFunction is",
+      deleteFunction ? "available" : "not available"
+    );
+  }, []);
 
   useEffect(() => {
     if (formulaData) {
       setFormulaName(formulaData.name);
     }
   }, [formulaData]);
+
+  const handleInputChange = (event) => {
+    setFormulaName(event.target.value);
+  };
 
   if (!formulaData) {
     return null; // или возвращайте какое-то другое дефолтное представление
@@ -23,8 +34,7 @@ const FormulaItem = ({ formulaData }) => {
           bordered={false}
           suffix={<EditOutlined style={{ fontSize: 16 }} />}
           value={formulaName}
-          // onFocus={handleFocus}
-          // onBlur={handleBlur}
+          onChange={handleInputChange}
           style={{
             width: "auto",
             borderBottom: "1px solid #e3e9f6",
@@ -37,24 +47,26 @@ const FormulaItem = ({ formulaData }) => {
             shape="round"
             size="middle"
             icon={<CloseCircleOutlined style={{ fontSize: 16 }} />}
-            // onClick={() => {
-            //   Modal.confirm({
-            //     content: "Вы правда хотите удалить этот калькулятор?",
-            //     okText: "Да",
-            //     cancelText: "Нет",
-            //     okButtonProps: {
-            //       style: {
-            //         backgroundColor: "rgba(8, 31, 73, 1)",
-            //         color: "white", // Задаем цвет текста для кнопки подтверждения
-            //       },
-            //     },
-            //     onCancel() {},
-            //     onOk() {
-            //       // Handle the item deletion
-            //       deleteFunction();
-            //     },
-            //   });
-            // }}
+            onClick={() => {
+              Modal.confirm({
+                content: "Вы правда хотите удалить эту функцию?",
+                okText: "Да",
+                cancelText: "Нет",
+                okButtonProps: {
+                  style: {
+                    backgroundColor: "rgba(8, 31, 73, 1)",
+                    color: "white",
+                  },
+                },
+                onCancel() {},
+                onOk() {
+                  console.log("deleteFunction is about to be called");
+                  if (deleteFunction) {
+                    deleteFunction(formulaData.key);
+                  }
+                },
+              });
+            }}
             style={{
               zIndex: 100,
               padding: 5,

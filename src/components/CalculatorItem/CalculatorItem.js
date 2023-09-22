@@ -19,13 +19,6 @@ const CalculatorItem = ({ deleteFunction }) => {
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
-  // const handleOk = () => {
-  //   setOpen(false);
-  // };
-  // const handleCancel = () => {
-  //   setOpen(false);
-  // };
-
   useEffect(() => {
     if (priceSell && commissionSell) {
       const result = priceSell * (1 - commissionSell);
@@ -84,7 +77,6 @@ const CalculatorItem = ({ deleteFunction }) => {
                 },
                 onCancel() {},
                 onOk() {
-                  // Handle the item deletion
                   deleteFunction();
                 },
               });

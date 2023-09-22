@@ -80,7 +80,7 @@ export const favoriteFormulas = [
     name: "Формула 1",
     variable1: "Цена покупки",
     variable2: "Умножить",
-    variable3: "Кол-во",
+    variable3: "Количество",
     variable4: "Разделить",
     variable5: "Цена продажи",
   },
