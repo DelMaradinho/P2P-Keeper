@@ -30,11 +30,11 @@ const CustomTabs = ({ onTabChange }) => {
 
   const onChange = (newActiveKey) => {
     setActiveKey(newActiveKey);
-    if (onTabChange) onTabChange(newActiveKey); // добавлено
+    if (onTabChange) onTabChange(newActiveKey);
   };
 
   const add = () => {
-    const newActiveKey = `tab${++newTabIndex.current}`; // преинкремент перед использованием
+    const newActiveKey = `tab${++newTabIndex.current}`;
     const newPanes = [...items];
     newPanes.push({
       label: `Tab ${newTabIndex.current}`,
@@ -42,7 +42,7 @@ const CustomTabs = ({ onTabChange }) => {
       content: <Button type="primary">Click me</Button>,
     });
     setItems(newPanes);
-    setActiveKey(newActiveKey);
+    // setActiveKey(newActiveKey);
     setTabsNumber(tabsNumber + 1);
   };
 

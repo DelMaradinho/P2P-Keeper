@@ -70,19 +70,11 @@ function Calculator() {
       ...prevSelected,
       ...formulas.filter((formula) => selectedInModal.includes(formula.key)),
     ]);
-    setSelectedInModal([]); // Очистка выбранных формул в модальном окне
+    setSelectedInModal([]);
     setIsModalVisible(false);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const selectFormula = (formula) => {
-    console.log("Вызов функции selectFormula");
-    console.log(selectedFormulasArray, "до");
-    setSelectedFormulasArray([...selectedFormulasArray, formula]);
-    console.log(selectedFormulasArray, "после");
     setIsModalVisible(false);
   };
 
@@ -117,7 +109,6 @@ function Calculator() {
             </li>
           ))}
         </ul>
-
         <Button
           type="primary"
           onClick={handleOk}
@@ -131,7 +122,6 @@ function Calculator() {
         >
           Добавить
         </Button>
-
         <Button
           type="primary"
           onClick={() => (window.location.href = "./formulas")}
@@ -201,7 +191,6 @@ function Calculator() {
                 </div>
               )}
             </div>
-            <FormulaItem />
           </>
         )}
         {activeTabKey === "tab3" && (
