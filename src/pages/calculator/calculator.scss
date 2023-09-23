@@ -41,3 +41,9 @@
         margin: 0 20px 45px 0;
     }
 }
+
+.module{
+    &__list {
+        list-style-type: none;
+    }
+}

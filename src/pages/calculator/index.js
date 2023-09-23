@@ -28,7 +28,10 @@ function Calculator() {
   const [formulas, setFormulas] = useState(favoriteFormulas);
   const [itemKeys, setItemKeys] = useState([0]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedFormula, setSelectedFormula] = useState(null);
+  const [selectedFormulasArray, setSelectedFormulasArray] = useState([]);
+  const [selectedInModal, setSelectedInModal] = useState([]);
+
+  console.log(selectedFormulasArray, "изначальное состояние");
 
   const deleteCalculator = (key) => {
     setItemKeys((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
@@ -37,6 +40,12 @@ function Calculator() {
 
   const deleteFormula = (keyToDelete) => {
     setFormulas((prevFormulas) =>
+      prevFormulas.filter((formula) => formula.key !== keyToDelete)
+    );
+  };
+
+  const deleteFormulaFromTab = (keyToDelete) => {
+    setSelectedFormulasArray((prevFormulas) =>
       prevFormulas.filter((formula) => formula.key !== keyToDelete)
     );
   };
@@ -57,6 +66,11 @@ function Calculator() {
   };
 
   const handleOk = () => {
+    setSelectedFormulasArray((prevSelected) => [
+      ...prevSelected,
+      ...formulas.filter((formula) => selectedInModal.includes(formula.key)),
+    ]);
+    setSelectedInModal([]); // Очистка выбранных формул в модальном окне
     setIsModalVisible(false);
   };
 
@@ -65,8 +79,19 @@ function Calculator() {
   };
 
   const selectFormula = (formula) => {
-    setSelectedFormula(formula);
+    console.log("Вызов функции selectFormula");
+    console.log(selectedFormulasArray, "до");
+    setSelectedFormulasArray([...selectedFormulasArray, formula]);
+    console.log(selectedFormulasArray, "после");
     setIsModalVisible(false);
+  };
+
+  const toggleSelectionInModal = (key) => {
+    setSelectedInModal((prevSelected) =>
+      prevSelected.includes(key)
+        ? prevSelected.filter((k) => k !== key)
+        : [...prevSelected, key]
+    );
   };
 
   console.log(activeTabKey, "activeTabKey+++++++++++++++++");
@@ -74,27 +99,52 @@ function Calculator() {
   return (
     <div className="App">
       <Modal
-        title="Выберите формулу"
+        title="Выберите формулы для добавления на страницу или создайте новую"
         visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null} // убираем стандартные кнопки в нижней части модального окна
+        onOk={handleOk}
+        onCancel={handleCancel} // убираем стандартные кнопки в нижней части модального окна
+        footer={false}
       >
-        <ul>
+        <ul className="module__list">
           {formulas.map((formula) => (
-            <li key={formula.key} onClick={() => selectFormula(formula)}>
-              {formula.name}{" "}
-              {/* предположим, что каждая формула имеет свойство name */}
+            <li key={formula.key}>
+              <input
+                type="checkbox"
+                checked={selectedInModal.includes(formula.key)}
+                onChange={() => toggleSelectionInModal(formula.key)}
+              />
+              {formula.name}
             </li>
           ))}
         </ul>
+
+        <Button
+          type="primary"
+          onClick={handleOk}
+          style={{
+            borderRadius: 12,
+            marginRight: 16,
+            paddingTop: 5,
+            paddingBottom: 5,
+            backgroundColor: "rgba(8, 31, 73, 1)",
+          }}
+        >
+          Добавить
+        </Button>
+
         <Button
           type="primary"
           onClick={() => (window.location.href = "./formulas")}
+          style={{
+            borderRadius: 12,
+            paddingTop: 5,
+            paddingBottom: 5,
+            backgroundColor: "rgba(8, 31, 73, 1)",
+          }}
         >
-          Создать новую формулу
+          Создать
         </Button>
       </Modal>
-
       <div className="left">
         <MainMenu selectedKey={["1"]} />
       </div>
@@ -158,55 +208,112 @@ function Calculator() {
           <>
             <h1 className="right__header">Tab 3</h1>
             <div className="formulas__container">
-              {selectedFormula && (
-                <FormulaItem
-                  formulaData={selectedFormula}
-                  deleteFunction={deleteFormula}
-                />
-              )}
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
             </div>
           </>
         )}
         {activeTabKey === "tab4" && (
           <>
             <h1 className="right__header">Tab 4</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         {activeTabKey === "tab5" && (
           <>
             <h1 className="right__header">Tab 5</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         {activeTabKey === "tab6" && (
           <>
             <h1 className="right__header">Tab 6</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         {activeTabKey === "tab7" && (
           <>
             <h1 className="right__header">Tab 7</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         {activeTabKey === "tab8" && (
           <>
             <h1 className="right__header">Tab 8</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         {activeTabKey === "tab9" && (
           <>
             <h1 className="right__header">Tab 9</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         {activeTabKey === "tab10" && (
           <>
             <h1 className="right__header">Tab 10</h1>
-            <FormulaItem />
+            <div className="formulas__container">
+              {selectedFormulasArray.length > 0 &&
+                selectedFormulasArray.map((selectedFormula) => (
+                  <FormulaItem
+                    formulaData={selectedFormula}
+                    deleteFunction={deleteFormulaFromTab}
+                  />
+                ))}
+            </div>
           </>
         )}
         <CustomTabs onTabChange={handleTabChange} />
