@@ -1,31 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Button, Tabs } from "antd";
 import "./CustomTabs.scss";
+import { initialTabs } from "../../pages/calculator";
 
-const initialItems = [
-  {
-    label: "Калькулятор",
-    // children: "Content of Tab 1",
-    key: "tab1",
-    closable: false,
-  },
-  {
-    label: "Мои формулы",
-    // children: "Content of Tab 2",
-    key: "tab2",
-    closable: false,
-  },
-  {
-    label: "Tab 3",
-    // children: "Content of Tab 3",
-    key: "tab3",
-    closable: true,
-  },
-];
-const CustomTabs = ({ onTabChange }) => {
-  const [activeKey, setActiveKey] = useState(initialItems[0].key);
-  const [items, setItems] = useState(initialItems);
-  const [tabsNumber, setTabsNumber] = useState(initialItems.length);
+const CustomTabs = ({ onTabChange, items, setItems }) => {
+  const [activeKey, setActiveKey] = useState(initialTabs[0].key);
+  const [tabsNumber, setTabsNumber] = useState(initialTabs.length);
   const newTabIndex = useRef(3);
 
   const onChange = (newActiveKey) => {
@@ -46,8 +26,6 @@ const CustomTabs = ({ onTabChange }) => {
     setTabsNumber(tabsNumber + 1);
   };
 
-  console.log(items, "items");
-  console.log(tabsNumber, "tabsNumber");
   const remove = (targetKey) => {
     let newActiveKey = activeKey;
     let lastIndex = -1;
@@ -67,6 +45,7 @@ const CustomTabs = ({ onTabChange }) => {
     setItems(newPanes);
     setActiveKey(newActiveKey);
   };
+
   const onEdit = (targetKey, action) => {
     if (action === "add") {
       add();

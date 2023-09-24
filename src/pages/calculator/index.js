@@ -7,6 +7,28 @@ import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import FormulaItem from "../../components/FormulaItem/FormulaItem";
 import { favoriteFormulas } from "../../constants/constants";
 import { Button, Modal } from "antd";
+import Tab from "./Tab";
+
+export const initialTabs = [
+  {
+    label: "Калькулятор",
+    // children: "Content of Tab 1",
+    key: "tab1",
+    closable: false,
+  },
+  {
+    label: "Мои формулы",
+    // children: "Content of Tab 2",
+    key: "tab2",
+    closable: false,
+  },
+  {
+    label: "Tab 3",
+    // children: "Content of Tab 3",
+    key: "tab3",
+    closable: true,
+  },
+];
 
 function Calculator() {
   const buttonCalculatorText = (
@@ -30,6 +52,7 @@ function Calculator() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedFormulasArray, setSelectedFormulasArray] = useState([]);
   const [selectedInModal, setSelectedInModal] = useState([]);
+  const [tabs, setTabs] = useState(initialTabs);
 
   console.log(selectedFormulasArray, "изначальное состояние");
 
@@ -193,119 +216,22 @@ function Calculator() {
             </div>
           </>
         )}
-        {activeTabKey === "tab3" && (
-          <>
-            <h1 className="right__header">Tab 3</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab4" && (
-          <>
-            <h1 className="right__header">Tab 4</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab5" && (
-          <>
-            <h1 className="right__header">Tab 5</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab6" && (
-          <>
-            <h1 className="right__header">Tab 6</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab7" && (
-          <>
-            <h1 className="right__header">Tab 7</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab8" && (
-          <>
-            <h1 className="right__header">Tab 8</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab9" && (
-          <>
-            <h1 className="right__header">Tab 9</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        {activeTabKey === "tab10" && (
-          <>
-            <h1 className="right__header">Tab 10</h1>
-            <div className="formulas__container">
-              {selectedFormulasArray.length > 0 &&
-                selectedFormulasArray.map((selectedFormula) => (
-                  <FormulaItem
-                    formulaData={selectedFormula}
-                    deleteFunction={deleteFormulaFromTab}
-                  />
-                ))}
-            </div>
-          </>
-        )}
-        <CustomTabs onTabChange={handleTabChange} />
+        {tabs?.map((tab) => {
+          return (
+            <Tab
+              key={tab.key}
+              tabKey={tab.key}
+              activeTabKey={activeTabKey}
+              formulas={selectedFormulasArray}
+              deleteFormula={deleteFormulaFromTab}
+            />
+          );
+        })}
+        <CustomTabs
+          onTabChange={handleTabChange}
+          items={tabs}
+          setItems={setTabs}
+        />
       </div>
       {(activeTabKey === "tab3" ||
         activeTabKey === "tab4" ||
