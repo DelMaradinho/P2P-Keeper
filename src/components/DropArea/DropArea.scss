@@ -1,0 +1,12 @@
+.droparea{
+  &__item{
+      min-width: 170px;
+      min-height: 30px;
+      padding: 0 20px;
+      background-color: white;
+      border: 1px solid #e3e9f6;
+      border-radius: 6px;
+      text-align: center;
+      line-height: 2;
+  }
+}

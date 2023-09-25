@@ -1,12 +1,72 @@
 import React, { useState } from "react";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import "./formulas.scss";
-import DraggableList from "../../components/DraggableList/DraggableList";
+import DnDFormulasComponent from "../../components/DnDFormulasComponent/DnDFormulasComponent";
 
-const initialItems = [
-  { id: "1_dnd", content: "Item 1 hhhhhhhhhhhhhhhhhhhh" },
-  { id: "2_dnd", content: "Item 2 nnnnnnnnnnnnnnnnnnnnnn" },
-  { id: "3_dnd", content: "Item 3 ccccccccccccccccccccc" },
+const operationsList = [
+  {
+    id: "1_plus",
+    value: "Прибавить",
+    type: "operation",
+  },
+  {
+    id: "2_minus",
+    value: "Отнять",
+    type: "operation",
+  },
+  {
+    id: "3_multiply",
+    value: "Умножить",
+    type: "operation",
+  },
+  {
+    id: "4_divide",
+    value: "Разделить",
+    type: "operation",
+  },
+];
+
+const variablesList = [
+  {
+    id: "1_platform",
+    value: "Платформа",
+    type: "variable",
+  },
+  {
+    id: "2_currency_bought",
+    value: "Что купил",
+    type: "variable",
+  },
+  {
+    id: "3_currency_sold",
+    value: "Что продал",
+    type: "variable",
+  },
+  {
+    id: "4_buy_price",
+    value: "За сколько купил",
+    type: "variable",
+  },
+  {
+    id: "5_sell_price",
+    value: "За сколько продал",
+    type: "variable",
+  },
+  {
+    id: "6_expences",
+    value: "Расходы",
+    type: "variable",
+  },
+  {
+    id: "7_spread",
+    value: "Спред",
+    type: "variable",
+  },
+  {
+    id: "8_net_profit",
+    value: "Чистая прибыль",
+    type: "variable",
+  },
 ];
 
 function Formulas() {
@@ -17,7 +77,10 @@ function Formulas() {
       </div>
       <div className="right">
         <h1 className="right__header">Создание формул</h1>
-        <DraggableList draggableItems={initialItems} />
+        <DnDFormulasComponent
+          operations={operationsList}
+          variables={variablesList}
+        />
       </div>
     </div>
   );

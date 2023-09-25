@@ -1,0 +1,13 @@
+.droparea{
+  &__container{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+    box-sizing: border-box;
+    max-width: 1144px;
+    padding: 10px;
+    background-color: rgb(240, 243, 249);
+    border-radius: 18px;
+    border: 1px solid #e3e9f6;
+  }
+}
