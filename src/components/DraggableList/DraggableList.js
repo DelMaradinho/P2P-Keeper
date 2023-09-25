@@ -1,53 +1,75 @@
-import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import React from "react";
+import "./DraggableList.scss";
 
-const DraggableList = ({ draggableItems }) => {
-  const [currentItems, setCurrentItems] = useState(draggableItems);
+function DraggableList({ draggableItems }) {
+  const dragStart = (e) => {
+    const target = e.target;
+    e.dataTransfer.setData("card_id", target.id);
+    setTimeout(() => {
+      target.className = "draggable__item__fill hold"; // добавляем класс 'hold'
+    }, 0);
+  };
 
-  const onDragEnd = (result) => {
-    if (!result.destination) {
-      return;
-    }
+  const dragEnd = (e) => {
+    e.target.className = "draggable__item__fill"; // устанавливаем изначальный класс
+  };
 
-    const reorderedItems = [...currentItems];
-    const [movedItem] = reorderedItems.splice(result.source.index, 1);
-    reorderedItems.splice(result.destination.index, 0, movedItem);
+  const dragEnter = (e) => {
+    e.preventDefault();
+    e.target.className += " hovered"; // добавляем класс 'hovered'
+  };
 
-    setCurrentItems(reorderedItems);
+  const dragLeave = (e) => {
+    e.target.className = "draggable__item"; // устанавливаем изначальный класс
+  };
+
+  const dragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const drop = (e) => {
+    e.target.className = "draggable__item"; // устанавливаем изначальный класс
+    const card_id = e.dataTransfer.getData("card_id");
+    const card = document.getElementById(card_id);
+    card.style.display = "block";
+    e.target.appendChild(card);
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {currentItems.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={{
-                      userSelect: "none",
-                      padding: 8,
-                      margin: "0 0 8px 0",
-                      minHeight: "50px",
-                      backgroundColor: "white",
-                      border: "1px solid lightgray",
-                    }}
-                  >
-                    {item.content}
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className="draggable__container">
+      <div
+        className="draggable__item"
+        id="item1"
+        onDrop={drop}
+        onDragOver={dragOver}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+      >
+        <div
+          className="draggable__item__fill"
+          draggable="true"
+          onDragStart={dragStart}
+          onDragEnd={dragEnd}
+          id="fill1"
+        ></div>
+      </div>
+      <div
+        className="draggable__item"
+        onDrop={drop}
+        onDragOver={dragOver}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+      ></div>
+      <div
+        className="draggable__item"
+        onDrop={drop}
+        onDragOver={dragOver}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+      ></div>
+      {/* ... и так далее для других элементов ... */}
+    </div>
   );
-};
+}
 
 export default DraggableList;

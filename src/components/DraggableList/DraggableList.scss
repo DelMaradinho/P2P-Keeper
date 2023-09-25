@@ -1,37 +1,35 @@
-.tabs{
+.draggable {
     &__container{
-        position: fixed;
-        bottom: 0;
-        left: 114px;
-        z-index: 101;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
     }
+    &__item{
+        width: 100px;
+        height: 100px;
+        background-color: green;
+        border: 1px solid rgb(0, 69, 0);
+        border-radius: 6px;
+        box-sizing: content-box;
+        &__fill{
+            width: 100%;
+            height: 100%;
+            background-color: greenyellow;
+            border: 1px solid rgb(0, 69, 0);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    };
 }
 
-.ant {
-    &-tabs{
-        &-nav{
-            margin: 0 !important;
-            &-add{
-                background: rgb(240, 243, 249) !important;
-            }
-        }
-        &-content {
-            &-holder{
-                display: none !important;
-            }
-        }
-        &-tab{
-            background: rgb(240, 243, 249) !important;
-            border: 1px solid #e3e9f6 !important;
-            &-active{
-                background: rgb(8, 31, 73) !important;
-                & > .ant-tabs-tab-btn{
-                    color: #fff !important;
-                }
-                & > .ant-tabs-tab-remove{
-                    color: #fff !important;
-                }
-            }
-        }
-    }
+.hold{
+    filter: opacity(0.4);
+    border: 1px solid rgb(0, 69, 0);
+    box-shadow: 0 0 5px rgb(0, 69, 0);
+}
+
+.hovered {
+    background-color: rgba(173, 255, 47, 0.4);
 }
