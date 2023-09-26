@@ -50,11 +50,9 @@ function Calculator() {
   const [formulas, setFormulas] = useState(favoriteFormulas);
   const [itemKeys, setItemKeys] = useState([0]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedFormulasArray, setSelectedFormulasArray] = useState([]);
+  const [selectedFormulas, setSelectedFormulas] = useState({});
   const [selectedInModal, setSelectedInModal] = useState([]);
   const [tabs, setTabs] = useState(initialTabs);
-
-  console.log(selectedFormulasArray, "изначальное состояние");
 
   const deleteCalculator = (key) => {
     setItemKeys((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
@@ -68,9 +66,12 @@ function Calculator() {
   };
 
   const deleteFormulaFromTab = (keyToDelete) => {
-    setSelectedFormulasArray((prevFormulas) =>
-      prevFormulas.filter((formula) => formula.key !== keyToDelete)
-    );
+    setSelectedFormulas((prevSelected) => ({
+      ...prevSelected,
+      [activeTabKey]: (prevSelected[activeTabKey] || []).filter(
+        (formula) => formula.key !== keyToDelete
+      ),
+    }));
   };
 
   const addItem = () => {
@@ -89,10 +90,12 @@ function Calculator() {
   };
 
   const handleOk = () => {
-    setSelectedFormulasArray((prevSelected) => [
+    setSelectedFormulas((prevSelected) => ({
       ...prevSelected,
-      ...formulas.filter((formula) => selectedInModal.includes(formula.key)),
-    ]);
+      [activeTabKey]: (prevSelected[activeTabKey] || []).concat(
+        formulas.filter((formula) => selectedInModal.includes(formula.key))
+      ),
+    }));
     setSelectedInModal([]);
     setIsModalVisible(false);
   };
@@ -216,16 +219,18 @@ function Calculator() {
             </div>
           </>
         )}
-        {tabs?.map((tab) => {
-          return (
-            <Tab
-              key={tab.key}
-              tabKey={tab.key}
-              activeTabKey={activeTabKey}
-              formulas={selectedFormulasArray}
-              deleteFormula={deleteFormulaFromTab}
-            />
-          );
+        {tabs?.map((tab, index) => {
+          if (index > 1) {
+            return (
+              <Tab
+                key={tab.key}
+                tabKey={tab.key}
+                activeTabKey={activeTabKey}
+                formulas={selectedFormulas[activeTabKey] || []}
+                deleteFormula={deleteFormulaFromTab}
+              />
+            );
+          }
         })}
         <CustomTabs
           onTabChange={handleTabChange}
