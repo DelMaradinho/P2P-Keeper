@@ -24,7 +24,7 @@ function DnDFormulasComponent({ variables, operations }) {
           </DraggableItemsList>
         </div>
       </div>
-      <h4>Область формул</h4>
+      <h4 className="drop__header">Область формул</h4>
       <DropAreasList />
     </>
   );
