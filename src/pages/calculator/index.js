@@ -7,6 +7,7 @@ import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import FormulaItem from "../../components/FormulaItem/FormulaItem";
 import { favoriteFormulas } from "../../constants/constants";
 import { Button, Modal } from "antd";
+import { getFromStorage } from "../../helpers/formulas";
 
 function Calculator() {
   const buttonCalculatorText = (

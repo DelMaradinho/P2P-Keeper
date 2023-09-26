@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import "./formulas.scss";
 import DnDFormulasComponent from "../../components/DnDFormulasComponent/DnDFormulasComponent";
 import { Modal, Button } from "antd";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { saveInStorage } from "../../helpers/formulas";
 
 const operationsList = [
   {
@@ -72,14 +74,19 @@ const variablesList = [
 ];
 
 function Formulas() {
+  const formulaStore = useSelector((state) => state.formulas.formula);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
+
   const showModal = () => {
     setIsModalVisible(true);
+    saveInStorage(formulaStore);
   };
 
   const closeModal = () => {
     setIsModalVisible(false);
   };
+
   return (
     <div className="App">
       <Modal
