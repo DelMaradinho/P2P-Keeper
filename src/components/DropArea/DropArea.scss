@@ -1,6 +1,6 @@
 .droparea{
   &__item{
-      min-width: 170px;
+      min-width: 179px;
       min-height: 30px;
       padding: 0 20px;
       background-color: white;
@@ -9,4 +9,8 @@
       text-align: center;
       line-height: 2;
   }
+}
+
+.hovered {
+  background-color: rgba(8, 31, 73, 0.1);
 }

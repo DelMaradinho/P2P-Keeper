@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import "./formulas.scss";
 import DnDFormulasComponent from "../../components/DnDFormulasComponent/DnDFormulasComponent";
+import { Modal, Button } from "antd";
+import { Link } from "react-router-dom";
 
 const operationsList = [
   {
@@ -70,17 +72,49 @@ const variablesList = [
 ];
 
 function Formulas() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
   return (
     <div className="App">
+      <Modal
+        visible={isModalVisible}
+        onCancel={closeModal}
+        footer={[
+          <Link to="/calculator" key="toCalculator">
+            <Button>В калькулятор</Button>
+          </Link>,
+          <Button key="ok" onClick={closeModal}>
+            ОК
+          </Button>,
+        ]}
+      >
+        Формула сохранена во вкладке "Мои формулы" на странице Калькулятор
+        спреда.
+      </Modal>
       <div className="left">
         <MainMenu selectedKey={["2"]} />
       </div>
       <div className="right">
         <h1 className="right__header">Создание формул</h1>
+        <h2>
+          Перетаскивайте необходимые переменные и действия в ячейки в области
+          формул, чтобы создать необходимую формулу
+        </h2>
         <DnDFormulasComponent
           operations={operationsList}
           variables={variablesList}
         />
+        <div className="right__button__wrapper">
+          <Button shape="round" size="middle" onClick={showModal}>
+            Сохранить формулу
+          </Button>
+        </div>
       </div>
     </div>
   );

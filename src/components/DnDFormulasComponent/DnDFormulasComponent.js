@@ -2,7 +2,6 @@ import React from "react";
 import "./DnDFormulasComponent.scss";
 import DraggableItem from "../DraggableItem/DraggableItem";
 import DraggableItemsList from "../DraggableItemsList/DraggableItemsList";
-import DropArea from "../DropArea/DropArea";
 import DropAreasList from "../DropAreasList/DropAreasList";
 
 function DnDFormulasComponent({ variables, operations }) {
@@ -25,6 +24,7 @@ function DnDFormulasComponent({ variables, operations }) {
           </DraggableItemsList>
         </div>
       </div>
+      <h4>Область формул</h4>
       <DropAreasList />
     </>
   );
