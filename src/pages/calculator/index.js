@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CalculatorItem from "../../components/CalculatorItem/CalculatorItem";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import "./calculator.scss";
@@ -6,10 +6,34 @@ import NewFormulaButton from "../../components/NewFormulaButton/NewFormulaButton
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import FormulaItem from "../../components/FormulaItem/FormulaItem";
 import { favoriteFormulas } from "../../constants/constants";
-import { Button, Modal } from "antd";
+import { Button, Input, Modal } from "antd";
 import { getFromStorage } from "../../helpers/formulas";
+import { EditOutlined } from "@ant-design/icons";
+
+const initialItems = [
+  {
+    label: "Калькулятор",
+    // children: "Content of Tab 1",
+    key: "tab1",
+    closable: false,
+  },
+  {
+    label: "Мои формулы",
+    // children: "Content of Tab 2",
+    key: "tab2",
+    closable: false,
+  },
+  {
+    label: "Tab 3",
+    // children: "Content of Tab 3",
+    key: "tab3",
+    closable: true,
+  },
+];
 
 function Calculator() {
+  const [items, setItems] = useState(initialItems);
+
   const buttonCalculatorText = (
     <span>
       Добавить
@@ -33,6 +57,19 @@ function Calculator() {
   const [selectedInModal, setSelectedInModal] = useState([]);
 
   console.log(selectedFormulasArray, "изначальное состояние");
+
+  const changePageName = (pageName, index) => {
+    // Copy the current items array
+    const newItems = [...items];
+
+    // Update the label of the item at the given index
+    if (newItems[index]) {
+      newItems[index].label = pageName;
+    }
+
+    // Update the state with the modified items array
+    setItems(newItems);
+  };
 
   const deleteCalculator = (key) => {
     setItemKeys((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
@@ -62,6 +99,19 @@ function Calculator() {
     setActiveTabKey(key);
   };
 
+  const handleFormulasTab = () => {
+    const activeTab = document.querySelector(".ant-tabs-tab-active");
+    if (activeTab) {
+      activeTab.classList.remove("ant-tabs-tab-active");
+    }
+
+    const targetTab = document.querySelector('[data-node-key="tab2"]');
+    if (targetTab) {
+      targetTab.classList.add("ant-tabs-tab-active");
+    }
+    setActiveTabKey("tab2");
+  };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -85,6 +135,56 @@ function Calculator() {
         ? prevSelected.filter((k) => k !== key)
         : [...prevSelected, key]
     );
+  };
+
+  const [activeKey, setActiveKey] = useState(items[0].key);
+  const [tabsNumber, setTabsNumber] = useState(items.length);
+  const newTabIndex = useRef(3);
+
+  const onChange = (newActiveKey) => {
+    setActiveKey(newActiveKey);
+    if (handleTabChange) handleTabChange(newActiveKey);
+  };
+
+  const add = () => {
+    const newActiveKey = `tab${++newTabIndex.current}`;
+    const newPanes = [...items];
+    newPanes.push({
+      label: `Tab ${newTabIndex.current}`,
+      key: newActiveKey,
+      content: <Button type="primary">Click me</Button>,
+    });
+    setItems(newPanes);
+    // setActiveKey(newActiveKey);
+    setTabsNumber(tabsNumber + 1);
+  };
+
+  const remove = (targetKey) => {
+    let newActiveKey = activeKey;
+    let lastIndex = -1;
+    items.forEach((item, i) => {
+      if (item.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
+    const newPanes = items.filter((item) => item.key !== targetKey);
+    if (newPanes.length && newActiveKey === targetKey) {
+      if (lastIndex >= 0) {
+        newActiveKey = newPanes[lastIndex].key;
+      } else {
+        newActiveKey = newPanes[0].key;
+      }
+    }
+    setItems(newPanes);
+    setActiveKey(newActiveKey);
+  };
+
+  const onEdit = (targetKey, action) => {
+    if (action === "add") {
+      add();
+    } else {
+      remove(targetKey);
+    }
   };
 
   console.log(activeTabKey, "activeTabKey+++++++++++++++++");
@@ -196,7 +296,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab3" && (
           <>
-            <h1 className="right__header">Tab 3</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[2].label}
+                onChange={(e) => changePageName(e.target.value, 2)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -210,7 +323,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab4" && (
           <>
-            <h1 className="right__header">Tab 4</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[3].label}
+                onChange={(e) => changePageName(e.target.value, 3)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -224,7 +350,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab5" && (
           <>
-            <h1 className="right__header">Tab 5</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[4].label}
+                onChange={(e) => changePageName(e.target.value, 4)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -238,7 +377,21 @@ function Calculator() {
         )}
         {activeTabKey === "tab6" && (
           <>
-            <h1 className="right__header">Tab 6</h1>
+            <h1 className="right__header">
+              {" "}
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[5].label}
+                onChange={(e) => changePageName(e.target.value, 5)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -252,7 +405,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab7" && (
           <>
-            <h1 className="right__header">Tab 7</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[6].label}
+                onChange={(e) => changePageName(e.target.value, 6)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -266,7 +432,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab8" && (
           <>
-            <h1 className="right__header">Tab 8</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[7].label}
+                onChange={(e) => changePageName(e.target.value, 7)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -280,7 +459,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab9" && (
           <>
-            <h1 className="right__header">Tab 9</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[8].label}
+                onChange={(e) => changePageName(e.target.value, 8)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -294,7 +486,20 @@ function Calculator() {
         )}
         {activeTabKey === "tab10" && (
           <>
-            <h1 className="right__header">Tab 10</h1>
+            <h1 className="right__header">
+              <Input
+                bordered={false}
+                suffix={<EditOutlined style={{ fontSize: 30 }} />}
+                value={items[9].label}
+                onChange={(e) => changePageName(e.target.value, 9)}
+                style={{
+                  width: "300px",
+                  borderBottom: "1px solid #e3e9f6",
+                  borderRadius: 0,
+                  fontSize: "36px",
+                }}
+              />
+            </h1>
             <div className="formulas__container">
               {selectedFormulasArray.length > 0 &&
                 selectedFormulasArray.map((selectedFormula) => (
@@ -306,7 +511,14 @@ function Calculator() {
             </div>
           </>
         )}
-        <CustomTabs onTabChange={handleTabChange} />
+        <CustomTabs
+          onTabChange={handleTabChange}
+          items={items}
+          addTabFunc={add}
+          onChange={onChange}
+          onEdit={onEdit}
+          activeKey={activeKey}
+        />
       </div>
       {(activeTabKey === "tab3" ||
         activeTabKey === "tab4" ||
@@ -320,6 +532,13 @@ function Calculator() {
           buttonText={buttonFormulaText}
           formulasPage={true}
         />
+      )}
+      {activeTabKey !== "tab2" && (
+        <div className="right__button__wrapper">
+          <Button shape="round" size="large" onClick={handleFormulasTab}>
+            Мои формулы
+          </Button>
+        </div>
       )}
     </div>
   );
