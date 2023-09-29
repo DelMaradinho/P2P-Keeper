@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/P2P-Keeper/static/css/main.3150e6f9.css",
-    "main.js": "/P2P-Keeper/static/js/main.f5e70403.js",
+    "main.css": "/P2P-Keeper/static/css/main.5a9433fe.css",
+    "main.js": "/P2P-Keeper/static/js/main.62f1d2a5.js",
     "static/js/787.25cd464e.chunk.js": "/P2P-Keeper/static/js/787.25cd464e.chunk.js",
     "static/media/Roboto-Regular.ttf": "/P2P-Keeper/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
     "static/media/Roboto-Bold.ttf": "/P2P-Keeper/static/media/Roboto-Bold.f80816a5455d171f948d.ttf",
     "index.html": "/P2P-Keeper/index.html",
-    "main.3150e6f9.css.map": "/P2P-Keeper/static/css/main.3150e6f9.css.map",
-    "main.f5e70403.js.map": "/P2P-Keeper/static/js/main.f5e70403.js.map",
+    "main.5a9433fe.css.map": "/P2P-Keeper/static/css/main.5a9433fe.css.map",
+    "main.62f1d2a5.js.map": "/P2P-Keeper/static/js/main.62f1d2a5.js.map",
     "787.25cd464e.chunk.js.map": "/P2P-Keeper/static/js/787.25cd464e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3150e6f9.css",
-    "static/js/main.f5e70403.js"
+    "static/css/main.5a9433fe.css",
+    "static/js/main.62f1d2a5.js"
   ]
 }

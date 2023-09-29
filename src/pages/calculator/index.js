@@ -100,16 +100,7 @@ function Calculator() {
   };
 
   const handleFormulasTab = () => {
-    const activeTab = document.querySelector(".ant-tabs-tab-active");
-    if (activeTab) {
-      activeTab.classList.remove("ant-tabs-tab-active");
-    }
-
-    const targetTab = document.querySelector('[data-node-key="tab2"]');
-    if (targetTab) {
-      targetTab.classList.add("ant-tabs-tab-active");
-    }
-    setActiveTabKey("tab2");
+    onChange("tab2");
   };
 
   const showModal = () => {
