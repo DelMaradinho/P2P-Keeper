@@ -70,7 +70,7 @@ const MainMenu = ({ selectedKey }) => {
           </Link>
         </Menu.Item>
         <Menu.Item key="4">
-          <Link to="#">
+          <Link to="/analysis">
             <PieChartOutlined style={{ fontSize: 20 }} />{" "}
             <span>Анализ сделок</span>
           </Link>
@@ -81,12 +81,12 @@ const MainMenu = ({ selectedKey }) => {
           </Link>
         </Menu.Item>
         <Menu.Item key="6">
-          <Link to="#">
+          <Link to="/resources">
             <ApartmentOutlined style={{ fontSize: 20 }} /> <span>Ресурсы</span>
           </Link>
         </Menu.Item>
         <Menu.Item key="7">
-          <Link to="#">
+          <Link to="/settings">
             <SettingOutlined style={{ fontSize: 20 }} /> <span>Настройки</span>
           </Link>
         </Menu.Item>
