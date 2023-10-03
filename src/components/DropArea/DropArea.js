@@ -3,10 +3,14 @@ import "./DropArea.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addValue } from "../../store/slice/formulas";
 import { getFormulaCurrentKey } from "../../helpers/formulas";
+import { Input } from "antd";
 
 function DropArea({ index }) {
   const formulaStore = useSelector((state) => state.formulas.formula);
   const [key, setKey] = useState(null);
+  const [droppedItem, setDroppedItem] = useState(null);
+  const [droppedValue, setDroppedValue] = useState(null);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,15 +19,15 @@ function DropArea({ index }) {
     setKey(initialKey);
   }, []);
 
-  const [droppedValue, setDroppedValue] = useState(null);
+  const [content, setContent] = useState(null);
 
   const dragEnter = (e) => {
     e.preventDefault();
-    e.target.className += " hovered"; // добавляем класс 'hovered'
+    e.target.className += " hovered";
   };
 
   const dragLeave = (e) => {
-    e.target.className = "droparea__item"; // устанавливаем изначальный класс
+    e.target.className = "droparea__item";
   };
 
   const dragOver = (e) => {
@@ -32,18 +36,43 @@ function DropArea({ index }) {
 
   const drop = (e) => {
     e.target.className = "droparea__item";
-    const operation = e.dataTransfer.getData("operation");
-    setDroppedValue(operation);
+
+    const item = JSON.parse(e.dataTransfer.getData("itemData"));
+    setDroppedItem(item);
+
+    if (item.type === "operation") {
+      let symbol;
+      switch (item.value) {
+        case "Прибавить":
+          symbol = "+";
+          break;
+        case "Отнять":
+          symbol = "-";
+          break;
+        case "Умножить":
+          symbol = "×";
+          break;
+        case "Разделить":
+          symbol = "/";
+          break;
+        default:
+          symbol = "?";
+      }
+      setDroppedValue(symbol);
+      setContent(symbol);
+    } else if (item.type === "variable") {
+      setDroppedValue(item.value);
+      setContent(item.value);
+    }
+
     dispatch(
       addValue({
         index,
-        value: operation,
+        value: item.value,
         key,
       })
     );
   };
-
-  console.log("formulaStore :>> ", formulaStore);
 
   return (
     <div
@@ -53,7 +82,15 @@ function DropArea({ index }) {
       onDragEnter={dragEnter}
       onDragLeave={dragLeave}
     >
-      {droppedValue}
+      {droppedItem && droppedItem.type === "variable" ? (
+        <Input
+          type="text"
+          addonBefore={content}
+          placeholder="Введите значение"
+        />
+      ) : (
+        content
+      )}
     </div>
   );
 }

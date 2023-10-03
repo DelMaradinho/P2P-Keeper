@@ -4,21 +4,19 @@ import "./DraggableItem.scss";
 function DraggableItem({ item }) {
   const dragStart = (e) => {
     const target = e.target;
-    e.dataTransfer.setData("operation", target.textContent);
-  };
 
-  const dragEnd = (e) => {
-    e.target.className = "draggable__item"; // устанавливаем изначальный класс
+    // передаем тип и значение элемента при перетаскивании
+    e.dataTransfer.setData("itemData", JSON.stringify(item));
+    // e.dataTransfer.setData("itemType", item.type);
+    // e.dataTransfer.setData("itemValue", item.value);
   };
 
   return (
     <div
       key={item.id}
-      type={item.type}
       className="draggable__item"
       draggable="true"
       onDragStart={dragStart}
-      onDragEnd={dragEnd}
     >
       {item.value}
     </div>

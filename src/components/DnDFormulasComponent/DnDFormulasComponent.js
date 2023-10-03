@@ -11,7 +11,9 @@ function DnDFormulasComponent({ variables, operations }) {
         <div className="draggable__container">
           <DraggableItemsList>
             {variables.map((variable) => (
-              <DraggableItem item={variable} />
+              <DraggableItem
+                item={{ value: variable.value, type: variable.type }}
+              />
             ))}
           </DraggableItemsList>
         </div>

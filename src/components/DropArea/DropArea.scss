@@ -2,7 +2,6 @@
   &__item{
       min-width: 179px;
       min-height: 30px;
-      padding: 0 20px;
       background-color: white;
       border: 1px solid #e3e9f6;
       border-radius: 6px;
@@ -13,4 +12,23 @@
 
 .hovered {
   background-color: rgba(8, 31, 73, 0.1);
+}
+
+.ant{
+  &-input{
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      & > input {
+        border: none !important;
+        border-radius: 12px !important;
+      }
+    }
+    &-group{
+      &-addon{
+        margin-bottom: 5px;
+        border: none !important;
+      }
+    }
+  }
 }
