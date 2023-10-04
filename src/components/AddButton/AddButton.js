@@ -10,7 +10,7 @@ const AddButton = ({ addFunction, buttonText }) => {
         type="primary"
         shape="round"
         size="middle"
-        icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
+        // icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
         onClick={addFunction}
         style={{
           backgroundColor: "rgba(8, 31, 73, 1)",

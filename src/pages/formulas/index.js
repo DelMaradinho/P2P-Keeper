@@ -48,12 +48,12 @@ const variablesList = [
   },
   {
     id: "4_buy_price",
-    value: "За сколько купил",
+    value: "Цена покупки",
     type: "variable",
   },
   {
     id: "5_sell_price",
-    value: "За сколько продал",
+    value: "Цена продажи",
     type: "variable",
   },
   {
@@ -117,7 +117,7 @@ function Formulas() {
           operations={operationsList}
           variables={variablesList}
         />
-        <div className="right__button__wrapper">
+        <div className="right__formula__button__wrapper">
           <Button shape="round" size="middle" onClick={showModal}>
             Сохранить формулу
           </Button>

@@ -9,6 +9,13 @@ import { Input } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
 function DropAreasList() {
+  const addAreaButtonText = (
+    <span>
+      Добавить
+      <br />
+      область
+    </span>
+  );
   const formulaStore = useSelector((state) => state.formulas.formula);
   const dispatch = useDispatch();
   const [areasCount, setAreasCount] = useState(3); // начальное состояние списка DropArea
@@ -46,7 +53,7 @@ function DropAreasList() {
         {Array.from({ length: areasCount }).map((_, index) => (
           <DropArea key={index} index={index} />
         ))}
-        <AddButton addFunction={addArea} buttonText={"Добавить область"} />
+        <AddButton addFunction={addArea} buttonText={addAreaButtonText} />
       </div>
     </>
   );

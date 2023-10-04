@@ -524,7 +524,7 @@ function Calculator() {
           formulasPage={true}
         />
       )}
-      {activeTabKey !== "tab2" && (
+      {activeTabKey === "tab1" && (
         <div className="right__button__wrapper">
           <Button shape="round" size="large" onClick={handleFormulasTab}>
             Мои формулы
