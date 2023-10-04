@@ -1,0 +1,91 @@
+.table {
+  &__container {
+    width: 1144px;
+    margin: 20px 20px 20px 0;
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    .ant-table-thead {
+      position: sticky !important;
+      top: 0;
+      z-index: 50;
+      border-bottom: none;
+      background-color: white;
+      tr {
+        border-bottom: none;
+        th {
+          background-color: white;
+          border-bottom: none;
+          padding: 5px 10px !important;
+          box-sizing: border-box;
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+    }
+    .ant-table-tbody {
+      margin: -10px 0 0 0;
+      & > .ant-table-row {
+        & > .ant-table-cell {
+          box-sizing: border-box !important;
+          border-bottom: none;
+          padding: 10px;
+          text-align: center !important;
+          vertical-align: middle !important;
+        }
+      }
+    }
+  }
+  &__row {
+    &__custom {
+      border-radius: 18px;
+      background-color: white;
+      border: none;
+      &:hover {
+        background-color: rgb(240, 243, 249) !important;
+        & > td {
+          background-color: rgb(240, 243, 249) !important;
+        }
+      }
+      & > td {
+        margin: 5px 0;
+        border: 1px solid #e3e9f6 !important;
+        border-right: none !important;
+        border-left: none !important;
+      }
+      & > td:first-child {
+        border: 1px solid #e3e9f6 !important;
+        border-right: none !important;
+        border-top-left-radius: 18px;
+        border-bottom-left-radius: 18px;
+      }
+      & > td:last-child {
+        border: 1px solid #e3e9f6 !important;
+        border-left: none !important;
+        border-top-right-radius: 18px;
+        border-bottom-right-radius: 18px;
+      }
+    }
+  }
+}
+
+.ant-table {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  & table {
+    border-spacing: 0 10px;
+  }
+}
+
+.ant {
+  &-modal {
+    &-body {
+      & > input {
+        margin: 0 0 16px 0;
+      }
+    }
+  }
+  &-select {
+    width: 100%;
+  }
+}

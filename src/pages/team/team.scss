@@ -1,0 +1,17 @@
+.App {
+    display: flex;
+}
+
+.right {
+    display: flex;
+    flex-wrap: wrap;
+    &__header{
+        flex-basis: 100%;
+    }
+    &__button{
+        &__container{
+            position: fixed;
+            margin-left: 1144px;
+        }
+    }
+}
