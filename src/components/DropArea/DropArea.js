@@ -3,8 +3,11 @@ import "./DropArea.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addValue } from "../../store/slice/formulas";
 import { getFormulaCurrentKey } from "../../helpers/formulas";
-import { Input } from "antd";
+import { ConfigProvider, DatePicker, Input } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+import { dateFormat } from "../../constants/constants";
+import ruRU from "antd/lib/locale/ru_RU";
 
 function DropArea({ index }) {
   const formulaStore = useSelector((state) => state.formulas.formula);
@@ -96,6 +99,21 @@ function DropArea({ index }) {
     hasDropped.current = false;
   };
 
+  const handleChange = (e, isNumber = false) => {
+    console.log("handleChange called with value:", e.target.value);
+    const { value } = e.target;
+    console.log("value = ", value);
+    // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
+    const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
+    if (isNumber && value !== "" && !re.test(value)) return;
+
+    const newValue = isNumber ? value.replace(",", ".") : value;
+    console.log("newValue = ", newValue);
+
+    setDroppedValue(newValue);
+    console.log("droppedValue = ", droppedValue);
+  };
+
   return (
     <div
       className="droparea__item"
@@ -106,14 +124,21 @@ function DropArea({ index }) {
     >
       {droppedItem && droppedItem.type === "variable" ? (
         <Input
-          type="text"
+          type="number"
           addonBefore={content}
           placeholder="Введите значение"
+          onChange={(e) => handleChange(e, true)}
+          value={droppedValue}
         />
       ) : (
         content
       )}
-
+      {droppedItem && droppedItem.type === "date" && (
+        <ConfigProvider locale={ruRU}>
+          {" "}
+          <DatePicker format={dateFormat} />
+        </ConfigProvider>
+      )}
       {droppedItem && (
         <div className="droparea__clear" onClick={clearDropArea}>
           <CloseCircleOutlined />

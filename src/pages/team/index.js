@@ -12,19 +12,19 @@ import {
 const initialTeam = [
   {
     name: "Дэвид Ливси",
-    role: "Доктор",
+    role: "Дроповод",
     email: "d.livesey@espanyola.com",
     key: 1,
   },
   {
     name: "Джим Хокинс",
-    role: "Юнга",
+    role: "Сотрудник",
     email: "j.hawkins@espanyola.com",
     key: 2,
   },
   {
     name: "Джон Трелони",
-    role: "Сквайр",
+    role: "Владелец",
     email: "j.treloni@espanyola.com",
     key: 3,
   },

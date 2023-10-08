@@ -10,6 +10,11 @@ function Analysis() {
       </div>
       <div className="right">
         <h1 className="right__header">Анализ сделок</h1>
+        <h3>
+          Привет!
+          <br />
+          На этой странице вы увидите аналитику по совершенным сделкам.
+        </h3>
       </div>
     </div>
   );

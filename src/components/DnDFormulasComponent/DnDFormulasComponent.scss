@@ -1,6 +1,6 @@
 .draggable {
   &__menu {
-    width: 100%;
+    gap: 16px;
     padding: 16px;
     border: 1px solid #e3e9f6;
     border-radius: 18px;
@@ -10,5 +10,14 @@
 .drop{
   &__header{
     width: 100%;
+  }
+}
+
+.header__draggable__wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  &> h2{
+    max-width: 600px;
   }
 }

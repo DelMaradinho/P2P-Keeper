@@ -38,8 +38,6 @@ function DropAreasList() {
         <Input
           bordered={false}
           suffix={<EditOutlined style={{ fontSize: 16 }} />}
-          // value={formulaName}
-          // onChange={handleInputChange}
           placeholder="Введите название формулы"
           style={{
             width: 225,

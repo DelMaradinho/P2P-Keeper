@@ -4,11 +4,20 @@ import DraggableItem from "../DraggableItem/DraggableItem";
 import DraggableItemsList from "../DraggableItemsList/DraggableItemsList";
 import DropAreasList from "../DropAreasList/DropAreasList";
 
-function DnDFormulasComponent({ variables, operations }) {
+function DnDFormulasComponent({ variables, operations, others }) {
   return (
     <>
-      <div className="draggable__menu">
-        <div className="draggable__container">
+      <div className="header__draggable__wrapper">
+        <h2>
+          Перетаскивайте необходимые переменные и действия в ячейки в области
+          формул, чтобы создать необходимую формулу
+        </h2>
+        <div className="draggable__menu">
+          <DraggableItemsList>
+            {others.map((other) => (
+              <DraggableItem item={{ value: other.value, type: other.type }} />
+            ))}
+          </DraggableItemsList>
           <DraggableItemsList>
             {variables.map((variable) => (
               <DraggableItem
@@ -16,9 +25,6 @@ function DnDFormulasComponent({ variables, operations }) {
               />
             ))}
           </DraggableItemsList>
-        </div>
-        <div className="draggable__container">
-          {" "}
           <DraggableItemsList>
             {operations.map((operation) => (
               <DraggableItem item={operation} />

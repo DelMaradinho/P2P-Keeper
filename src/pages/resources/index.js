@@ -10,6 +10,10 @@ function Resources() {
       </div>
       <div className="right">
         <h1 className="right__header">Ресурсы</h1>
+        <h3>
+          На этой странице вы увидите ресурсы для вашей работы. Например: карты,
+          кошельки, балансы и т.д.
+        </h3>
       </div>
     </div>
   );

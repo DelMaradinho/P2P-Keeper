@@ -11,6 +11,10 @@
     &:hover .droparea__clear{
       display: block;
     }
+    & > .ant-picker {
+      height: 35px;
+      border: none;
+    }
   }
   &__clear {
     display: none;

@@ -32,6 +32,29 @@ const operationsList = [
 
 const variablesList = [
   {
+    id: "1_buy_price",
+    value: "Цена покупки",
+    type: "variable",
+  },
+  {
+    id: "2_sell_price",
+    value: "Цена продажи",
+    type: "variable",
+  },
+  {
+    id: "3_spread",
+    value: "Спред",
+    type: "variable",
+  },
+  {
+    id: "4_net_profit",
+    value: "Чистая прибыль",
+    type: "variable",
+  },
+];
+
+const othersList = [
+  {
     id: "1_platform",
     value: "Платформа",
     type: "variable",
@@ -47,29 +70,9 @@ const variablesList = [
     type: "variable",
   },
   {
-    id: "4_buy_price",
-    value: "Цена покупки",
-    type: "variable",
-  },
-  {
-    id: "5_sell_price",
-    value: "Цена продажи",
-    type: "variable",
-  },
-  {
-    id: "6_expences",
-    value: "Расходы",
-    type: "variable",
-  },
-  {
-    id: "7_spread",
-    value: "Спред",
-    type: "variable",
-  },
-  {
-    id: "8_net_profit",
-    value: "Чистая прибыль",
-    type: "variable",
+    id: "4_currency_sold",
+    value: "Дата",
+    type: "date",
   },
 ];
 
@@ -109,13 +112,10 @@ function Formulas() {
       </div>
       <div className="right">
         <h1 className="right__header">Создание формул</h1>
-        <h2>
-          Перетаскивайте необходимые переменные и действия в ячейки в области
-          формул, чтобы создать необходимую формулу
-        </h2>
         <DnDFormulasComponent
           operations={operationsList}
           variables={variablesList}
+          others={othersList}
         />
         <div className="right__formula__button__wrapper">
           <Button shape="round" size="middle" onClick={showModal}>
