@@ -103,9 +103,9 @@ function DropArea({ index }) {
     console.log("handleChange called with value:", e.target.value);
     const { value } = e.target;
     console.log("value = ", value);
-    // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
-    const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
-    if (isNumber && value !== "" && !re.test(value)) return;
+    // // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
+    // const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
+    // if (isNumber && value !== "" && !re.test(value)) return;
 
     const newValue = isNumber ? value.replace(",", ".") : value;
     console.log("newValue = ", newValue);
