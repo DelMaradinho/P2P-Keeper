@@ -118,11 +118,14 @@ const CustomTable = ({ tableData }) => {
         [record.key]: [{ ...record, key: `${record.key}-1` }],
       };
     });
+
     setExpandedRowKeys((prevKeys) => {
       if (prevKeys.includes(record.key)) {
+        // Если строка уже развернута, сворачиваем её
         return prevKeys.filter((key) => key !== record.key);
       }
-      return [...prevKeys, record.key];
+      // Если строка не развернута, делаем её единственной развернутой строкой
+      return [record.key];
     });
   };
 
