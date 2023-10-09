@@ -433,8 +433,16 @@ const CustomTable = ({ tableData }) => {
   const handleDocumentClick = (e) => {
     // Получите DOM-узел таблицы
     const tableNode = document.querySelector(".ant-table");
-    if (tableNode && !tableNode.contains(e.target)) {
-      // Если клик был вне таблицы, закройте все раскрывающиеся строки
+    // Получите DOM-узел выпадающего списка AutoComplete
+    const autoCompleteDropdown = document.querySelector(".ant-select-dropdown");
+
+    if (
+      tableNode &&
+      !tableNode.contains(e.target) &&
+      (!autoCompleteDropdown || !autoCompleteDropdown.contains(e.target))
+    ) {
+      // Если клик был вне таблицы и вне выпадающего списка AutoComplete,
+      // закройте все раскрывающиеся строки
       setExpandedRowKeys([]);
     }
   };
