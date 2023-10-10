@@ -6,6 +6,12 @@ export const formulasSlice = createSlice({
     formula: {},
   },
   reducers: {
+    initializeFromLocalStorage: (state) => {
+      const savedFormulas = localStorage.getItem("formula");
+      if (savedFormulas) {
+        state.formula = JSON.parse(savedFormulas);
+      }
+    },
     addValue: (state, action) => {
       if (!state.formula[action.payload.key]) {
         state.formula[action.payload.key] = {};
@@ -27,6 +33,7 @@ export const formulasSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addValue, addEmpty } = formulasSlice.actions;
+export const { addValue, addEmpty, initializeFromLocalStorage } =
+  formulasSlice.actions;
 
 export default formulasSlice.reducer;

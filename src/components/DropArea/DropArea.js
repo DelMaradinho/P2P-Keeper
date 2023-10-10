@@ -1,30 +1,48 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./DropArea.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addValue } from "../../store/slice/formulas";
-import { getFormulaCurrentKey } from "../../helpers/formulas";
+import {
+  addValue,
+  getList,
+  initializeFromLocalStorage,
+} from "../../store/slice/formulas";
+import {
+  getFormulaCurrentKey,
+  getFormulaNextKey,
+} from "../../helpers/formulas";
 import { ConfigProvider, DatePicker, Input } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { dateFormat } from "../../constants/constants";
 import ruRU from "antd/lib/locale/ru_RU";
+import {
+  setDroppedItem,
+  setDroppedValue,
+  setContent,
+  clearData,
+} from "../../store/slice/dropArea"; // замените на правильный путь к вашему редьюсеру
 
-function DropArea({ index }) {
-  const formulaStore = useSelector((state) => state.formulas.formula);
-  const [key, setKey] = useState(null);
-  const [droppedItem, setDroppedItem] = useState(null);
-  const [droppedValue, setDroppedValue] = useState(null);
+function DropArea({ index, formulaKey, onDnDAction }) {
   const hasDropped = useRef(false);
 
   const dispatch = useDispatch();
+  const { droppedItems, droppedValues, contents } = useSelector(
+    (state) => state.drop
+  );
 
-  useEffect(() => {
-    const storedFormula = JSON.parse(localStorage.getItem("formula")) || {};
-    const initialKey = Object.keys(storedFormula).length + 1;
-    setKey(initialKey);
-  }, []);
+  const droppedItem = droppedItems[index];
+  const droppedValue = droppedValues[index];
+  const content = contents[index];
 
-  const [content, setContent] = useState(null);
+  // const [droppedItem, setDroppedItem] = useState(null);
+  // const [droppedValue, setDroppedValue] = useState(null);
+  // const [content, setContent] = useState(null);
+
+  // useEffect(() => {
+  //   setDroppedItem(droppedItems?.[index] || null);
+  //   setDroppedValue(droppedValues?.[index] || null);
+  //   setContent(contents?.[index] || null);
+  // }, [droppedItems, droppedValues, contents]);
 
   const dragEnter = (e) => {
     if (hasDropped.current) {
@@ -56,7 +74,7 @@ function DropArea({ index }) {
     e.target.className = "droparea__item";
 
     const item = JSON.parse(e.dataTransfer.getData("itemData"));
-    setDroppedItem(item);
+    dispatch(setDroppedItem({ index, item }));
     hasDropped.current = true;
 
     if (item.type === "operation") {
@@ -77,25 +95,33 @@ function DropArea({ index }) {
         default:
           symbol = "?";
       }
-      setDroppedValue(symbol);
-      setContent(symbol);
+      dispatch(setDroppedValue({ index, value: symbol }));
+      dispatch(setContent({ index, content: symbol }));
     } else if (item.type === "variable") {
-      setDroppedValue(item.value);
-      setContent(item.value);
+      dispatch(setDroppedValue({ index, value: item.value }));
+      dispatch(setContent({ index, content: item.value }));
     }
 
     dispatch(
       addValue({
         index,
         value: item.value,
-        key,
+        key: formulaKey,
       })
     );
+
+    onDnDAction();
   };
 
   const clearDropArea = () => {
-    setDroppedItem(null);
-    setContent(null);
+    dispatch(clearData(index));
+    dispatch(
+      addValue({
+        index,
+        value: "",
+        key: formulaKey,
+      })
+    );
     hasDropped.current = false;
   };
 
@@ -110,7 +136,8 @@ function DropArea({ index }) {
     const newValue = isNumber ? value.replace(",", ".") : value;
     console.log("newValue = ", newValue);
 
-    setDroppedValue(newValue);
+    dispatch(setDroppedValue({ index, value: newValue }));
+
     console.log("droppedValue = ", droppedValue);
   };
 

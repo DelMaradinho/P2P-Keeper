@@ -33,3 +33,7 @@ export const filterDataByCriteria = (filter, initialData) => {
 
   return filteredData;
 };
+
+export const hasNonEmptyString = (array) => {
+  return array.some((str) => str.trim() !== "");
+};

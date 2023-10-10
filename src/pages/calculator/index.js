@@ -5,10 +5,11 @@ import "./calculator.scss";
 import NewFormulaButton from "../../components/NewFormulaButton/NewFormulaButton";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import FormulaItem from "../../components/FormulaItem/FormulaItem";
-import { favoriteFormulas } from "../../constants/constants";
 import { Button, Input, Modal } from "antd";
 import { getFromStorage } from "../../helpers/formulas";
 import { EditOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { initializeFromLocalStorage } from "../../store/slice/formulas";
 
 const initialItems = [
   {
@@ -33,6 +34,8 @@ const initialItems = [
 
 function Calculator() {
   const [items, setItems] = useState(initialItems);
+  const formulas = useSelector((state) => state.formulas.formula);
+  const dispatch = useDispatch();
 
   const buttonCalculatorText = (
     <span>
@@ -50,7 +53,6 @@ function Calculator() {
     </span>
   );
 
-  const [formulas, setFormulas] = useState(favoriteFormulas);
   const [itemKeys, setItemKeys] = useState([0]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedFormulasArray, setSelectedFormulasArray] = useState([]);
@@ -77,9 +79,9 @@ function Calculator() {
   };
 
   const deleteFormula = (keyToDelete) => {
-    setFormulas((prevFormulas) =>
-      prevFormulas.filter((formula) => formula.key !== keyToDelete)
-    );
+    // setFormulas((prevFormulas) =>
+    //   prevFormulas.filter((formula) => formula.key !== keyToDelete)
+    // );
   };
 
   const deleteFormulaFromTab = (keyToDelete) => {
@@ -178,7 +180,11 @@ function Calculator() {
     }
   };
 
-  console.log(activeTabKey, "activeTabKey+++++++++++++++++");
+  useEffect(() => {
+    dispatch(initializeFromLocalStorage());
+  }, []);
+
+  console.log("formulas :>> ", formulas);
 
   return (
     <div className="App">
@@ -189,7 +195,7 @@ function Calculator() {
         onCancel={handleCancel} // убираем стандартные кнопки в нижней части модального окна
         footer={false}
       >
-        <ul className="module__list">
+        {/* <ul className="module__list">
           {formulas.map((formula) => (
             <li key={formula.key}>
               <input
@@ -200,7 +206,7 @@ function Calculator() {
               {formula.name}
             </li>
           ))}
-        </ul>
+        </ul> */}
         <Button
           type="primary"
           onClick={handleOk}
@@ -254,14 +260,16 @@ function Calculator() {
           <>
             <h1 className="right__header">Мои формулы</h1>
             <div className="formulas__container">
-              {formulas.length > 0 &&
-                formulas.map((formula) => (
-                  <FormulaItem
-                    formulaData={formula}
-                    deleteFunction={deleteFormula}
-                  />
-                ))}
-              {formulas.length === 0 && (
+              {Object.keys(formulas).length > 0 &&
+                Object.values(formulas).map((formula) => {
+                  return (
+                    <FormulaItem
+                      formulaData={formula}
+                      deleteFunction={deleteFormula}
+                    />
+                  );
+                })}
+              {Object.keys(formulas).length === 0 && (
                 <div>
                   <h2>У вас нет избранных формул</h2>
                   <Button

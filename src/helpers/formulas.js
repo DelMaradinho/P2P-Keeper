@@ -10,13 +10,12 @@ export const getFromStorage = () => {
 
 export const getFormulaCurrentKey = (formula) => {
   const reduxValue = Number(Object.keys(formula)?.length);
-  const storageValue = Number(
-    Object.keys(JSON.parse(localStorage.getItem(formulaKey)) || {}).length
-  );
 
-  if (reduxValue > storageValue) {
-    return reduxValue + 1;
-  }
+  return reduxValue;
+};
 
-  return storageValue + 1;
+export const getFormulaNextKey = (formula) => {
+  const reduxValue = Number(Object.keys(formula)?.length);
+
+  return reduxValue + 1;
 };

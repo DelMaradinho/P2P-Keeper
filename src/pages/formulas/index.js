@@ -4,8 +4,9 @@ import "./formulas.scss";
 import DnDFormulasComponent from "../../components/DnDFormulasComponent/DnDFormulasComponent";
 import { Modal, Button } from "antd";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveInStorage } from "../../helpers/formulas";
+import { clearAllDropAreas, setDndActions } from "../../store/slice/dropArea";
 
 const operationsList = [
   {
@@ -78,12 +79,18 @@ const othersList = [
 
 function Formulas() {
   const formulaStore = useSelector((state) => state.formulas.formula);
-
+  const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleClearAll = () => {
+    dispatch(clearAllDropAreas());
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
     saveInStorage(formulaStore);
+    handleClearAll();
+    dispatch(setDndActions({ isSet: false }));
   };
 
   const closeModal = () => {
