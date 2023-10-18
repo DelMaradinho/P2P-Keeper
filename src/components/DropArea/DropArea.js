@@ -5,7 +5,6 @@ import { addValue } from "../../store/slice/formulas";
 import { getFormulaCurrentKey } from "../../helpers/formulas";
 import { ConfigProvider, DatePicker, Input } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
 import { dateFormat } from "../../constants/constants";
 import ruRU from "antd/lib/locale/ru_RU";
 
@@ -52,8 +51,8 @@ function DropArea({ index }) {
     if (hasDropped.current) {
       return;
     }
-
     e.target.className = "droparea__item";
+    e.target.className += " droparea__item__full";
 
     const item = JSON.parse(e.dataTransfer.getData("itemData"));
     setDroppedItem(item);
@@ -93,10 +92,15 @@ function DropArea({ index }) {
     );
   };
 
-  const clearDropArea = () => {
+  const clearDropArea = (e) => {
     setDroppedItem(null);
     setContent(null);
     hasDropped.current = false;
+    let parent = e.target.closest(".droparea__item");
+
+    if (parent) {
+      parent.className = "droparea__item";
+    }
   };
 
   const handleChange = (e, isNumber = false) => {

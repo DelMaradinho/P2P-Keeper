@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   CarryOutOutlined,
   DesktopOutlined,
@@ -15,9 +15,27 @@ import { Link } from "react-router-dom";
 
 const MainMenu = ({ selectedKey }) => {
   const [collapsed, setCollapsed] = useState(true);
+  const hoverTimeoutRef = useRef(null); // Хранит ссылку на таймер
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
+  const handleMouseEnter = () => {
+    // Устанавливаем таймер, который раскроет меню после 0.3 секунды
+    hoverTimeoutRef.current = setTimeout(() => {
+      setCollapsed(false);
+    }, 500); // 300ms = 0.3 секунды
+  };
+
+  const handleMouseLeave = () => {
+    // Если таймер активен, мы его отменяем
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    // Сворачиваем меню
+    setCollapsed(true);
+  };
+
   return (
     <div className={styles.menu__container}>
       <Button
@@ -50,6 +68,8 @@ const MainMenu = ({ selectedKey }) => {
           color: "rgba(8, 31, 73, 1)",
         }}
         inlineCollapsed={collapsed}
+        onMouseEnter={handleMouseEnter} // Обработчик события при наведении мыши
+        onMouseLeave={handleMouseLeave} // Обработчик события при уходе курсора мыши
       >
         <Menu.Item key="1">
           <Link to="/calculator">

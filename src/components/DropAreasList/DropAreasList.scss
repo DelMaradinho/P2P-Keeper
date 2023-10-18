@@ -1,11 +1,11 @@
 .droparea{
   &__container{
     display: grid;
-    grid-template-columns: repeat(10, minmax(min-content, 133px));
+    grid-template-columns: repeat(10, 1fr);
     grid-gap: 10px;
     align-items: center;
     box-sizing: border-box;
-    max-width: 1144px;
+    width: 1144px;
     padding: 10px;
     margin: 0 0 26px 0;
     background-color: rgb(240, 243, 249);

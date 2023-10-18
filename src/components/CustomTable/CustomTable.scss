@@ -34,6 +34,12 @@
       }
     }
   }
+  &__button{
+    &__filter{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
   &__row {
     &__custom {
       border-radius: 18px;

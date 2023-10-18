@@ -21,8 +21,10 @@ body {
 }
 
 h1 {
-  font-size: 36px;
-  text-align: center;
+  font-size: 30px;
+  text-align: left;
+  line-height: 1.7;
+  text-transform: uppercase;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

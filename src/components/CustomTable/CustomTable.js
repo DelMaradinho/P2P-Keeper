@@ -5,7 +5,11 @@ import "./CustomTable.scss";
 import "react-resizable/css/styles.css";
 import AutoComplete from "../AutoComplete/AutoComplete";
 import { DatePicker } from "antd";
-import { RollbackOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  RollbackOutlined,
+  DeleteOutlined,
+  RedoOutlined,
+} from "@ant-design/icons";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -22,6 +26,7 @@ import {
 import { filterDataByCriteria } from "../../helpers/helpers";
 import { SyncOutlined } from "@ant-design/icons";
 import ruRU from "antd/lib/locale/ru_RU";
+import NewFormulaButton from "../NewFormulaButton/NewFormulaButton";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -61,6 +66,25 @@ const CustomTable = ({ tableData }) => {
       setData([]);
     };
   }, [tableData]);
+
+  const buttonText = <span>Добавить сделку</span>;
+
+  const handleAddRow = () => {
+    const newRow = {
+      key: data.length + 1,
+      currency: "",
+      buy_price: "",
+      buy_amount: "",
+      exchange: "",
+      sell_price: "",
+      sell_amount: "",
+      spread: "",
+      net_profit: "",
+      date: dayjs(new Date().toISOString().slice(0, 10), dateFormat),
+      description: "",
+    };
+    setData((prevData) => [newRow, ...prevData]);
+  };
 
   function handleChangeNested(
     parentKey,
@@ -266,7 +290,9 @@ const CustomTable = ({ tableData }) => {
       render: (text, record) => (
         <p style={{ margin: 0 }}>
           <a onClick={() => handleDuplicate(record)} title="Повторить сделку">
-            <RollbackOutlined style={{ fontSize: 14 }} />
+            <RedoOutlined
+              style={{ fontSize: 14, transform: "rotate(-90deg)" }}
+            />
           </a>{" "}
           <a
             onClick={() => {
@@ -481,7 +507,16 @@ const CustomTable = ({ tableData }) => {
   return (
     <div className="table__container">
       <ConfigProvider locale={ruRU}>
-        <FilterPanel onFilterChange={onFilterChange} />
+        <div className="table__button__filter">
+          <NewFormulaButton
+            addFunction={handleAddRow}
+            buttonText={buttonText}
+            fixed={false}
+            size="middle"
+          />
+          <FilterPanel onFilterChange={onFilterChange} />
+        </div>
+
         <Table
           components={components}
           columns={resizableColumns}

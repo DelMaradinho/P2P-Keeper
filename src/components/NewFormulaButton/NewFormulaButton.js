@@ -8,6 +8,7 @@ const NewFormulaButton = ({
   buttonText,
   fixed = true,
   formulasPage = false,
+  size = "large",
 }) => {
   return (
     <div
@@ -18,7 +19,7 @@ const NewFormulaButton = ({
       <Button
         type="primary"
         shape="round"
-        size="large"
+        size={size}
         icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
         onClick={addFunction}
         style={{

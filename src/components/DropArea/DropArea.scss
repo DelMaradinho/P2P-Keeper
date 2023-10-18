@@ -1,15 +1,19 @@
 .droparea{
   &__item{
+    box-sizing: border-box;
     position: relative;
     width: auto;
     min-height: 35px;
     background-color: white;
-    border: 1px solid #e3e9f6;
+    border: 2px dashed #e3e9f6;
     border-radius: 6px;
     text-align: center;
     line-height: 2;
     &:hover .droparea__clear{
       display: block;
+    }
+    &__full {
+      border: 1px solid #e3e9f6;
     }
     & > .ant-picker {
       height: 35px;
@@ -46,7 +50,7 @@
         margin: 5px 0;
         padding: 0 5px !important;
         border: none !important;
-        font-size: 10px !important;
+        font-size: 12px !important;
       }
     }
   }

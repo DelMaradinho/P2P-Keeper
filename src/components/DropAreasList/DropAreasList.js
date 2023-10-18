@@ -18,7 +18,7 @@ function DropAreasList() {
   );
   const formulaStore = useSelector((state) => state.formulas.formula);
   const dispatch = useDispatch();
-  const [areasCount, setAreasCount] = useState(3); // начальное состояние списка DropArea
+  const [areasCount, setAreasCount] = useState(6); // начальное состояние списка DropArea
   const [key, setKey] = useState(null);
 
   useEffect(() => {
