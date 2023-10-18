@@ -153,6 +153,7 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
+
   const [columns, setColumns] = useState([
     {
       title: "Монета",

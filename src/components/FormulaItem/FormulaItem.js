@@ -76,16 +76,15 @@ const FormulaItem = ({ formulaData, deleteFunction }) => {
         </Space>
       </div>
       <div className="formula">
-        {Array.from({ length: 12 }, (_, i) => i + 1).map((num) => {
-          const variableKey = `variable${num}`;
-          if (formulaData[variableKey]) {
-            return (
-              <div key={variableKey} className="formula__variable">
-                {formulaData[variableKey]}
-              </div>
-            );
-          }
-          return null;
+        {formulaData?.value?.map((item, index) => {
+          return (
+            <div
+              key={`formula__variable${index}`}
+              className="formula__variable"
+            >
+              {item}
+            </div>
+          );
         })}
       </div>
     </div>
