@@ -153,7 +153,6 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
-
   const [columns, setColumns] = useState([
     {
       title: "Монета",
@@ -250,7 +249,19 @@ const CustomTable = ({ tableData }) => {
         const calculatedSpread = `${
           record.sell_price / (record.buy_price - 1)
         } %`;
-        return <Input type="text" value={calculatedSpread} readOnly />;
+        return (
+          <Input
+            type="text"
+            value={calculatedSpread}
+            style={{
+              height: 35,
+              backgroundColor: "#5DE0DD",
+              border: "1px solid blue",
+              fontWeight: "bolder",
+            }}
+            readOnly
+          />
+        );
       },
     },
     {
@@ -263,7 +274,19 @@ const CustomTable = ({ tableData }) => {
         const calculatedProfit =
           record.sell_price * record.buy_amount -
           record.buy_price * record.buy_amount;
-        return <Input type="text" value={calculatedProfit} readOnly />;
+        return (
+          <Input
+            type="text"
+            value={calculatedProfit}
+            style={{
+              height: 35,
+              backgroundColor: "#00800047",
+              border: "1px solid #3FE0B3",
+              fontWeight: "bolder",
+            }}
+            readOnly
+          />
+        );
       },
     },
     {
@@ -514,6 +537,7 @@ const CustomTable = ({ tableData }) => {
             buttonText={buttonText}
             fixed={false}
             size="middle"
+            narrow={true}
           />
           <FilterPanel onFilterChange={onFilterChange} />
         </div>

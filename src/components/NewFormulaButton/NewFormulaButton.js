@@ -9,12 +9,15 @@ const NewFormulaButton = ({
   fixed = true,
   formulasPage = false,
   size = "large",
+  narrow = false,
 }) => {
   return (
     <div
       className={`newFormula ${
         fixed ? "newFormula__fixed" : "newFormula__notFixed"
-      } ${formulasPage ? "newFormula__fixed-outside" : ""}`}
+      } ${formulasPage ? "newFormula__fixed-outside" : ""} ${
+        narrow && "newFormula__narrow"
+      }`}
     >
       <Button
         type="primary"
@@ -23,7 +26,6 @@ const NewFormulaButton = ({
         icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
         onClick={addFunction}
         style={{
-          height: 80,
           zIndex: 100,
           borderRadius: 12,
           paddingTop: 5,
