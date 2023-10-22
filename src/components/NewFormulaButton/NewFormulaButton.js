@@ -26,7 +26,6 @@ const NewFormulaButton = ({
         icon={<PlusCircleOutlined style={{ fontSize: 20 }} />}
         onClick={addFunction}
         style={{
-          zIndex: 100,
           borderRadius: 12,
           paddingTop: 5,
           paddingBottom: 5,
