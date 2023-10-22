@@ -39,7 +39,7 @@ export const tableData = [
     sell_price: 12350,
     spread: "",
     net_profit: "",
-    date: "2023-08-29",
+    date: "2023-10-22",
   },
   {
     key: 2,
@@ -50,7 +50,7 @@ export const tableData = [
     sell_price: 12350,
     spread: "",
     net_profit: "",
-    date: "2022-02-01",
+    date: "2023-10-20",
   },
   {
     key: 3,
@@ -61,7 +61,7 @@ export const tableData = [
     sell_price: 178,
     spread: "",
     net_profit: "",
-    date: "2021-01-25",
+    date: "2023-10-01",
   },
 ];
 

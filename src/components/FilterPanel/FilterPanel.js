@@ -1,13 +1,13 @@
-import { TreeSelect } from "antd";
 import { useState } from "react";
 import { filterData } from "../../constants/constants";
-import { DatePicker } from "antd";
+import { DatePicker, TreeSelect, Radio } from "antd";
 import "./FilterPanel.scss";
 
 const { RangePicker } = DatePicker;
 const FilterPanel = ({ onFilterChange }) => {
   const [value, setValue] = useState();
   const [dateRange, setDateRange] = useState([]);
+  const [quickDate, setQuickDate] = useState("");
 
   const onChange = (newValue) => {
     // Инициализация formattedValue ключами из filterData и пустыми массивами
@@ -47,17 +47,73 @@ const FilterPanel = ({ onFilterChange }) => {
       endDate: dateStrings[1] || "",
     };
     onFilterChange(formattedFilter);
+    setQuickDate("");
+  };
+
+  const handleQuickDateSelect = (quickDateValue) => {
+    let newStartDate, newEndDate;
+
+    // Получаем текущую дату и время
+    const now = new Date();
+
+    // Определяем начальную и конечную даты в зависимости от выбора пользователя
+    switch (quickDateValue) {
+      case "day":
+        newStartDate = now;
+        newEndDate = now;
+        break;
+      case "week":
+        newStartDate = new Date(now.setDate(now.getDate() - 7));
+        newEndDate = new Date();
+        break;
+      case "month":
+        newStartDate = new Date(now.setMonth(now.getMonth() - 1));
+        newEndDate = new Date();
+        break;
+      default:
+        // Никакие действия не требуются, если не выбраны быстрые даты
+        return;
+    }
+
+    // Обновляем состояние диапазона дат
+    setDateRange([newStartDate, newEndDate]);
+
+    // Обновляем фильтры для передачи в функцию onFilterChange
+    const formattedFilter = {
+      startDate: newStartDate.toISOString().split("T")[0], // Преобразуем в строку формата YYYY-MM-DD
+      endDate: newEndDate.toISOString().split("T")[0],
+    };
+    setDateRange([]); // Это ключевое изменение
+    onFilterChange(formattedFilter);
+  };
+
+  const onQuickDateChange = (e) => {
+    const quickDateValue = e.target.value;
+    setQuickDate(quickDateValue);
+    handleQuickDateSelect(quickDateValue); // Вызываем функцию обработки быстрых дат
   };
 
   return (
     <div className="filter__container">
       <RangePicker
+        value={dateRange.length > 0 ? dateRange : null} // Если dateRange пуст, передаем null, чтобы сбросить выбор
         onChange={onDateChange}
         placeholder={["Дата начальная", "Дата конечная"]}
         style={{
           width: "290px",
         }}
       />
+      <Radio.Group
+        onChange={onQuickDateChange}
+        value={quickDate}
+        style={{
+          marginLeft: "10px", // Для отступа, если требуется
+        }}
+      >
+        <Radio.Button value="day">За день</Radio.Button>
+        <Radio.Button value="week">За неделю</Radio.Button>
+        <Radio.Button value="month">За месяц</Radio.Button>
+      </Radio.Group>
       <TreeSelect
         showSearch
         style={{
