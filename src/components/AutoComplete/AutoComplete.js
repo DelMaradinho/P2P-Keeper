@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { AutoComplete as AutoCompleteAntD } from "antd";
 import { cryptoCurrencies } from "../../constants/constants";
 
-function AutoComplete({ defaultOptions, handleSelect, defaultValue }) {
+function AutoComplete({
+  defaultOptions,
+  handleSelect,
+  defaultValue,
+  ref,
+  dropdownRef,
+}) {
   const [options, setOptions] = useState(defaultOptions);
   const [currentValue, setCurrentValue] = useState(defaultValue);
 
@@ -28,6 +34,7 @@ function AutoComplete({ defaultOptions, handleSelect, defaultValue }) {
 
   return (
     <AutoCompleteAntD
+      ref={ref}
       value={currentValue}
       style={{
         width: "100%",
@@ -40,6 +47,7 @@ function AutoComplete({ defaultOptions, handleSelect, defaultValue }) {
         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
       }
       placeholder="USDT"
+      dropdownRender={(menu) => <div ref={dropdownRef}>{menu}</div>}
     />
   );
 }

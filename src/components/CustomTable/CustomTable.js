@@ -59,6 +59,10 @@ const CustomTable = ({ tableData }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [filter, setFilter] = useState({});
 
+  const tableRef = useRef(null);
+  const autoCompleteRef = useRef(null);
+  const dropdownRef = useRef(null);
+
   useEffect(() => {
     setData(tableData);
 
@@ -93,11 +97,9 @@ const CustomTable = ({ tableData }) => {
     value,
     isNumber = false
   ) {
-    console.log("function start");
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
     const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
     if (isNumber && value !== "" && !re.test(value)) return;
-    console.log("function 1");
     const newValue = isNumber ? value.replace(",", ".") : value;
 
     setNestedData((prevNestedData) => {
@@ -354,6 +356,8 @@ const CustomTable = ({ tableData }) => {
       width: 50,
       render: (text, record) => (
         <AutoComplete
+          ref={autoCompleteRef}
+          dropdownRef={dropdownRef}
           defaultOptions={cryptoCurrencies}
           defaultValue={text}
           handleSelect={(value) =>
@@ -484,24 +488,16 @@ const CustomTable = ({ tableData }) => {
   };
 
   const handleDocumentClick = (e) => {
-    // Получите DOM-узел таблицы
-    const tableNode = document.querySelector(".ant-table");
-    // Получите DOM-узел выпадающего списка AutoComplete
-    const autoCompleteDropdown = document.querySelector(".ant-select-dropdown");
-
     if (
-      tableNode &&
-      !tableNode.contains(e.target) &&
-      (!autoCompleteDropdown || !autoCompleteDropdown.contains(e.target))
+      tableRef.current &&
+      !tableRef.current.contains(e.target) &&
+      (!dropdownRef.current || !dropdownRef.current.contains(e.target))
     ) {
-      // Если клик был вне таблицы и вне выпадающего списка AutoComplete,
-      // закройте все раскрывающиеся строки
       setExpandedRowKeys([]);
     }
   };
 
   const onAddConvert = (record) => {
-    console.log("record :>> ", record);
     setNestedData((prevNestedData) => {
       return {
         ...prevNestedData,
@@ -517,8 +513,6 @@ const CustomTable = ({ tableData }) => {
       };
     });
   };
-
-  console.log("nestedData :>> ", nestedData);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleDocumentClick);
@@ -543,6 +537,7 @@ const CustomTable = ({ tableData }) => {
         </div>
 
         <Table
+          ref={tableRef}
           components={components}
           columns={resizableColumns}
           dataSource={data}
