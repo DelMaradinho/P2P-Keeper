@@ -61,7 +61,7 @@ const CustomTable = ({ tableData }) => {
 
   const tableRef = useRef(null);
   const autoCompleteRef = useRef(null);
-  const dropdownRef = useRef(null);
+  const dropdownRefs = useRef([]);
 
   useEffect(() => {
     setData(tableData);
@@ -357,7 +357,9 @@ const CustomTable = ({ tableData }) => {
       render: (text, record) => (
         <AutoComplete
           ref={autoCompleteRef}
-          dropdownRef={dropdownRef}
+          dropdownRef={(el) => {
+            dropdownRefs.current[record.key] = el;
+          }}
           defaultOptions={cryptoCurrencies}
           defaultValue={text}
           handleSelect={(value) =>
@@ -488,10 +490,14 @@ const CustomTable = ({ tableData }) => {
   };
 
   const handleDocumentClick = (e) => {
+    const isClickInsideDropdown = Object.values(dropdownRefs.current).some(
+      (ref) => ref && ref.contains(e.target)
+    );
+
     if (
       tableRef.current &&
       !tableRef.current.contains(e.target) &&
-      (!dropdownRef.current || !dropdownRef.current.contains(e.target))
+      !isClickInsideDropdown
     ) {
       setExpandedRowKeys([]);
     }
