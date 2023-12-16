@@ -135,6 +135,19 @@ const CustomTable = ({ tableData }) => {
     });
   }
 
+  const handleDocumentClick = (e) => {
+    const isClickInsideDropdown = Object.values(dropdownRefs.current).some(
+      (ref) => ref && ref.contains(e.target)
+    );
+    if (
+      tableRef.current &&
+      !tableRef.current.contains(e.target) &&
+      !isClickInsideDropdown
+    ) {
+      setExpandedRowKeys([]);
+    }
+  };
+
   const handleRowExpand = (record) => {
     setNestedData((prevNestedData) => {
       if (prevNestedData[record.key]) return prevNestedData;
@@ -487,20 +500,6 @@ const CustomTable = ({ tableData }) => {
 
       return updatedFilter;
     });
-  };
-
-  const handleDocumentClick = (e) => {
-    const isClickInsideDropdown = Object.values(dropdownRefs.current).some(
-      (ref) => ref && ref.contains(e.target)
-    );
-
-    if (
-      tableRef.current &&
-      !tableRef.current.contains(e.target) &&
-      !isClickInsideDropdown
-    ) {
-      setExpandedRowKeys([]);
-    }
   };
 
   const onAddConvert = (record) => {

@@ -4,34 +4,64 @@ import "./CalculatorItem.scss";
 import { CloseCircleOutlined, EditOutlined } from "@ant-design/icons";
 
 const CalculatorItem = ({ deleteFunction }) => {
-  const [priceSell, setPriceSell] = useState("");
-  const [commissionSell, setCommissionSell] = useState("");
-  const [priceWithCommissionSell, setPriceWithCommissionSell] = useState("");
-  const [priceBuy, setPriceBuy] = useState("");
-  const [commissionBuy, setCommissionBuy] = useState("");
-  const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState("");
-  const [spread, setSpread] = useState("");
-  const [turnover, SetTurnover] = useState("");
-  const [netProfit, setNetProfit] = useState("");
+  const [priceBuy, setPriceBuy] = useState();
+  const [commissionBuy, setCommissionBuy] = useState();
+  const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState();
+  const [priceSell, setPriceSell] = useState();
+  const [commissionSell, setCommissionSell] = useState();
+  const [priceWithCommissionSell, setPriceWithCommissionSell] = useState();
+  const [spread, setSpread] = useState();
+  const [turnover, SetTurnover] = useState();
+  const [netProfit, setNetProfit] = useState();
   // const [open, setOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
+  // Рассчёт цены с комиссией при продаже
   useEffect(() => {
     if (priceSell && commissionSell) {
-      const result = priceSell * (1 - commissionSell);
+      const result = Number(priceSell) * (1 - Number(commissionSell));
       setPriceWithCommissionSell(result);
+    }
+    if(!priceSell || !commissionSell) {
+      setPriceWithCommissionSell(undefined);
     }
   }, [priceSell, commissionSell]);
 
+  // Рассчёт цены с комиссией при покупке
   useEffect(() => {
     if (priceBuy && commissionBuy) {
-      const result = priceBuy * (1 - commissionBuy);
+      const result = Number(priceBuy) * (1 + Number(commissionBuy));
       setPriceWithCommissionBuy(result);
     }
+    if(!priceBuy || !commissionBuy) {
+      setPriceWithCommissionBuy(undefined);
+    }
   }, [priceBuy, commissionBuy]);
+
+  // Рассчёт спреда
+  useEffect(() => {
+    if (priceWithCommissionSell && priceWithCommissionBuy) {
+      const result = (Number(priceWithCommissionSell) / Number(priceWithCommissionBuy) - 1) * 100;
+      setSpread(parseFloat(result.toFixed(2)));
+    }
+    if(!priceWithCommissionSell || !priceWithCommissionBuy) {
+      setSpread(undefined);
+    }
+  }, [priceWithCommissionSell, priceWithCommissionBuy]);
+
+  // Рассчёт чистой прибыли
+  useEffect(() => {
+    if (spread && turnover) {
+      const result = Number(turnover) * Number(spread) / 100;
+      setNetProfit(parseFloat(result.toFixed(2)));
+    }
+    if(!spread || !turnover) {
+      setNetProfit(undefined);
+    }
+  }, [turnover, spread]);
 
   function handleChange(value, setFunc) {
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
@@ -137,10 +167,8 @@ const CalculatorItem = ({ deleteFunction }) => {
         <div className="calculator__spread">Спред</div>
         <div className="calculator__spread__amount">
           <Input
-            value={spread}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onChange={(e) => handleChange(e.target.value, setSpread)}
+            value={spread? `${spread} %` : spread}
+            readOnly
           />
         </div>
         <div className="calculator__turnover">Оборот</div>
@@ -156,9 +184,7 @@ const CalculatorItem = ({ deleteFunction }) => {
         <div className="calculator__netProfit__amount">
           <Input
             value={netProfit}
-            onChange={(e) => handleChange(e.target.value, setNetProfit)}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            readOnly
           />
         </div>
       </div>

@@ -77,12 +77,12 @@ const MainMenu = ({ selectedKey }) => {
             <span>Калькулятор спреда</span>
           </Link>
         </Menu.Item>
-        <Menu.Item key="2">
+        {/* <Menu.Item key="2">
           <Link to="/formulas">
             <DesktopOutlined style={{ fontSize: 20 }} />{" "}
             <span>Создание формул</span>
           </Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="3">
           <Link to="/history">
             <CarryOutOutlined style={{ fontSize: 20 }} />{" "}

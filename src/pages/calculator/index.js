@@ -13,23 +13,23 @@ import { initializeFromLocalStorage } from "../../store/slice/formulas";
 
 const initialItems = [
   {
-    label: "Калькулятор",
+    label: "2 действия",
     // children: "Content of Tab 1",
     key: "tab1",
     closable: false,
   },
   {
-    label: "Мои формулы",
+    label: "3 действия",
     // children: "Content of Tab 2",
     key: "tab2",
     closable: false,
   },
-  {
-    label: "Tab 3",
-    // children: "Content of Tab 3",
-    key: "tab3",
-    closable: true,
-  },
+  // {
+  //   label: "Tab 3",
+  //   // children: "Content of Tab 3",
+  //   key: "tab3",
+  //   closable: true,
+  // },
 ];
 
 function Calculator() {

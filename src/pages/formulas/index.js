@@ -99,7 +99,8 @@ function Formulas() {
 
   return (
     <div className="App">
-      <Modal
+      {/* Временно скрыто */}
+      {/* <Modal
         visible={isModalVisible}
         onCancel={closeModal}
         footer={[
@@ -113,12 +114,13 @@ function Formulas() {
       >
         Формула сохранена во вкладке "Мои формулы" на странице Калькулятор
         спреда.
-      </Modal>
+      </Modal> */}
       <div className="left">
         <MainMenu selectedKey={["2"]} />
       </div>
       <div className="right">
-        <h1 className="right__header">Создание формул</h1>
+        {/* Временно скрыто */}
+        {/* <h1 className="right__header">Создание формул</h1>
         <DnDFormulasComponent
           operations={operationsList}
           variables={variablesList}
@@ -128,7 +130,7 @@ function Formulas() {
           <Button shape="round" size="middle" onClick={showModal}>
             Сохранить формулу
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
