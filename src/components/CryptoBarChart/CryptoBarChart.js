@@ -8,13 +8,12 @@ const data = [
   { name: 'Апрель', Bitcoin: 2780, Ethereum: 3908, amt: 2000 },
   { name: 'Май', Bitcoin: 1890, Ethereum: 4800, amt: 2181 },
   { name: 'Июнь', Bitcoin: 2390, Ethereum: 3800, amt: 2500 },
-  { name: 'Июль', Bitcoin: 3490, Ethereum: 4300, amt: 2100 },
 ];
 
 const CryptoBarChart = () => (
   <BarChart
-    width={500}
-    height={300}
+    width={600}
+    height={400}
     data={data}
     margin={{
       top: 5, right: 30, left: 20, bottom: 5,
