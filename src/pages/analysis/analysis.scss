@@ -1,0 +1,23 @@
+.App {
+    display: flex;
+}
+
+.right {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1144px;
+    margin: 0 0 0 114px;
+    font-size: 14px;
+    &__header{
+        flex-basis: 100%;
+        & > span {
+            & > input {
+                text-align: center;
+            }
+        }
+    }
+    &__analytics {
+        width: 100%;
+        margin-top: 16px;
+    }
+}

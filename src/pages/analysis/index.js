@@ -1,6 +1,8 @@
 import React from "react";
 import MainMenu from "../../components/MainMenu/MainMenu";
-// import "./analysis.scss";
+import CryptoBarChart from "../../components/CryptoBarChart/CryptoBarChart";
+import CryptoPieChart from "../../components/CryptoPieChart/CryptoPieChart";
+import "./analysis.scss";
 
 function Analysis() {
   return (
@@ -13,6 +15,10 @@ function Analysis() {
         <h3>
           На этой странице вы увидите аналитику по совершенным сделкам.
         </h3>
+        <div className="right__analytics">
+        <CryptoBarChart />
+        <CryptoPieChart />
+        </div>
       </div>
     </div>
   );
