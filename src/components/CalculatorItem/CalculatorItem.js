@@ -3,7 +3,7 @@ import { Button, Input, Modal, Space } from "antd";
 import "./CalculatorItem.scss";
 import { CloseCircleOutlined, EditOutlined } from "@ant-design/icons";
 
-const CalculatorItem = ({ deleteFunction }) => {
+const CalculatorItem = ({ deleteFunction, type = '' }) => {
   const [priceBuy, setPriceBuy] = useState();
   const [commissionBuy, setCommissionBuy] = useState();
   const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState();
@@ -75,7 +75,9 @@ const CalculatorItem = ({ deleteFunction }) => {
 
   return (
     <div>
-      <div className="calculator__outer">
+      {
+        !type && <>
+                <div className="calculator__outer">
         <Input
           bordered={false}
           suffix={<EditOutlined style={{ fontSize: 16 }} />}
@@ -188,6 +190,184 @@ const CalculatorItem = ({ deleteFunction }) => {
           />
         </div>
       </div>
+        </>
+      }
+      {
+        type === 'usdt' && <>
+                <div className="calculator__outer">
+        <Input
+          bordered={false}
+          suffix={<EditOutlined style={{ fontSize: 16 }} />}
+          placeholder="USDT"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          style={{
+            width: 100,
+            borderBottom: "1px solid #e3e9f6",
+            borderRadius: 0,
+          }}
+        />
+        <Space>
+          <Button
+            type="text"
+            shape="round"
+            size="middle"
+            icon={<CloseCircleOutlined style={{ fontSize: 16 }} />}
+            onClick={() => {
+              Modal.confirm({
+                content: "Вы правда хотите удалить этот калькулятор?",
+                okText: "Да",
+                cancelText: "Нет",
+                okButtonProps: {
+                  style: {
+                    backgroundColor: "rgba(8, 31, 73, 1)",
+                    color: "white", // Задаем цвет текста для кнопки подтверждения
+                  },
+                },
+                onCancel() {},
+                onOk() {
+                  deleteFunction();
+                },
+              });
+            }}
+            style={{
+              zIndex: 100,
+              padding: 5,
+              borderRadius: 18,
+            }}
+          />
+        </Space>
+      </div>
+      <div className={`calculator__3x__container ${isFocused ? "focused" : ""}`}>
+        <div className="calculator__price">Цена покупки USDT</div>
+        <div className="calculator__price__buy">
+          <Input
+            value={priceBuy}
+            onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__commission">Комиссия</div>
+        <div className="calculator__commission__buy">
+          <Input
+            value={commissionBuy}
+            onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__priceWithCommission">Цена ALT в USDT</div>
+        <div className="calculator__priceWithCommission__buy">
+          <Input value={priceWithCommissionBuy} readOnly />
+        </div>
+        <div className="calculator__spread">Цена продажи ALT в руб.</div>
+        <div className="calculator__spread__amount">
+          <Input
+            value={spread? `${spread} %` : spread}
+            readOnly
+          />
+        </div>
+        <div className="calculator__turnover">Спред</div>
+        <div className="calculator__turnover__amount">
+          <Input
+            value={turnover}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={(e) => handleChange(e.target.value, SetTurnover)}
+          />
+        </div>
+      </div>
+        </>
+      }
+      {
+        type === 'alt' && <>
+        <div className="calculator__outer">
+        <Input
+          bordered={false}
+          suffix={<EditOutlined style={{ fontSize: 16 }} />}
+          placeholder="ALT"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          style={{
+            width: 100,
+            borderBottom: "1px solid #e3e9f6",
+            borderRadius: 0,
+          }}
+        />
+        <Space>
+          <Button
+            type="text"
+            shape="round"
+            size="middle"
+            icon={<CloseCircleOutlined style={{ fontSize: 16 }} />}
+            onClick={() => {
+              Modal.confirm({
+                content: "Вы правда хотите удалить этот калькулятор?",
+                okText: "Да",
+                cancelText: "Нет",
+                okButtonProps: {
+                  style: {
+                    backgroundColor: "rgba(8, 31, 73, 1)",
+                    color: "white", // Задаем цвет текста для кнопки подтверждения
+                  },
+                },
+                onCancel() {},
+                onOk() {
+                  deleteFunction();
+                },
+              });
+            }}
+            style={{
+              zIndex: 100,
+              padding: 5,
+              borderRadius: 18,
+            }}
+          />
+        </Space>
+      </div>
+      <div className={`calculator__3x__container ${isFocused ? "focused" : ""}`}>
+        <div className="calculator__price">Цена покупки ALT</div>
+        <div className="calculator__price__buy">
+          <Input
+            value={priceBuy}
+            onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__commission">Комиссия</div>
+        <div className="calculator__commission__buy">
+          <Input
+            value={commissionBuy}
+            onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__priceWithCommission">Цена ALT в USDT</div>
+        <div className="calculator__priceWithCommission__buy">
+          <Input value={priceWithCommissionBuy} readOnly />
+        </div>
+        <div className="calculator__spread">Цена продажи USDT в руб.</div>
+        <div className="calculator__spread__amount">
+          <Input
+            value={spread? `${spread} %` : spread}
+            readOnly
+          />
+        </div>
+        <div className="calculator__turnover">Спред</div>
+        <div className="calculator__turnover__amount">
+          <Input
+            value={turnover}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={(e) => handleChange(e.target.value, SetTurnover)}
+          />
+        </div>
+      </div>
+        </>
+      }
     </div>
   );
 };

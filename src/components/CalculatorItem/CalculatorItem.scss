@@ -27,6 +27,31 @@
             background-color: rgb(240, 243, 249);
         }
     }
+    &__3x {
+        &__container {
+        display: grid;
+        align-content: center;
+        grid-template:
+        "blank buy"
+        "price price__buy"
+        "commission commission__buy"
+        "priceWithCommission priceWithCommission__buy"
+        "spread spread__amount"
+        "turnover turnover__amount"
+        "netProfit netProfit__amount"
+        ;
+        width: 368px;
+        gap: 5px;
+        padding: 10px;
+        border: 1px solid #e3e9f6;
+        box-sizing: border-box;
+        border-radius: 18px;
+        line-height: 30px;
+        &:hover, &.focused {
+            background-color: rgb(240, 243, 249);
+        }
+    }
+    }
     &__blank{
         grid-area: blank;
     }

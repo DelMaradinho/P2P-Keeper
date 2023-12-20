@@ -54,28 +54,35 @@ function Calculator() {
   );
 
   const [itemKeys, setItemKeys] = useState([0]);
+  const [itemKeysUsdt, setItemKeysUsdt] = useState([0]);
+  const [itemKeysAlt, setItemKeysAlt] = useState([0]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedFormulasArray, setSelectedFormulasArray] = useState([]);
   const [selectedInModal, setSelectedInModal] = useState([]);
 
   console.log(selectedFormulasArray, "изначальное состояние");
 
-  const changePageName = (pageName, index) => {
-    // Copy the current items array
-    const newItems = [...items];
+  // const changePageName = (pageName, index) => {
+  //   // Copy the current items array
+  //   const newItems = [...items];
 
-    // Update the label of the item at the given index
-    if (newItems[index]) {
-      newItems[index].label = pageName;
+  //   // Update the label of the item at the given index
+  //   if (newItems[index]) {
+  //     newItems[index].label = pageName;
+  //   }
+
+  //   // Update the state with the modified items array
+  //   setItems(newItems);
+  // };
+
+  const deleteCalculator = (key, type) => {
+    if(type === 'usdt') {
+      setItemKeysUsdt((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
+    } else if(type === 'alt') {
+      setItemKeysAlt((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
+    } else {
+      setItemKeys((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
     }
-
-    // Update the state with the modified items array
-    setItems(newItems);
-  };
-
-  const deleteCalculator = (key) => {
-    setItemKeys((prevKeys) => prevKeys.filter((itemKey) => itemKey !== key));
-    console.log(itemKeys);
   };
 
   const deleteFormula = (keyToDelete) => {
@@ -90,9 +97,14 @@ function Calculator() {
     );
   };
 
-  const addItem = () => {
-    setItemKeys((prevKeys) => [...prevKeys, prevKeys.length]);
-    console.log(itemKeys);
+  const addItem = (type) => {
+    if(type === 'usdt') {
+      setItemKeysUsdt((prevKeys) => [...prevKeys, prevKeys.length]);
+    } else if(type === 'alt') {
+      setItemKeysAlt((prevKeys) => [...prevKeys, prevKeys.length]);
+    } else {
+      setItemKeys((prevKeys) => [...prevKeys, prevKeys.length]);
+    }
   };
 
   const [activeTabKey, setActiveTabKey] = useState("tab1");
@@ -139,46 +151,46 @@ function Calculator() {
     if (handleTabChange) handleTabChange(newActiveKey);
   };
 
-  const add = () => {
-    const newActiveKey = `tab${++newTabIndex.current}`;
-    const newPanes = [...items];
-    newPanes.push({
-      label: `Tab ${newTabIndex.current}`,
-      key: newActiveKey,
-      content: <Button type="primary">Click me</Button>,
-    });
-    setItems(newPanes);
-    // setActiveKey(newActiveKey);
-    setTabsNumber(tabsNumber + 1);
-  };
+  // const add = () => {
+  //   const newActiveKey = `tab${++newTabIndex.current}`;
+  //   const newPanes = [...items];
+  //   newPanes.push({
+  //     label: `Tab ${newTabIndex.current}`,
+  //     key: newActiveKey,
+  //     content: <Button type="primary">Click me</Button>,
+  //   });
+  //   setItems(newPanes);
+  //   // setActiveKey(newActiveKey);
+  //   setTabsNumber(tabsNumber + 1);
+  // };
 
-  const remove = (targetKey) => {
-    let newActiveKey = activeKey;
-    let lastIndex = -1;
-    items.forEach((item, i) => {
-      if (item.key === targetKey) {
-        lastIndex = i - 1;
-      }
-    });
-    const newPanes = items.filter((item) => item.key !== targetKey);
-    if (newPanes.length && newActiveKey === targetKey) {
-      if (lastIndex >= 0) {
-        newActiveKey = newPanes[lastIndex].key;
-      } else {
-        newActiveKey = newPanes[0].key;
-      }
-    }
-    setItems(newPanes);
-    setActiveKey(newActiveKey);
-  };
+  // const remove = (targetKey) => {
+  //   let newActiveKey = activeKey;
+  //   let lastIndex = -1;
+  //   items.forEach((item, i) => {
+  //     if (item.key === targetKey) {
+  //       lastIndex = i - 1;
+  //     }
+  //   });
+  //   const newPanes = items.filter((item) => item.key !== targetKey);
+  //   if (newPanes.length && newActiveKey === targetKey) {
+  //     if (lastIndex >= 0) {
+  //       newActiveKey = newPanes[lastIndex].key;
+  //     } else {
+  //       newActiveKey = newPanes[0].key;
+  //     }
+  //   }
+  //   setItems(newPanes);
+  //   setActiveKey(newActiveKey);
+  // };
 
-  const onEdit = (targetKey, action) => {
-    if (action === "add") {
-      add();
-    } else {
-      remove(targetKey);
-    }
-  };
+  // const onEdit = (targetKey, action) => {
+  //   if (action === "add") {
+  //     // add();
+  //   } else {
+  //     remove(targetKey);
+  //   }
+  // };
 
   useEffect(() => {
     dispatch(initializeFromLocalStorage());
@@ -190,7 +202,7 @@ function Calculator() {
     <div className="App">
       <Modal
         title="Выберите формулы для добавления на страницу или создайте новую"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel} // убираем стандартные кнопки в нижней части модального окна
         footer={false}
@@ -259,7 +271,7 @@ function Calculator() {
         {activeTabKey === "tab2" && (
           <>
             <h1 className="right__header">Мои формулы</h1>
-            <div className="formulas__container">
+            {/* <div className="formulas__container">
               {Object.keys(formulas).length > 0 &&
                 Object.values(formulas).map((formula) => {
                   return (
@@ -290,17 +302,47 @@ function Calculator() {
                   </Button>
                 </div>
               )}
+            </div> */}
+            <div className="calculators__container">
+              {itemKeysUsdt.length !== 0 &&
+                itemKeysUsdt.map((key) => (
+                  <CalculatorItem
+                    key={key}
+                    type="usdt"
+                    deleteFunction={() => deleteCalculator(key, 'usdt')}
+                  />
+                ))}
+              <NewFormulaButton
+                addFunction={() => addItem('usdt')}
+                buttonText={buttonCalculatorText}
+                fixed={false}
+              />
+            </div>
+            <div className="calculators__container">
+              {itemKeysAlt.length !== 0 &&
+                itemKeysAlt.map((key) => (
+                  <CalculatorItem
+                    key={key}
+                    type="alt"
+                    deleteFunction={() => deleteCalculator(key, 'alt')}
+                  />
+                ))}
+              <NewFormulaButton
+                addFunction={() => addItem('alt')}
+                buttonText={buttonCalculatorText}
+                fixed={false}
+              />
             </div>
           </>
         )}
-        {activeTabKey === "tab3" && (
+        {/* {activeTabKey === "tab3" && (
           <>
             <h1 className="right__header">
               <Input
                 bordered={false}
                 suffix={<EditOutlined style={{ fontSize: 30 }} />}
                 value={items[2].label}
-                onChange={(e) => changePageName(e.target.value, 2)}
+                // onChange={(e) => changePageName(e.target.value, 2)}
                 style={{
                   width: "300px",
                   borderBottom: "1px solid #e3e9f6",
@@ -509,13 +551,13 @@ function Calculator() {
                 ))}
             </div>
           </>
-        )}
+        )} */}
         <CustomTabs
           onTabChange={handleTabChange}
           items={items}
-          addTabFunc={add}
+          // addTabFunc={add}
           onChange={onChange}
-          onEdit={onEdit}
+          // onEdit={onEdit}
           activeKey={activeKey}
         />
       </div>

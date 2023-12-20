@@ -25,7 +25,7 @@ import "./CustomTabs.scss";
 const CustomTabs = ({
   onTabChange,
   items,
-  addTabFunc,
+  // addTabFunc,
   onChange,
   onEdit,
   activeKey,
@@ -81,10 +81,11 @@ const CustomTabs = ({
   return (
     <div className="tabs__container">
       <Tabs
-        type="editable-card"
+        type="card"
+        // type="editable-card"
         onChange={onChange}
         activeKey={activeKey}
-        onEdit={onEdit}
+        // onEdit={onEdit}
         items={items}
       />
     </div>
