@@ -27,18 +27,17 @@
             background-color: rgb(240, 243, 249);
         }
     }
-    &__3x {
+    &__Usdt {
         &__container {
         display: grid;
         align-content: center;
         grid-template:
-        "blank buy"
-        "price price__buy"
-        "commission commission__buy"
-        "priceWithCommission priceWithCommission__buy"
-        "spread spread__amount"
-        "turnover turnover__amount"
-        "netProfit netProfit__amount"
+        "Usdt__price Usdt__price__input"
+        "Usdt__commission Usdt__commission__input"
+        "Usdt__Alt__price Usdt__Alt__price__input"
+        "Usdt__Alt__price__sell Usdt__Alt__price__sell__input"
+        "Usdt__Alt__commission__sell Usdt__Alt__commission__sell__input"
+        "Usdt__spread Usdt__spread__result"
         ;
         width: 368px;
         gap: 5px;
@@ -49,8 +48,148 @@
         line-height: 30px;
         &:hover, &.focused {
             background-color: rgb(240, 243, 249);
+            }
+        }
+        &__price{
+            grid-area: Usdt__price;
+            &__input{
+                grid-area: Usdt__price__input;
+                & > input {
+                    text-align: center;
+                }
+            }
+        }
+        &__commission{
+            grid-area: Usdt__commission;
+            &__input{
+                grid-area: Usdt__commission__input;
+                & > input {
+                    text-align: center;
+                }
+            }
+        }
+        &__Alt{
+            &__price{
+                grid-area: Usdt__Alt__price;
+                &__input{
+                    grid-area: Usdt__Alt__price__input;
+                    & > input {
+                        text-align: center;
+                    }
+                }
+                &__sell{
+                    grid-area: Usdt__Alt__price__sell;
+                    &__input{
+                        grid-area: Usdt__Alt__price__sell__input;
+                        & > input {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+            &__commission{
+                &__sell{
+                    grid-area: Usdt__Alt__commission__sell;
+                    &__input{
+                        grid-area: Usdt__Alt__commission__sell__input;
+                        & > input {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+        &__spread{
+            grid-area: Usdt__spread;
+            &__result{
+                grid-area: Usdt__spread__result;
+                & > input {
+                    text-align: center;
+                }
+            }
         }
     }
+    &__Alt{
+        &__container {
+            display: grid;
+            align-content: center;
+            grid-template:
+            "Alt__price Alt__price__input"
+            "Alt__commission Alt__commission__input"
+            "Alt__Usdt__price Alt__Usdt__price__input"
+            "Alt__Usdt__price__sell Alt__Usdt__price__sell__input"
+            "Alt__Usdt__commission__sell Alt__Usdt__commission__sell__input"
+            "Alt__spread Alt__spread__result"
+            ;
+            width: 368px;
+            gap: 5px;
+            padding: 10px;
+            border: 1px solid #e3e9f6;
+            box-sizing: border-box;
+            border-radius: 18px;
+            line-height: 30px;
+            &:hover, &.focused {
+                background-color: rgb(240, 243, 249);
+                }
+            }
+        &__price{
+            grid-area: Alt__price;
+            &__input{
+                grid-area: Alt__price__input;
+                & > input {
+                    text-align: center;
+                }
+            }
+        }
+        &__commission{
+            grid-area: Alt__commission;
+            &__input{
+                grid-area: Alt__commission__input;
+                & > input {
+                    text-align: center;
+                }
+            }
+        }
+        &__Usdt{
+            &__price{
+                grid-area: Alt__Usdt__price;
+                &__input{
+                    grid-area: Alt__Usdt__price__input;
+                    & > input {
+                        text-align: center;
+                    }
+                }
+                &__sell{
+                    grid-area: Alt__Usdt__price__sell;
+                    &__input{
+                        grid-area: Alt__Usdt__price__sell__input;
+                        & > input {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+            &__commission{
+                &__sell{
+                    grid-area: Alt__Usdt__commission__sell;
+                    &__input{
+                        grid-area: Alt__Usdt__commission__sell__input;
+                        & > input {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+        &__spread{
+            grid-area: Alt__spread;
+            &__result{
+                grid-area: Alt__spread__result;
+                & > input {
+                    text-align: center;
+                }
+            }
+        }
     }
     &__blank{
         grid-area: blank;
@@ -117,5 +256,4 @@
             }
         }
     }
-
 }

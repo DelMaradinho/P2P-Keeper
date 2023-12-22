@@ -13,6 +13,19 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
   const [spread, setSpread] = useState();
   const [turnover, SetTurnover] = useState();
   const [netProfit, setNetProfit] = useState();
+  const [usdtPriceBuy, setUsdtPriceBuy] = useState();
+  const [usdtCommissionBuy, setUsdtCommissionBuy] = useState();
+  const [altPriceInUsdt, setAltPriceInUsdt] = useState();
+  const [altSellPrice, setAltSellPrice] = useState();
+  const [altCommissionSell, setAltCommissionSell] = useState();
+  const [usdtSpread, setUsdtSpread] = useState();
+  const [altPriceBuy, setAltPriceBuy] = useState();
+  const [altCommissionBuy, setAltCommissionBuy] = useState();
+  const [altPriceInUsdt2, setAltPriceInUsdt2] = useState();
+  const [usdtSellPrice, setUsdtSellPrice] = useState();
+  const [usdtCommissionSell, setUsdtCommissionSell] = useState();
+  const [altSpread, setAltSpread] = useState();
+      
   // const [open, setOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -62,6 +75,28 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
       setNetProfit(undefined);
     }
   }, [turnover, spread]);
+
+  // Рассчёт USDT спреда в 3х калькуляторе
+  useEffect(() => {
+    if(usdtPriceBuy && usdtCommissionBuy && altPriceInUsdt && altSellPrice && altCommissionSell) {
+      const result = (((Number(altSellPrice) - (Number(altSellPrice) * Number(altCommissionSell) / 100)) / (Number(altPriceInUsdt) * ((Number(usdtPriceBuy) * Number(usdtCommissionBuy) / 100) + Number(usdtPriceBuy)))) - 1) * 100;
+      setUsdtSpread(Number(result.toFixed(2)))
+    }
+    if(!usdtPriceBuy || !usdtCommissionBuy || !altPriceInUsdt || !altSellPrice || !altCommissionSell) {
+      setUsdtSpread(undefined);
+    }
+  }, [usdtPriceBuy, usdtCommissionBuy, altPriceInUsdt, altSellPrice, altCommissionSell])
+
+  // Рассчёт ALT спреда в 3х калькуляторе
+  useEffect(() => {
+    if(altPriceBuy && altCommissionBuy && altPriceInUsdt2 && usdtSellPrice && usdtCommissionSell) {
+      const result = ((Number(usdtSellPrice) - (Number(usdtSellPrice) * Number(usdtCommissionSell / 100))) / (((Number(altPriceBuy) * Number(altCommissionBuy) / 100) + Number(altPriceBuy)) / Number(altPriceInUsdt2)) - 1) *100;
+      setAltSpread(Number(result.toFixed(2)))
+    }
+    if(!altPriceBuy || !altCommissionBuy || !altPriceInUsdt2 || !usdtSellPrice || !usdtCommissionSell) {
+      setAltSpread(undefined);
+    }
+  }, [altPriceBuy, altCommissionBuy, altPriceInUsdt2, usdtSellPrice, usdtCommissionSell])
 
   function handleChange(value, setFunc) {
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
@@ -194,7 +229,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
       }
       {
         type === 'usdt' && <>
-                <div className="calculator__outer">
+      <div className="calculator__outer">
         <Input
           bordered={false}
           suffix={<EditOutlined style={{ fontSize: 16 }} />}
@@ -238,43 +273,57 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
           />
         </Space>
       </div>
-      <div className={`calculator__3x__container ${isFocused ? "focused" : ""}`}>
-        <div className="calculator__price">Цена покупки USDT</div>
-        <div className="calculator__price__buy">
+      <div className={`calculator__Usdt__container ${isFocused ? "focused" : ""}`}>
+        <div className="calculator__Usdt__price">Цена покупки USDT</div>
+        <div className="calculator__Usdt__price__input">
           <Input
-            value={priceBuy}
-            onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+            value={usdtPriceBuy}
+            onChange={(e) => handleChange(e.target.value, setUsdtPriceBuy)}
             onFocus={handleFocus}
             onBlur={handleBlur}
           />
         </div>
-        <div className="calculator__commission">Комиссия</div>
-        <div className="calculator__commission__buy">
+        <div className="calculator__Usdt__commission">Комиссия</div>
+        <div className="calculator__Usdt__commission__input">
           <Input
-            value={commissionBuy}
-            onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
+            value={usdtCommissionBuy}
+            placeholder="%"
+            onChange={(e) => handleChange(e.target.value, setUsdtCommissionBuy)}
             onFocus={handleFocus}
             onBlur={handleBlur}
           />
         </div>
-        <div className="calculator__priceWithCommission">Цена ALT в USDT</div>
-        <div className="calculator__priceWithCommission__buy">
-          <Input value={priceWithCommissionBuy} readOnly />
+        <div className="calculator__Usdt__Alt__price">Цена ALT в USDT</div>
+        <div className="calculator__Usdt__Alt__price__input">
+          <Input value={altPriceInUsdt}
+            onChange={(e) => handleChange(e.target.value, setAltPriceInUsdt)}
+            onFocus={handleFocus}
+            onBlur={handleBlur} />
         </div>
-        <div className="calculator__spread">Цена продажи ALT в руб.</div>
-        <div className="calculator__spread__amount">
+        <div className="calculator__Usdt__Alt__price__sell">Цена продажи ALT в руб.</div>
+        <div className="calculator__Usdt__Alt__price__sell__input">
           <Input
-            value={spread? `${spread} %` : spread}
+            value={altSellPrice}
+            onChange={(e) => handleChange(e.target.value, setAltSellPrice)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__Usdt__Alt__commission__sell">Комиссия</div>
+        <div className="calculator__Usdt__Alt__commission__sell__input">
+          <Input
+            value={altCommissionSell}
+            placeholder="%"
+            onChange={(e) => handleChange(e.target.value, setAltCommissionSell)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__Usdt__spread">Спред</div>
+        <div className="calculator__Usdt__spread__result">
+          <Input
+            value={usdtSpread ? `${usdtSpread}%` : "Заполните все ячейки"}
             readOnly
-          />
-        </div>
-        <div className="calculator__turnover">Спред</div>
-        <div className="calculator__turnover__amount">
-          <Input
-            value={turnover}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onChange={(e) => handleChange(e.target.value, SetTurnover)}
           />
         </div>
       </div>
@@ -326,43 +375,58 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
           />
         </Space>
       </div>
-      <div className={`calculator__3x__container ${isFocused ? "focused" : ""}`}>
-        <div className="calculator__price">Цена покупки ALT</div>
-        <div className="calculator__price__buy">
+      <div className={`calculator__Alt__container ${isFocused ? "focused" : ""}`}>
+        <div className="calculator__Alt__price">Цена покупки ALT</div>
+        <div className="calculator__Alt__price__input">
           <Input
-            value={priceBuy}
-            onChange={(e) => handleChange(e.target.value, setPriceBuy)}
+            value={altPriceBuy}
+            onChange={(e) => handleChange(e.target.value, setAltPriceBuy)}
             onFocus={handleFocus}
             onBlur={handleBlur}
           />
         </div>
-        <div className="calculator__commission">Комиссия</div>
-        <div className="calculator__commission__buy">
+        <div className="calculator__Alt__commission">Комиссия</div>
+        <div className="calculator__Alt__commission__input">
           <Input
-            value={commissionBuy}
-            onChange={(e) => handleChange(e.target.value, setCommissionBuy)}
+            value={altCommissionBuy}
+            placeholder="%"
+            onChange={(e) => handleChange(e.target.value, setAltCommissionBuy)}
             onFocus={handleFocus}
             onBlur={handleBlur}
           />
         </div>
-        <div className="calculator__priceWithCommission">Цена ALT в USDT</div>
-        <div className="calculator__priceWithCommission__buy">
-          <Input value={priceWithCommissionBuy} readOnly />
-        </div>
-        <div className="calculator__spread">Цена продажи USDT в руб.</div>
-        <div className="calculator__spread__amount">
+        <div className="calculator__Alt__Usdt__price">Цена ALT в USDT</div>
+        <div className="calculator__Alt__Usdt__price__input">
           <Input
-            value={spread? `${spread} %` : spread}
+            value={altPriceInUsdt2}
+            onChange={(e) => handleChange(e.target.value, setAltPriceInUsdt2)}
+            onFocus={handleFocus}
+            onBlur={handleBlur} />
+        </div>
+        <div className="calculator__Alt__Usdt__price__sell">Цена продажи USDT в руб.</div>
+        <div className="calculator__Alt__Usdt__price__sell__input">
+          <Input
+            value={usdtSellPrice}
+            onChange={(e) => handleChange(e.target.value, setUsdtSellPrice)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__Alt__Usdt__commission__sell">Комиссия</div>
+        <div className="calculator__Alt__Usdt__commission__sell__input">
+          <Input
+            value={usdtCommissionSell}
+            placeholder="%"
+            onChange={(e) => handleChange(e.target.value, setUsdtCommissionSell)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+        <div className="calculator__Alt__spread">Спред</div>
+        <div className="calculator__Alt__spread__result">
+          <Input
+            value={altSpread ? `${altSpread}%` : "Заполните все ячейки"}
             readOnly
-          />
-        </div>
-        <div className="calculator__turnover">Спред</div>
-        <div className="calculator__turnover__amount">
-          <Input
-            value={turnover}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onChange={(e) => handleChange(e.target.value, SetTurnover)}
           />
         </div>
       </div>

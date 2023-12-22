@@ -303,7 +303,7 @@ function Calculator() {
                 </div>
               )}
             </div> */}
-            <div className="calculators__container">
+            <div className="calculators__3x__container">
               {itemKeysUsdt.length !== 0 &&
                 itemKeysUsdt.map((key) => (
                   <CalculatorItem
@@ -318,7 +318,7 @@ function Calculator() {
                 fixed={false}
               />
             </div>
-            <div className="calculators__container">
+            <div className="calculators__3x__container">
               {itemKeysAlt.length !== 0 &&
                 itemKeysAlt.map((key) => (
                   <CalculatorItem
