@@ -6,7 +6,6 @@ import "react-resizable/css/styles.css";
 import AutoComplete from "../AutoComplete/AutoComplete";
 import { DatePicker } from "antd";
 import {
-  RollbackOutlined,
   DeleteOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
@@ -21,7 +20,6 @@ import FilterPanel from "../FilterPanel/FilterPanel";
 import {
   cryptoCurrencies,
   dateFormat,
-  tableData,
 } from "../../constants/constants";
 import { filterDataByCriteria } from "../../helpers/helpers";
 import { SyncOutlined } from "@ant-design/icons";
@@ -78,6 +76,7 @@ const CustomTable = ({ tableData }) => {
       key: data.length + 1,
       currency: "",
       buy_price: "",
+      commission: "",
       buy_amount: "",
       exchange: "",
       sell_price: "",
@@ -201,6 +200,22 @@ const CustomTable = ({ tableData }) => {
       sorter: (a, b) => a.buy_price - b.buy_price,
     },
     {
+      title: "Комиссия",
+      dataIndex: "commission",
+      key: "commission",
+      sticky: true,
+      width: 97,
+      render: (text, record) => (
+        <Input
+          type="text"
+          value={text}
+          onChange={(event) =>
+            handleChange(record.key, "commission", event.target.value, true)
+          }
+        />
+      ),
+    },
+    {
       title: "Количество",
       dataIndex: "buy_amount",
       key: "buy_amount",
@@ -261,9 +276,9 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        const calculatedSpread = `${
-          record.sell_price / (record.buy_price - 1)
-        } %`;
+        const calculatedSpread = record.currency === 'USDT' ? `${
+          Number(record?.sell_price) / (Number(record?.exchanging_rate) * (Number(record?.buy_price) + (Number(record?.buy_price) * Number(record?.commission)))) - 1
+        } %` : 'хЭр';
         return (
           <Input
             type="text"
@@ -381,6 +396,28 @@ const CustomTable = ({ tableData }) => {
               record.key,
               "exchanging_currency",
               value
+            )
+          }
+        />
+      ),
+    },
+    {
+      title: "Курс конвертации",
+      dataIndex: "exchanging_rate",
+      key: "exchanging_rate",
+      sticky: true,
+      width: 50,
+      render: (text, record) => (
+        <Input
+          type="number"
+          value={text}
+          onChange={(event) =>
+            handleChangeNested(
+              record.key.split("-")[0],
+              record.key,
+              "exchanging_rate",
+              event.target.value,
+              true
             )
           }
         />
@@ -564,7 +601,7 @@ const CustomTable = ({ tableData }) => {
                   pagination={false}
                   tableLayout="fixed"
                 />
-                <Button onClick={() => onAddConvert(record)}>
+                <Button disabled  onClick={() => onAddConvert(record)}>
                   Добавить конвертацию
                 </Button>
               </div>
