@@ -167,6 +167,17 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
+  const countSpredForUsdt = (record) => {
+    const sell_price = Number(record?.sell_price) || 0
+    const exchanging_rate = Number(record?.exchanging_rate) || 0
+    const buy_price = Number(record?.buy_price) || 0
+    const commission = Number(record?.commission) || 0
+
+    const spred = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
+
+    return `${spred} %`
+  }
+
   const [columns, setColumns] = useState([
     {
       title: "Монета",
@@ -276,9 +287,7 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        const calculatedSpread = record.currency === 'USDT' ? `${
-          Number(record?.sell_price) / (Number(record?.exchanging_rate) * (Number(record?.buy_price) + (Number(record?.buy_price) * Number(record?.commission)))) - 1
-        } %` : 'хЭр';
+        const calculatedSpread = record.currency === 'USDT' ? countSpredForUsdt(record) : 'хЭр';
         return (
           <Input
             type="text"
