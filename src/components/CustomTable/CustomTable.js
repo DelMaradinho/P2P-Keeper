@@ -168,14 +168,20 @@ const CustomTable = ({ tableData }) => {
   };
 
   const countSpredForUsdt = (record) => {
-    const sell_price = Number(record?.sell_price) || 0
-    const exchanging_rate = Number(record?.exchanging_rate) || 0
-    const buy_price = Number(record?.buy_price) || 0
-    const commission = Number(record?.commission) || 0
+    let result
+    if(record?.sell_price && record?.exchanging_rate && record?.buy_price && record?.commission) {
+      const sell_price = Number(record?.sell_price)
+      const exchanging_rate = Number(record?.exchanging_rate)
+      const buy_price = Number(record?.buy_price)
+      const commission = Number(record?.commission)
 
-    const spred = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
+      result = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
 
-    return `${spred} %`
+      return `${result} %`
+    } else {
+      result = undefined
+      return result
+    }
   }
 
   const [columns, setColumns] = useState([
