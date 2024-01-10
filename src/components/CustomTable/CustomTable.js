@@ -52,7 +52,7 @@ const ResizableTitle = (props) => {
 };
 
 const CustomTable = ({ tableData }) => {
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([]);
   const [nestedData, setNestedData] = useState({});
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [filter, setFilter] = useState({});
@@ -89,13 +89,14 @@ const CustomTable = ({ tableData }) => {
     setData((prevData) => [newRow, ...prevData]);
   };
 
-  function handleChangeNested(
+
+  const handleChangeNested = (
     parentKey,
     childKey,
     fieldName,
     value,
     isNumber = false
-  ) {
+  ) => {
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
     const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
     if (isNumber && value !== "" && !re.test(value)) return;
@@ -114,7 +115,25 @@ const CustomTable = ({ tableData }) => {
 
       return { ...prevNestedData, [parentKey]: newNestedArray };
     });
+
+    if (fieldName === "exchanging_rate") { 
+      setData((prevData) => {
+        const parentRow = prevData.find(row => Number(row.key) === Number(parentKey));
+      if (parentRow && parentRow.currency === 'USDT') {
+        const spread = countSpredForUsdt(parentRow, newValue); 
+        return prevData.map((item) => {
+          if (item.key === parentRow.key) {
+            return { ...item, spread };
+          }
+          return item;
+        });
+      }
+        return prevData
+      })
+    }
   }
+
+  console.log('data :>> ', data);
 
   function handleChange(key, fieldName, value, isNumber = false) {
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
@@ -167,11 +186,10 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
-  const countSpredForUsdt = (record) => {
+  const countSpredForUsdt = (record, exchanging_rate = null) => {
     let result
-    if(record?.sell_price && record?.exchanging_rate && record?.buy_price && record?.commission) {
+    if(record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
       const sell_price = Number(record?.sell_price)
-      const exchanging_rate = Number(record?.exchanging_rate)
       const buy_price = Number(record?.buy_price)
       const commission = Number(record?.commission)
 
@@ -179,7 +197,7 @@ const CustomTable = ({ tableData }) => {
 
       return `${result} %`
     } else {
-      result = undefined
+      result = 'нет значений'
       return result
     }
   }
