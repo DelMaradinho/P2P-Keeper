@@ -188,17 +188,57 @@ const CustomTable = ({ tableData }) => {
 
   const countSpredForUsdt = (record, exchanging_rate = null) => {
     let result
+    const sell_price = Number(record?.sell_price)
+    const buy_price = Number(record?.buy_price)
+    const commission = Number(record?.commission)
     if(record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
-      const sell_price = Number(record?.sell_price)
-      const buy_price = Number(record?.buy_price)
-      const commission = Number(record?.commission)
-
       result = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
 
       return `${result} %`
     } else {
-      result = 'нет значений'
-      return result
+      result = ((sell_price / buy_price) - 1) * 100
+      return `${result} %`
+    }
+  }
+
+  const countNetProfitForUsdt = (record, exchanging_rate = null) => {
+    let result
+    const sell_price = Number(record?.sell_price)
+    const buy_price = Number(record?.buy_price)
+    const buy_amount = Number(record?.buy_amount)
+    const commission = Number(record?.commission)
+    if(sell_price && buy_price && buy_amount && commission && exchanging_rate) {
+      return result = (((buy_price+(buy_price*commission))*buy_amount)/(exchanging_rate*(buy_price+(buy_price*commission)))*sell_price)-((buy_price+(buy_price*commission))*buy_amount)
+    } else {
+      return result = sell_price * buy_amount - buy_price * buy_amount
+    }
+  }
+
+  const countSpredForAlt = (record, exchanging_rate = null) => {
+    let result
+    const sell_price = Number(record?.sell_price)
+    const buy_price = Number(record?.buy_price)
+    const commission = Number(record?.commission)
+    
+    if(record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
+      return result = sell_price / ((buy_price + (buy_price * commission )) / exchanging_rate) - 1
+
+    } else {
+      result = ((sell_price / buy_price) - 1) * 100
+      return `${result} %`
+    }
+  }
+
+  const countNetProfitForAlt = (record, exchanging_rate = null) => {
+    let result
+    const sell_price = Number(record?.sell_price)
+    const buy_price = Number(record?.buy_price)
+    const buy_amount = Number(record?.buy_amount)
+    const commission = Number(record?.commission)
+    if(sell_price && buy_price && buy_amount && commission && exchanging_rate) {
+      return result = (((buy_price+(buy_price*commission))*buy_amount)/((buy_price+(buy_price*commission))/exchanging_rate)*sell_price)-((buy_price+(buy_price*commission))*buy_amount)
+    } else {
+      return result = sell_price * buy_amount - buy_price * buy_amount
     }
   }
 
