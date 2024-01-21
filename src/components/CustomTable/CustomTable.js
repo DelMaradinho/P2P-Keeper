@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, ConfigProvider, Input, Modal, Table } from "antd";
 import { Resizable } from "react-resizable";
 import "./CustomTable.scss";
@@ -116,18 +116,18 @@ const CustomTable = ({ tableData }) => {
       return { ...prevNestedData, [parentKey]: newNestedArray };
     });
 
-    if (fieldName === "exchanging_rate") { 
+    if (fieldName === "exchanging_rate") {
       setData((prevData) => {
         const parentRow = prevData.find(row => Number(row.key) === Number(parentKey));
-      if (parentRow && parentRow.currency === 'USDT') {
-        const spread = countSpredForUsdt(parentRow, newValue); 
-        return prevData.map((item) => {
-          if (item.key === parentRow.key) {
-            return { ...item, spread };
-          }
-          return item;
-        });
-      }
+        if (parentRow && parentRow.currency === 'USDT') {
+          const spread = countSpredForUsdt(parentRow, newValue);
+          return prevData.map((item) => {
+            if (item.key === parentRow.key) {
+              return { ...item, spread };
+            }
+            return item;
+          });
+        }
         return prevData
       })
     }
@@ -191,14 +191,13 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission)
-    if(record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
+    if (record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
       result = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
-
-      return `${result} %`
     } else {
       result = ((sell_price / buy_price) - 1) * 100
-      return `${result} %`
     }
+
+    return `${result} %`
   }
 
   const countNetProfitForUsdt = (record, exchanging_rate = null) => {
@@ -207,8 +206,8 @@ const CustomTable = ({ tableData }) => {
     const buy_price = Number(record?.buy_price)
     const buy_amount = Number(record?.buy_amount)
     const commission = Number(record?.commission)
-    if(sell_price && buy_price && buy_amount && commission && exchanging_rate) {
-      return result = (((buy_price+(buy_price*commission))*buy_amount)/(exchanging_rate*(buy_price+(buy_price*commission)))*sell_price)-((buy_price+(buy_price*commission))*buy_amount)
+    if (sell_price && buy_price && buy_amount && commission && exchanging_rate) {
+      return result = (((buy_price + (buy_price * commission)) * buy_amount) / (exchanging_rate * (buy_price + (buy_price * commission))) * sell_price) - ((buy_price + (buy_price * commission)) * buy_amount)
     } else {
       return result = sell_price * buy_amount - buy_price * buy_amount
     }
@@ -219,9 +218,9 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission)
-    
-    if(record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
-      return result = sell_price / ((buy_price + (buy_price * commission )) / exchanging_rate) - 1
+
+    if (record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
+      return result = sell_price / ((buy_price + (buy_price * commission)) / exchanging_rate) - 1
 
     } else {
       result = ((sell_price / buy_price) - 1) * 100
@@ -235,8 +234,8 @@ const CustomTable = ({ tableData }) => {
     const buy_price = Number(record?.buy_price)
     const buy_amount = Number(record?.buy_amount)
     const commission = Number(record?.commission)
-    if(sell_price && buy_price && buy_amount && commission && exchanging_rate) {
-      return result = (((buy_price+(buy_price*commission))*buy_amount)/((buy_price+(buy_price*commission))/exchanging_rate)*sell_price)-((buy_price+(buy_price*commission))*buy_amount)
+    if (sell_price && buy_price && buy_amount && commission && exchanging_rate) {
+      return result = (((buy_price + (buy_price * commission)) * buy_amount) / ((buy_price + (buy_price * commission)) / exchanging_rate) * sell_price) - ((buy_price + (buy_price * commission)) * buy_amount)
     } else {
       return result = sell_price * buy_amount - buy_price * buy_amount
     }
@@ -351,18 +350,18 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        const calculatedSpread = record.currency === 'USDT' ? countSpredForUsdt(record) : 'хЭр';
+        //const calculatedSpread = record.currency === 'USDT' ? countSpredForUsdt(record) : 'хЭр';
         return (
           <Input
             type="text"
-            value={calculatedSpread}
+            value={text}
             style={{
               height: 35,
               backgroundColor: "#5DE0DD",
               border: "1px solid blue",
               fontWeight: "bolder",
             }}
-            readOnly
+          readOnly
           />
         );
       },
@@ -433,7 +432,7 @@ const CustomTable = ({ tableData }) => {
                     color: "white",
                   },
                 },
-                onCancel() {},
+                onCancel() { },
                 onOk() {
                   handleDelete(record.key);
                 },
@@ -556,22 +555,22 @@ const CustomTable = ({ tableData }) => {
 
   const handleResize =
     (index) =>
-    (e, { size }) => {
-      setColumns((prev) => {
-        const nextColumns = [...prev];
+      (e, { size }) => {
+        setColumns((prev) => {
+          const nextColumns = [...prev];
 
-        // Проверка ключа столбца
-        if (nextColumns[index].key === "action") {
-          return prev; // Если это столбец "action", просто верните предыдущие столбцы без изменений
-        }
+          // Проверка ключа столбца
+          if (nextColumns[index].key === "action") {
+            return prev; // Если это столбец "action", просто верните предыдущие столбцы без изменений
+          }
 
-        nextColumns[index] = {
-          ...nextColumns[index],
-          width: size.width,
-        };
-        return nextColumns;
-      });
-    };
+          nextColumns[index] = {
+            ...nextColumns[index],
+            width: size.width,
+          };
+          return nextColumns;
+        });
+      };
 
   const components = {
     header: {
@@ -650,7 +649,6 @@ const CustomTable = ({ tableData }) => {
           />
           <FilterPanel onFilterChange={onFilterChange} />
         </div>
-
         <Table
           ref={tableRef}
           components={components}
@@ -674,7 +672,7 @@ const CustomTable = ({ tableData }) => {
                   pagination={false}
                   tableLayout="fixed"
                 />
-                <Button disabled  onClick={() => onAddConvert(record)}>
+                <Button disabled onClick={() => onAddConvert(record)}>
                   Добавить конвертацию
                 </Button>
               </div>
