@@ -133,8 +133,6 @@ const CustomTable = ({ tableData }) => {
     }
   }
 
-  console.log('data :>> ', data);
-
   function handleChange(key, fieldName, value, isNumber = false) {
     // Если isNumber равен true, проверяем значение на соответствие регулярному выражению
     const re = /^(\d+[.,]?\d*|[.,]\d+)$/;
@@ -350,18 +348,22 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        //const calculatedSpread = record.currency === 'USDT' ? countSpredForUsdt(record) : 'хЭр';
+        let calculatedSpread = record.currency === 'USDT' ? countSpredForUsdt(record) : 'хЭр';
+        if (text) {
+          calculatedSpread = text
+        }
+
         return (
           <Input
             type="text"
-            value={text}
+            value={calculatedSpread}
             style={{
               height: 35,
               backgroundColor: "#5DE0DD",
               border: "1px solid blue",
               fontWeight: "bolder",
             }}
-          readOnly
+            readOnly
           />
         );
       },
@@ -446,6 +448,8 @@ const CustomTable = ({ tableData }) => {
       ),
     },
   ]);
+
+  console.log('data :>> ', data);
 
   const [columnsExtra, setColumnsExtra] = useState([
     {
