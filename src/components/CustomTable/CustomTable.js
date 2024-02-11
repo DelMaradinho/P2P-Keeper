@@ -189,6 +189,8 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission)
+    console.log(record, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& record 2')
+
     if (record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
       result = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
     } else {
@@ -216,6 +218,7 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission)
+    console.log(record, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& sell_pricrecord 1')
 
     if (record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
       return result = sell_price / ((buy_price + (buy_price * commission)) / exchanging_rate) - 1
@@ -348,15 +351,17 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        let calculatedSpread = record.currency === 'USDT' ? countSpredForUsdt(record) : 'хЭр';
-        if (text) {
-          calculatedSpread = text
-        }
-
+        let result = countSpredForAlt(record)
+        if (record.currency === 'USDT') {
+          result = countSpredForUsdt(record)
+        } else if (text) {
+          result = text
+        } 
+        
         return (
           <Input
             type="text"
-            value={calculatedSpread}
+            value={result}
             style={{
               height: 35,
               backgroundColor: "#5DE0DD",
@@ -375,9 +380,11 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 110,
       render: (text, record) => {
-        const calculatedProfit =
-          record.sell_price * record.buy_amount -
-          record.buy_price * record.buy_amount;
+        const calculatedProfit = record.currency === 'USDT' ? countNetProfitForUsdt(record) : '';
+        if (text) {
+          calculatedProfit = text
+        }
+
         return (
           <Input
             type="text"
