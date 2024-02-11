@@ -121,9 +121,20 @@ const CustomTable = ({ tableData }) => {
         const parentRow = prevData.find(row => Number(row.key) === Number(parentKey));
         if (parentRow && parentRow.currency === 'USDT') {
           const spread = countSpredForUsdt(parentRow, newValue);
+          const net_profit = countNetProfitForUsdt(parentRow, newValue);
           return prevData.map((item) => {
             if (item.key === parentRow.key) {
-              return { ...item, spread };
+              return { ...item, spread, net_profit };
+            }
+            return item;
+          });
+        }
+        if (parentRow && parentRow.currency && parentRow.currency !== 'USDT') {
+          const spread = countSpredForAlt(parentRow, newValue);
+          const net_profit = countNetProfitForAlt(parentRow, newValue);
+          return prevData.map((item) => {
+            if (item.key === parentRow.key) {
+              return { ...item, spread, net_profit };
             }
             return item;
           });
@@ -351,17 +362,21 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 70,
       render: (text, record) => {
-        let result = countSpredForAlt(record)
+        let resultSpread
         if (record.currency === 'USDT') {
-          result = countSpredForUsdt(record)
-        } else if (text) {
-          result = text
+          resultSpread = countSpredForUsdt(record)
+        }
+        if (record.currency && record.currency !== 'USDT') {
+          resultSpread = countSpredForAlt(record)
+        }
+        if (text) {
+          resultSpread = text
         } 
         
         return (
           <Input
             type="text"
-            value={result}
+            value={resultSpread}
             style={{
               height: 35,
               backgroundColor: "#5DE0DD",
@@ -380,15 +395,21 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 110,
       render: (text, record) => {
-        const calculatedProfit = record.currency === 'USDT' ? countNetProfitForUsdt(record) : '';
+        let resultNetProfit
+        if (record.currency === 'USDT') {
+          resultNetProfit = countNetProfitForUsdt(record)
+        }
+        if (record.currency && record.currency !== 'USDT') {
+          resultNetProfit = countNetProfitForAlt(record)
+        }
         if (text) {
-          calculatedProfit = text
+          resultNetProfit = text
         }
 
         return (
           <Input
             type="text"
-            value={calculatedProfit}
+            value={resultNetProfit}
             style={{
               height: 35,
               backgroundColor: "#00800047",
