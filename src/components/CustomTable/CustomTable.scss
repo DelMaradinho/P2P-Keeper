@@ -74,12 +74,14 @@
       &__expanded {
         background-color: rgb(240, 243, 249) !important;
         border: none;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
         & > td:first-child {
-          border-bottom-left-radius: 0;
+          border-bottom-left-radius: 0 !important;
           background-color: rgb(240, 243, 249) !important;
         }
         & > td:last-child {
-          border-bottom-right-radius: 0;
+          border-bottom-right-radius: 0 !important;
           background-color: rgb(240, 243, 249) !important;
         }
       }

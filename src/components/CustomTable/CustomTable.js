@@ -199,15 +199,21 @@ const CustomTable = ({ tableData }) => {
     let result
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
-    const commission = Number(record?.commission)
-    console.log(record, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& record 2')
+    const commission = Number(record?.commission) / 100
 
     if (record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
-      result = sell_price / (exchanging_rate * (buy_price + (buy_price * commission))) - 1
+      let variable1
+      variable1 = buy_price * commission
+      variable1 = variable1 + buy_price
+      variable1 = variable1 * exchanging_rate
+      variable1 = sell_price / variable1
+      variable1 = variable1 - 1
+      result = variable1 * 100
     } else {
       result = ((sell_price / buy_price) - 1) * 100
     }
 
+    result = result.toFixed(2);
     return `${result} %`
   }
 
@@ -216,9 +222,23 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const buy_amount = Number(record?.buy_amount)
-    const commission = Number(record?.commission)
+    const commission = Number(record?.commission) / 100
     if (sell_price && buy_price && buy_amount && commission && exchanging_rate) {
-      return result = (((buy_price + (buy_price * commission)) * buy_amount) / (exchanging_rate * (buy_price + (buy_price * commission))) * sell_price) - ((buy_price + (buy_price * commission)) * buy_amount)
+      let variable1
+      let variable2
+      let variable3
+      variable1 = buy_price * commission
+      variable1 = buy_price + variable1
+      variable1 = variable1 * buy_amount
+      variable2 = buy_price * commission
+      variable2 = buy_price + variable2
+      variable2 = exchanging_rate * variable2
+      variable1 = variable1 / variable2 * sell_price
+      variable3 = buy_price * commission
+      variable3 = buy_price + variable3
+      variable3 = variable3 * buy_amount
+      variable1 = variable1 - variable3
+      return result = variable1.toFixed(2)
     } else {
       return result = sell_price * buy_amount - buy_price * buy_amount
     }
@@ -229,15 +249,17 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission)
-    console.log(record, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& sell_pricrecord 1')
 
     if (record?.sell_price && exchanging_rate && record?.buy_price && record?.commission) {
-      return result = sell_price / ((buy_price + (buy_price * commission)) / exchanging_rate) - 1
+      result = (sell_price / ((buy_price + (buy_price * commission / 100)) / exchanging_rate) - 1) * 100;
 
     } else {
       result = ((sell_price / buy_price) - 1) * 100
-      return `${result} %`
+
     }
+
+    result = result.toFixed(2)
+    return `${result} %`
   }
 
   const countNetProfitForAlt = (record, exchanging_rate = null) => {
@@ -245,12 +267,90 @@ const CustomTable = ({ tableData }) => {
     const sell_price = Number(record?.sell_price)
     const buy_price = Number(record?.buy_price)
     const buy_amount = Number(record?.buy_amount)
-    const commission = Number(record?.commission)
+    const commission = Number(record?.commission) / 100
     if (sell_price && buy_price && buy_amount && commission && exchanging_rate) {
-      return result = (((buy_price + (buy_price * commission)) * buy_amount) / ((buy_price + (buy_price * commission)) / exchanging_rate) * sell_price) - ((buy_price + (buy_price * commission)) * buy_amount)
+      let variable1
+      let variable2
+      let variable3
+      variable1 = buy_price * commission
+      variable1 = variable1 + buy_price
+      variable1 = variable1 * buy_amount
+      variable2 = buy_price * commission
+      variable2 = variable2 + buy_price
+      variable2 = variable2 / exchanging_rate
+      variable1 = variable1 / variable2 * sell_price
+      variable3 = buy_price * commission
+      variable3 = variable3 + buy_price
+      variable3 = variable3 * buy_amount
+      variable1 = variable1 - variable3
+      return result = variable1.toFixed(2)
+      // return result = (((buy_price + (buy_price * commission)) * buy_amount) / ((buy_price + (buy_price * commission)) / exchanging_rate) * sell_price) - ((buy_price + (buy_price * commission)) * buy_amount);
     } else {
       return result = sell_price * buy_amount - buy_price * buy_amount
     }
+  }
+
+  const countBuyPriceFiatUsdt = (record) => {
+    let result
+    const buy_price = Number(record?.buy_price)
+    const commission = Number(record?.commission) / 100
+    const exchanging_rate = Number(record?.exchanging_rate)
+    console.log(record, 'recordrecordrecord')
+    if(buy_price && commission && exchanging_rate) {
+      return result = exchanging_rate * (buy_price + (buy_price * commission))
+    }
+    else return result = ''
+  }
+
+  const countBuyPriceFiatAlt = (record) => {
+    let result
+    const buy_price = Number(record?.buy_price)
+    const commission = Number(record?.commission) / 100
+    const exchanging_rate = Number(record?.exchanging_rate)
+    console.log(record, 'recordrecordrecord')
+    if(buy_price && commission && exchanging_rate) {
+      return result = (buy_price + (buy_price * commission)) / exchanging_rate
+    }
+    else return result = ''
+  }
+
+  const countAmountUsdt = (record) => {
+    const buy_price = Number(record?.buy_price)
+    const buy_amount = Number(record?.buy_amount)
+    const commission = Number(record?.commission) / 100
+    const exchanging_rate = Number(record?.exchanging_rate)
+    let result
+    if (buy_price && buy_amount && commission && exchanging_rate) {
+      let variable1
+      let variable2
+      variable1 = buy_price * commission
+      variable1 = variable1 + buy_price
+      variable1 = variable1 * buy_amount
+      variable2 = buy_price * commission
+      variable2 = variable2 + buy_price
+      variable2 = variable2 * exchanging_rate
+      return result = variable1 / variable2
+    } else return result = ''
+  }
+
+  const countAmountAlt = (record) => {
+    const buy_price = Number(record?.buy_price)
+    const buy_amount = Number(record?.buy_amount)
+    const commission = Number(record?.commission) / 100
+    const exchanging_rate = Number(record?.exchanging_rate)
+    let result
+
+    if (buy_price && buy_amount && commission && exchanging_rate) {
+      let variable1
+      let variable2
+      variable1 = buy_price * commission
+      variable1 = variable1 + buy_price
+      variable1 = variable1 * buy_amount
+      variable2 = buy_price * commission
+      variable2 = variable2 + buy_price
+      variable2 = variable2 / exchanging_rate
+      return result = variable1 / variable2
+    } else return result = ''
   }
 
   const [columns, setColumns] = useState([
@@ -360,7 +460,7 @@ const CustomTable = ({ tableData }) => {
       dataIndex: "spread",
       key: "spread",
       sticky: true,
-      width: 70,
+      width: 85,
       render: (text, record) => {
         let resultSpread
         if (record.currency === 'USDT') {
@@ -533,21 +633,42 @@ const CustomTable = ({ tableData }) => {
       key: "exchanging_buy_price",
       sticky: true,
       width: 50,
-      render: (text, record) => (
-        <Input
-          type="number"
-          value={text}
-          onChange={(event) =>
-            handleChangeNested(
-              record.key.split("-")[0],
-              record.key,
-              "exchanging_buy_price",
-              event.target.value,
-              true
-            )
-          }
-        />
-      ),
+      render: (text, record) => {
+        let resultExchangingBuyPrice
+        if (record.currency === 'USDT') {
+          resultExchangingBuyPrice = countBuyPriceFiatUsdt(record)
+        }
+        if (record.currency && record.currency !== 'USDT') {
+          resultExchangingBuyPrice = countBuyPriceFiatAlt(record)
+        }
+        if (text) {
+          resultExchangingBuyPrice = text
+        }
+
+        return (
+          <Input
+            type="text"
+            value={resultExchangingBuyPrice}
+            readOnly
+          />
+        );
+      },
+      // render: (text, record) => (
+        
+      //   <Input
+      //     type="number"
+      //     value={text}
+      //     onChange={(event) =>
+      //       handleChangeNested(
+      //         record.key.split("-")[0],
+      //         record.key,
+      //         "exchanging_buy_price",
+      //         event.target.value,
+      //         true
+      //       )
+      //     }
+      //   />
+      // ),
     },
     {
       title: "Количество",
@@ -555,21 +676,41 @@ const CustomTable = ({ tableData }) => {
       key: "exchanging_buy_amount",
       sticky: true,
       width: 50,
-      render: (text, record) => (
-        <Input
-          type="number"
-          value={text}
-          onChange={(event) =>
-            handleChangeNested(
-              record.key.split("-")[0],
-              record.key,
-              "exchanging_buy_amount",
-              event.target.value,
-              true
-            )
-          }
-        />
-      ),
+      render: (text, record) => {
+        let resultExchangingAmount
+        if (record.currency === 'USDT') {
+          resultExchangingAmount = countAmountUsdt(record)
+        }
+        if (record.currency && record.currency !== 'USDT') {
+          resultExchangingAmount = countAmountAlt(record)
+        }
+        if (text) {
+          resultExchangingAmount = text
+        }
+
+        return (
+          <Input
+            type="text"
+            value={resultExchangingAmount}
+            readOnly
+          />
+        );
+      },
+      // render: (text, record) => (
+      //   <Input
+      //     type="number"
+      //     value={text}
+      //     onChange={(event) =>
+      //       handleChangeNested(
+      //         record.key.split("-")[0],
+      //         record.key,
+      //         "exchanging_buy_amount",
+      //         event.target.value,
+      //         true
+      //       )
+      //     }
+      //   />
+      // ),
     },
   ]);
 
