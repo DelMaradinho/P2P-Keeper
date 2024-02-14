@@ -163,13 +163,24 @@ const CustomTable = ({ tableData }) => {
   }
 
   const handleDocumentClick = (e) => {
+    // Проверяем, произошел ли клик внутри выпадающего списка или раскрытой строки
     const isClickInsideDropdown = Object.values(dropdownRefs.current).some(
       (ref) => ref && ref.contains(e.target)
     );
+
+    // Проверяем, является ли элемент внутри вложенной таблицы (раскрытой строки)
+    const isClickInsideExpandedRow = e.target.closest('.expanded_wrapper') !== null;
+
+    // Проверяем, является ли элемент внутри строки таблицы
+    const clickedRow = e.target.closest('.ant-table-row');
+    const clickedRowKey = clickedRow ? clickedRow.getAttribute('data-row-key') : null;
+
+    // Если клик произошел не в выпадающем списке и не в раскрытой строке,
+    // и либо вне таблицы, либо по другой строке
     if (
-      tableRef.current &&
-      !tableRef.current.contains(e.target) &&
-      !isClickInsideDropdown
+      !isClickInsideDropdown &&
+      !isClickInsideExpandedRow &&
+      (!tableRef.current.contains(e.target) || (clickedRowKey && !expandedRowKeys.includes(clickedRowKey)))
     ) {
       setExpandedRowKeys([]);
     }
@@ -807,7 +818,7 @@ const CustomTable = ({ tableData }) => {
     return () => {
       document.removeEventListener("mousedown", handleDocumentClick);
     };
-  }, []);
+  }, [expandedRowKeys]);
 
   return (
     <div className="table__container">
