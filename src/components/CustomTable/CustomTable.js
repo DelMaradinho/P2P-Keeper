@@ -175,12 +175,25 @@ const CustomTable = ({ tableData }) => {
     const clickedRow = e.target.closest('.ant-table-row');
     const clickedRowKey = clickedRow ? clickedRow.getAttribute('data-row-key') : null;
 
-    // Если клик произошел не в выпадающем списке и не в раскрытой строке,
-    // и либо вне таблицы, либо по другой строке
+    // Получаем элемент, по которому был сделан клик
+    const targetElement = e.target;
+
+    // Проверяем, находится ли кликнутый элемент внутри компонента строки таблицы
+    const isClickInsideTableRow = targetElement.closest('.ant-table-row') !== null;
+
+    // Проверяем, является ли кликнутый элемент родительским элементом для раскрытой строки
+    const isClickInsideExpandedParentRow = expandedRowKeys.some((key) => {
+      const parentRow = document.querySelector(`[data-row-key="${key}"]`);
+      return parentRow && parentRow.contains(targetElement);
+    });
+
+    // Если клик был не в выпадающем списке, не в раскрытой строке, и не по родительской строке раскрытой таблицы,
+    // и если клик был сделан вне компонента строки таблицы или по другой строке
     if (
       !isClickInsideDropdown &&
       !isClickInsideExpandedRow &&
-      (!tableRef.current.contains(e.target) || (clickedRowKey && !expandedRowKeys.includes(clickedRowKey)))
+      !isClickInsideExpandedParentRow &&
+      (!isClickInsideTableRow || (clickedRowKey && !expandedRowKeys.includes(clickedRowKey)))
     ) {
       setExpandedRowKeys([]);
     }
