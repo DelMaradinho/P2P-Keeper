@@ -1,31 +1,10 @@
-import React, { useRef, useState } from "react";
-import { Button, Tabs } from "antd";
+import React from "react";
+import { Tabs } from "antd";
 import "./CustomTabs.scss";
 
-// const initialItems = [
-//   {
-//     label: "Калькулятор",
-//     // children: "Content of Tab 1",
-//     key: "tab1",
-//     closable: false,
-//   },
-//   {
-//     label: "Мои формулы",
-//     // children: "Content of Tab 2",
-//     key: "tab2",
-//     closable: false,
-//   },
-//   {
-//     label: "Tab 3",
-//     // children: "Content of Tab 3",
-//     key: "tab3",
-//     closable: true,
-//   },
-// ];
 const CustomTabs = ({
   onTabChange,
   items,
-  // addTabFunc,
   onChange,
   onEdit,
   activeKey,

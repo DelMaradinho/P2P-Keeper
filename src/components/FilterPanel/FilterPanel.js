@@ -96,7 +96,7 @@ const FilterPanel = ({ onFilterChange }) => {
   return (
     <div className="filter__container">
       <RangePicker
-        value={dateRange.length > 0 ? dateRange : null} // Если dateRange пуст, передаем null, чтобы сбросить выбор
+        value={dateRange?.length > 0 ? dateRange : null} // Если dateRange пуст, передаем null, чтобы сбросить выбор
         onChange={onDateChange}
         placeholder={["Дата начальная", "Дата конечная"]}
         style={{
