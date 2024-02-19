@@ -11,22 +11,30 @@ export const filterData = [
         value: "usdt",
         title: "USDT",
       },
-    ],
-  },
-  {
-    value: "platform",
-    title: "Платформа",
-    children: [
       {
-        value: "binance",
-        title: "Binance",
+        value: "doge",
+        title: "DOGE",
       },
       {
-        value: "bybit",
-        title: "Bybit",
+        value: "eth",
+        title: "ETH",
       },
     ],
   },
+  // {
+  //   value: "platform",
+  //   title: "Платформа",
+  //   children: [
+  //     {
+  //       value: "binance",
+  //       title: "Binance",
+  //     },
+  //     {
+  //       value: "bybit",
+  //       title: "Bybit",
+  //     },
+  //   ],
+  // },
 ];
 
 export const tableData = [

@@ -6,3 +6,19 @@
     margin: 0 0 16px 0;
   }
 }
+
+.quickDate {
+  &__button {
+    &__container {
+      & > .ant-btn {
+        border-radius: 0;
+      }
+      & > .ant-btn:first-child {
+        border-radius: 6px 0 0 6px;
+      }
+      & > .ant-btn:last-child {
+        border-radius: 0 6px 6px 0;
+      }
+    }
+  }
+}

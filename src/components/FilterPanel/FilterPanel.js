@@ -119,24 +119,27 @@ const FilterPanel = ({ onFilterChange }) => {
         <Radio.Button value="week">За неделю</Radio.Button>
         <Radio.Button value="month">За месяц</Radio.Button>
       </Radio.Group> */}
-      <Button
-        type={quickDate === "day" ? "primary" : "default"}
-        onClick={() => onQuickDateChange("day")}
-      >
-        За день
-      </Button>
-      <Button
-        type={quickDate === "week" ? "primary" : "default"}
-        onClick={() => onQuickDateChange("week")}
-      >
-        За неделю
-      </Button>
-      <Button
-        type={quickDate === "month" ? "primary" : "default"}
-        onClick={() => onQuickDateChange("month")}
-      >
-        За месяц
-      </Button>
+      <div className="quickDate__button__container">
+        <Button
+          type={quickDate === "day" ? "primary" : "default"}
+          onClick={() => onQuickDateChange("day")}
+          classNames="quickDate_button"
+        >
+          За день
+        </Button>
+        <Button
+          type={quickDate === "week" ? "primary" : "default"}
+          onClick={() => onQuickDateChange("week")}
+        >
+          За неделю
+        </Button>
+        <Button
+          type={quickDate === "month" ? "primary" : "default"}
+          onClick={() => onQuickDateChange("month")}
+        >
+          За месяц
+        </Button>
+      </div>
       <TreeSelect
         showSearch
         style={{
