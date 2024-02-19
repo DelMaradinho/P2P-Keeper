@@ -320,7 +320,7 @@ const CustomTable = ({ tableData }) => {
     const commission = Number(record?.commission) / 100
     const exchanging_rate = Number(record?.exchanging_rate)
     console.log(record, 'recordrecordrecord')
-    if(buy_price && commission && exchanging_rate) {
+    if (buy_price && commission && exchanging_rate) {
       return result = exchanging_rate * (buy_price + (buy_price * commission))
     }
     else return result = ''
@@ -332,7 +332,7 @@ const CustomTable = ({ tableData }) => {
     const commission = Number(record?.commission) / 100
     const exchanging_rate = Number(record?.exchanging_rate)
     console.log(record, 'recordrecordrecord')
-    if(buy_price && commission && exchanging_rate) {
+    if (buy_price && commission && exchanging_rate) {
       return result = (buy_price + (buy_price * commission)) / exchanging_rate
     }
     else return result = ''
@@ -495,8 +495,8 @@ const CustomTable = ({ tableData }) => {
         }
         if (text) {
           resultSpread = text
-        } 
-        
+        }
+
         return (
           <Input
             type="text"
@@ -678,7 +678,7 @@ const CustomTable = ({ tableData }) => {
         );
       },
       // render: (text, record) => (
-        
+
       //   <Input
       //     type="number"
       //     value={text}
@@ -790,6 +790,12 @@ const CustomTable = ({ tableData }) => {
 
   const onFilterChange = (incomingFilter) => {
     setFilter((prevFilter) => {
+      if (Object.keys(incomingFilter).length === 0) {
+        // Если да, сбрасываем фильтр и данные
+        setData(tableData); // Предполагая, что tableData - это исходный набор данных
+        return {}; // Возвращаем пустой объект для сброса фильтра
+      }
+
       const updatedFilter = { ...prevFilter, ...incomingFilter };
 
       // Удаление ключей с пустыми массивами

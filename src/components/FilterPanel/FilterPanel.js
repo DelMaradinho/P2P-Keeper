@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { filterData } from "../../constants/constants";
-import { DatePicker, TreeSelect, Radio } from "antd";
+import { DatePicker, TreeSelect, Radio, Button } from "antd";
 import "./FilterPanel.scss";
 
 const { RangePicker } = DatePicker;
@@ -87,10 +87,15 @@ const FilterPanel = ({ onFilterChange }) => {
     onFilterChange(formattedFilter);
   };
 
-  const onQuickDateChange = (e) => {
-    const quickDateValue = e.target.value;
-    setQuickDate(quickDateValue);
-    handleQuickDateSelect(quickDateValue); // Вызываем функцию обработки быстрых дат
+  const onQuickDateChange = (value) => {
+    if (quickDate === value) {
+      setQuickDate(""); // Сбросить выбор
+      setDateRange([]); // Сбросить даты, если это необходимо
+      onFilterChange({}); // Сбросить фильтры, если это необходимо
+    } else {
+      setQuickDate(value);
+      handleQuickDateSelect(value);
+    }
   };
 
   return (
@@ -103,7 +108,7 @@ const FilterPanel = ({ onFilterChange }) => {
           width: "290px",
         }}
       />
-      <Radio.Group
+      {/* <Radio.Group
         onChange={onQuickDateChange}
         value={quickDate}
         style={{
@@ -113,7 +118,25 @@ const FilterPanel = ({ onFilterChange }) => {
         <Radio.Button value="day">За день</Radio.Button>
         <Radio.Button value="week">За неделю</Radio.Button>
         <Radio.Button value="month">За месяц</Radio.Button>
-      </Radio.Group>
+      </Radio.Group> */}
+      <Button
+        type={quickDate === "day" ? "primary" : "default"}
+        onClick={() => onQuickDateChange("day")}
+      >
+        За день
+      </Button>
+      <Button
+        type={quickDate === "week" ? "primary" : "default"}
+        onClick={() => onQuickDateChange("week")}
+      >
+        За неделю
+      </Button>
+      <Button
+        type={quickDate === "month" ? "primary" : "default"}
+        onClick={() => onQuickDateChange("month")}
+      >
+        За месяц
+      </Button>
       <TreeSelect
         showSearch
         style={{
