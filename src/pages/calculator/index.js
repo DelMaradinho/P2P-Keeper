@@ -236,13 +236,13 @@ function Calculator() {
           activeKey={activeKey}
         />
       </div>
-      {activeTabKey === "tab1" && (
+      {/* {activeTabKey === "tab1" && (
         <div className="right__button__wrapper">
           <Button shape="round" size="large" onClick={handleFormulasTab}>
             Мои формулы
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

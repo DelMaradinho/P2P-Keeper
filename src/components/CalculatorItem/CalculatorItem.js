@@ -17,13 +17,13 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
   const [usdtCommissionBuy, setUsdtCommissionBuy] = useState();
   const [altPriceInUsdt, setAltPriceInUsdt] = useState();
   const [altSellPrice, setAltSellPrice] = useState();
-  const [altCommissionSell, setAltCommissionSell] = useState();
+  const [altCommissionSell, setAltCommissionSell] = useState(0);
   const [usdtSpread, setUsdtSpread] = useState();
   const [altPriceBuy, setAltPriceBuy] = useState();
   const [altCommissionBuy, setAltCommissionBuy] = useState();
   const [altPriceInUsdt2, setAltPriceInUsdt2] = useState();
   const [usdtSellPrice, setUsdtSellPrice] = useState();
-  const [usdtCommissionSell, setUsdtCommissionSell] = useState();
+  const [usdtCommissionSell, setUsdtCommissionSell] = useState(0);
   const [altSpread, setAltSpread] = useState();
       
   // const [open, setOpen] = useState(false);
@@ -36,7 +36,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
   useEffect(() => {
     if (priceBuy && commissionBuy) {
       const result = Number(priceBuy) * (1 + Number(commissionBuy) / 100);
-      setPriceWithCommissionBuy(result);
+      setPriceWithCommissionBuy(Number(result));
     }
     if(!priceBuy || !commissionBuy) {
       setPriceWithCommissionBuy(undefined);
@@ -47,7 +47,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
   useEffect(() => {
     if (priceSell && commissionSell) {
       const result = Number(priceSell) * (1 - Number(commissionSell) / 100);
-      setPriceWithCommissionSell(result);
+      setPriceWithCommissionSell(Number(result));
     }
     if(!priceSell || !commissionSell) {
       setPriceWithCommissionSell(undefined);
@@ -58,7 +58,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
   useEffect(() => {
     if (priceWithCommissionSell && priceWithCommissionBuy) {
       const result = (Number(priceWithCommissionSell) / Number(priceWithCommissionBuy) - 1) * 100;
-      setSpread(result);
+      setSpread(Number(result));
     }
     if(!priceWithCommissionSell || !priceWithCommissionBuy) {
       setSpread(undefined);
@@ -68,8 +68,6 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
   // Рассчёт чистой прибыли
   useEffect(() => {
     if (spread && turnover) {
-      console.log(spread, 'spread')
-      console.log(turnover, 'turnover')
       const result = Number(turnover) * Number(spread) / 100;
       setNetProfit(result);
     }
@@ -80,22 +78,22 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
 
   // Рассчёт USDT спреда в 3х калькуляторе
   useEffect(() => {
-    if(usdtPriceBuy && usdtCommissionBuy && altPriceInUsdt && altSellPrice && altCommissionSell) {
+    if(usdtPriceBuy && usdtCommissionBuy && altPriceInUsdt && altSellPrice) {
       const result = (((Number(altSellPrice) - (Number(altSellPrice) * Number(altCommissionSell) / 100)) / (Number(altPriceInUsdt) * ((Number(usdtPriceBuy) * Number(usdtCommissionBuy) / 100) + Number(usdtPriceBuy)))) - 1) * 100;
-      setUsdtSpread(Number(result.toFixed(2)))
+      setUsdtSpread(Number(result).toFixed(4))
     }
-    if(!usdtPriceBuy || !usdtCommissionBuy || !altPriceInUsdt || !altSellPrice || !altCommissionSell) {
+    if(!usdtPriceBuy || !usdtCommissionBuy || !altPriceInUsdt || !altSellPrice) {
       setUsdtSpread(undefined);
     }
   }, [usdtPriceBuy, usdtCommissionBuy, altPriceInUsdt, altSellPrice, altCommissionSell])
 
   // Рассчёт ALT спреда в 3х калькуляторе
   useEffect(() => {
-    if(altPriceBuy && altCommissionBuy && altPriceInUsdt2 && usdtSellPrice && usdtCommissionSell) {
+    if(altPriceBuy && altCommissionBuy && altPriceInUsdt2 && usdtSellPrice) {
       const result = ((Number(usdtSellPrice) - (Number(usdtSellPrice) * Number(usdtCommissionSell / 100))) / (((Number(altPriceBuy) * Number(altCommissionBuy) / 100) + Number(altPriceBuy)) / Number(altPriceInUsdt2)) - 1) *100;
-      setAltSpread(Number(result.toFixed(2)))
+      setAltSpread(Number(result).toFixed(4))
     }
-    if(!altPriceBuy || !altCommissionBuy || !altPriceInUsdt2 || !usdtSellPrice || !usdtCommissionSell) {
+    if(!altPriceBuy || !altCommissionBuy || !altPriceInUsdt2 || !usdtSellPrice) {
       setAltSpread(undefined);
     }
   }, [altPriceBuy, altCommissionBuy, altPriceInUsdt2, usdtSellPrice, usdtCommissionSell])
@@ -114,7 +112,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
     <div>
       {
         !type && <>
-                <div className="calculator__outer">
+        <div className="calculator__outer">
         <Input
           bordered={false}
           suffix={<EditOutlined style={{ fontSize: 16 }} />}
@@ -200,15 +198,15 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
         </div>
         <div className="calculator__priceWithCommission">Цена с комиссией</div>
         <div className="calculator__priceWithCommission__buy">
-          <Input value={priceWithCommissionBuy} readOnly />
+          <Input value={priceWithCommissionBuy ? priceWithCommissionBuy.toFixed(4) : priceWithCommissionBuy} readOnly />
         </div>
         <div className="calculator__priceWithCommission__sell">
-          <Input value={priceWithCommissionSell} readOnly />
+          <Input value={priceWithCommissionSell ? priceWithCommissionSell.toFixed(4) : priceWithCommissionSell} readOnly />
         </div>
         <div className="calculator__spread">Спред</div>
         <div className="calculator__spread__amount">
           <Input
-            value={spread ? `${spread} %` : spread}
+            value={spread ? `${spread.toFixed(4)} %` : spread}
             readOnly
           />
         </div>
@@ -316,7 +314,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
             <div className="calculator__Usdt__Alt__commission__sell">Комиссия</div>
             <div className="calculator__Usdt__Alt__commission__sell__input">
               <Input
-                value={altCommissionSell}
+                value={altCommissionSell !== 0 ? altCommissionSell : 0}
                 suffix="%"
                 onChange={(e) => handleChange(e.target.value, setAltCommissionSell)}
                 onFocus={handleFocus}
@@ -326,7 +324,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
             <div className="calculator__Usdt__spread">Спред</div>
             <div className="calculator__Usdt__spread__result">
               <Input
-                value={usdtSpread ? `${usdtSpread}%` : "Заполните все ячейки"}
+                value={usdtSpread ? `${usdtSpread} %` : "Заполните все ячейки"}
                 readOnly
               />
             </div>
@@ -419,7 +417,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
             <div className="calculator__Alt__Usdt__commission__sell">Комиссия</div>
             <div className="calculator__Alt__Usdt__commission__sell__input">
               <Input
-                value={usdtCommissionSell}
+                value={usdtCommissionSell !== 0 ? usdtCommissionSell : '0'}
                 suffix="%"
                 onChange={(e) => handleChange(e.target.value, setUsdtCommissionSell)}
                 onFocus={handleFocus}

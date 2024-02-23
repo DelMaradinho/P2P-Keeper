@@ -3,6 +3,7 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 6px;
+        background-color: #fff;
     }
     &__container {
         display: grid;
@@ -21,6 +22,7 @@
         padding: 10px;
         border: 1px solid #e3e9f6;
         box-sizing: border-box;
+        background-color: #fff;
         border-radius: 18px;
         line-height: 30px;
         &:hover, &.focused {
@@ -45,6 +47,7 @@
         border: 1px solid #e3e9f6;
         box-sizing: border-box;
         border-radius: 18px;
+        background-color: #fff;
         line-height: 30px;
         &:hover, &.focused {
             background-color: rgb(240, 243, 249);
@@ -63,6 +66,7 @@
             grid-area: Usdt__commission;
             &__input{
                 grid-area: Usdt__commission__input;
+                text-align: center;
                 & > input {
                     text-align: center;
                 }
@@ -93,7 +97,7 @@
                     &__input{
                         grid-area: Usdt__Alt__commission__sell__input;
                         & > input {
-                            text-align: center;
+                            text-align: center !important;
                         }
                     }
                 }
@@ -126,6 +130,7 @@
             padding: 10px;
             border: 1px solid #e3e9f6;
             box-sizing: border-box;
+            background-color: #fff;
             border-radius: 18px;
             line-height: 30px;
             &:hover, &.focused {
@@ -256,4 +261,8 @@
             }
         }
     }
+}
+
+.ant-input {
+    text-align: center;
 }
