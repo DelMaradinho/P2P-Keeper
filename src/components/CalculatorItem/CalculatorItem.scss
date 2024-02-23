@@ -70,6 +70,9 @@
                 & > input {
                     text-align: center;
                 }
+                & span > .ant-input {
+                    margin-left: 11px;
+                }
             }
         }
         &__Alt{
@@ -98,6 +101,9 @@
                         grid-area: Usdt__Alt__commission__sell__input;
                         & > input {
                             text-align: center !important;
+                        }
+                        & span > .ant-input {
+                            margin-left: 11px;
                         }
                     }
                 }
@@ -153,6 +159,9 @@
                 & > input {
                     text-align: center;
                 }
+                & span > .ant-input {
+                    margin-left: 11px;
+                }
             }
         }
         &__Usdt{
@@ -181,6 +190,9 @@
                         grid-area: Alt__Usdt__commission__sell__input;
                         & > input {
                             text-align: center;
+                        }
+                        & span > .ant-input {
+                            margin-left: 11px;
                         }
                     }
                 }
@@ -220,9 +232,15 @@
         grid-area: commission;
         &__buy{
             grid-area: commission__buy;
+            & span > .ant-input {
+                margin-left: 11px;
+            }
         }
         &__sell{
             grid-area: commission__sell;
+            & span > .ant-input {
+                margin-left: 11px;
+            }
         }
     }
     &__priceWithCommission{
