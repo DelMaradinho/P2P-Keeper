@@ -5,22 +5,22 @@ import { CloseCircleOutlined, EditOutlined } from "@ant-design/icons";
 
 const CalculatorItem = ({ deleteFunction, type = '' }) => {
   const [priceBuy, setPriceBuy] = useState();
-  const [commissionBuy, setCommissionBuy] = useState();
+  const [commissionBuy, setCommissionBuy] = useState(0);
   const [priceWithCommissionBuy, setPriceWithCommissionBuy] = useState();
   const [priceSell, setPriceSell] = useState();
-  const [commissionSell, setCommissionSell] = useState();
+  const [commissionSell, setCommissionSell] = useState(0);
   const [priceWithCommissionSell, setPriceWithCommissionSell] = useState();
   const [spread, setSpread] = useState();
   const [turnover, setTurnover] = useState();
   const [netProfit, setNetProfit] = useState();
   const [usdtPriceBuy, setUsdtPriceBuy] = useState();
-  const [usdtCommissionBuy, setUsdtCommissionBuy] = useState();
+  const [usdtCommissionBuy, setUsdtCommissionBuy] = useState(0);
   const [altPriceInUsdt, setAltPriceInUsdt] = useState();
   const [altSellPrice, setAltSellPrice] = useState();
   const [altCommissionSell, setAltCommissionSell] = useState(0);
   const [usdtSpread, setUsdtSpread] = useState();
   const [altPriceBuy, setAltPriceBuy] = useState();
-  const [altCommissionBuy, setAltCommissionBuy] = useState();
+  const [altCommissionBuy, setAltCommissionBuy] = useState(0);
   const [altPriceInUsdt2, setAltPriceInUsdt2] = useState();
   const [usdtSellPrice, setUsdtSellPrice] = useState();
   const [usdtCommissionSell, setUsdtCommissionSell] = useState(0);
@@ -34,22 +34,22 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
 
   // Рассчёт цены с комиссией при покупке
   useEffect(() => {
-    if (priceBuy && commissionBuy) {
+    if (priceBuy) {
       const result = Number(priceBuy) * (1 + Number(commissionBuy) / 100);
       setPriceWithCommissionBuy(Number(result));
     }
-    if(!priceBuy || !commissionBuy) {
+    if(!priceBuy) {
       setPriceWithCommissionBuy(undefined);
     }
   }, [priceBuy, commissionBuy]);
 
     // Рассчёт цены с комиссией при продаже
   useEffect(() => {
-    if (priceSell && commissionSell) {
+    if (priceSell) {
       const result = Number(priceSell) * (1 - Number(commissionSell) / 100);
       setPriceWithCommissionSell(Number(result));
     }
-    if(!priceSell || !commissionSell) {
+    if(!priceSell) {
       setPriceWithCommissionSell(undefined);
     }
   }, [priceSell, commissionSell]);
@@ -390,7 +390,7 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
             <div className="calculator__Alt__commission">Комиссия</div>
             <div className="calculator__Alt__commission__input">
               <Input
-                value={altCommissionBuy}
+                value={altCommissionBuy !== 0 ? altCommissionBuy : '0'}
                 suffix="%"
                 onChange={(e) => handleChange(e.target.value, setAltCommissionBuy)}
                 onFocus={handleFocus}
