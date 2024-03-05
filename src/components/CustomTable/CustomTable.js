@@ -237,7 +237,7 @@ const CustomTable = ({ tableData }) => {
       result = ((sell_price / buy_price) - 1) * 100
     }
 
-    result = result.toFixed(2);
+    result = result.toFixed(4);
     return `${result} %`
   }
 
@@ -262,10 +262,12 @@ const CustomTable = ({ tableData }) => {
       variable3 = buy_price + variable3
       variable3 = variable3 * buy_amount
       variable1 = variable1 - variable3
-      return result = variable1.toFixed(2)
+      result = variable1.toFixed(2)
     } else {
-      return result = sell_price * buy_amount - buy_price * buy_amount
+      result = sell_price * buy_amount - buy_price * buy_amount
     }
+
+    return result.toFixed(4)
   }
 
   const countSpredForAlt = (record, exchanging_rate = null) => {
@@ -282,7 +284,7 @@ const CustomTable = ({ tableData }) => {
 
     }
 
-    result = result.toFixed(2)
+    result = result.toFixed(4)
     return `${result} %`
   }
 
@@ -307,11 +309,12 @@ const CustomTable = ({ tableData }) => {
       variable3 = variable3 + buy_price
       variable3 = variable3 * buy_amount
       variable1 = variable1 - variable3
-      return result = variable1.toFixed(2)
-      // return result = (((buy_price + (buy_price * commission)) * buy_amount) / ((buy_price + (buy_price * commission)) / exchanging_rate) * sell_price) - ((buy_price + (buy_price * commission)) * buy_amount);
+      result = variable1
     } else {
-      return result = sell_price * buy_amount - buy_price * buy_amount
+        result = sell_price * buy_amount - buy_price * buy_amount
     }
+
+    return result.toFixed(4)
   }
 
   const countBuyPriceFiatUsdt = (record) => {
@@ -319,7 +322,6 @@ const CustomTable = ({ tableData }) => {
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission) / 100
     const exchanging_rate = Number(record?.exchanging_rate)
-    console.log(record, 'recordrecordrecord')
     if (buy_price && commission && exchanging_rate) {
       return result = exchanging_rate * (buy_price + (buy_price * commission))
     }
@@ -331,7 +333,6 @@ const CustomTable = ({ tableData }) => {
     const buy_price = Number(record?.buy_price)
     const commission = Number(record?.commission) / 100
     const exchanging_rate = Number(record?.exchanging_rate)
-    console.log(record, 'recordrecordrecord')
     if (buy_price && commission && exchanging_rate) {
       return result = (buy_price + (buy_price * commission)) / exchanging_rate
     }

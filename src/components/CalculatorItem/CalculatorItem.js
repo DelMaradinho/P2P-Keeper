@@ -78,22 +78,22 @@ const CalculatorItem = ({ deleteFunction, type = '' }) => {
 
   // Рассчёт USDT спреда в 3х калькуляторе
   useEffect(() => {
-    if(usdtPriceBuy && usdtCommissionBuy && altPriceInUsdt && altSellPrice) {
+    if(usdtPriceBuy && altPriceInUsdt && altSellPrice) {
       const result = (((Number(altSellPrice) - (Number(altSellPrice) * Number(altCommissionSell) / 100)) / (Number(altPriceInUsdt) * ((Number(usdtPriceBuy) * Number(usdtCommissionBuy) / 100) + Number(usdtPriceBuy)))) - 1) * 100;
       setUsdtSpread(Number(result).toFixed(4))
     }
-    if(!usdtPriceBuy || !usdtCommissionBuy || !altPriceInUsdt || !altSellPrice) {
+    if(!usdtPriceBuy || !altPriceInUsdt || !altSellPrice) {
       setUsdtSpread(undefined);
     }
   }, [usdtPriceBuy, usdtCommissionBuy, altPriceInUsdt, altSellPrice, altCommissionSell])
 
   // Рассчёт ALT спреда в 3х калькуляторе
   useEffect(() => {
-    if(altPriceBuy && altCommissionBuy && altPriceInUsdt2 && usdtSellPrice) {
+    if(altPriceBuy && altPriceInUsdt2 && usdtSellPrice) {
       const result = ((Number(usdtSellPrice) - (Number(usdtSellPrice) * Number(usdtCommissionSell / 100))) / (((Number(altPriceBuy) * Number(altCommissionBuy) / 100) + Number(altPriceBuy)) / Number(altPriceInUsdt2)) - 1) *100;
       setAltSpread(Number(result).toFixed(4))
     }
-    if(!altPriceBuy || !altCommissionBuy || !altPriceInUsdt2 || !usdtSellPrice) {
+    if(!altPriceBuy || !altPriceInUsdt2 || !usdtSellPrice) {
       setAltSpread(undefined);
     }
   }, [altPriceBuy, altCommissionBuy, altPriceInUsdt2, usdtSellPrice, usdtCommissionSell])
