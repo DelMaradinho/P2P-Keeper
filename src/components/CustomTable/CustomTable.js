@@ -154,10 +154,24 @@ const CustomTable = ({ tableData }) => {
     setData((prevData) => {
       const newData = [...prevData];
       const objIndex = newData.findIndex((obj) => obj.key === key);
+      const currentRow = newData[objIndex]
 
       if (objIndex === -1) return prevData; // если объект не найден, вернем неизмененное состояние
 
-      newData[objIndex][fieldName] = newValue;
+      let spread = currentRow.spread
+      let net_profit = currentRow.net_profit
+
+      if (currentRow?.currency === 'USDT') {
+        spread = countSpredForUsdt(currentRow);
+        net_profit = countNetProfitForUsdt(currentRow);
+      } else {
+        spread = countSpredForAlt(currentRow);
+        net_profit = countNetProfitForAlt(currentRow);
+      }
+
+      currentRow[fieldName] = newValue;
+      currentRow['spread'] = spread;
+      currentRow['net_profit'] = net_profit;
       return newData;
     });
   }
