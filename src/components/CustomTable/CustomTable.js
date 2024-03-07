@@ -122,6 +122,7 @@ const CustomTable = ({ tableData }) => {
         if (parentRow && parentRow.currency === 'USDT') {
           const spread = countSpredForUsdt(parentRow, newValue);
           const net_profit = countNetProfitForUsdt(parentRow, newValue);
+          
           return prevData.map((item) => {
             if (item.key === parentRow.key) {
               return { ...item, spread, net_profit };
@@ -160,18 +161,26 @@ const CustomTable = ({ tableData }) => {
 
       let spread = currentRow.spread
       let net_profit = currentRow.net_profit
+      // let exchanging_buy_amount = nestedData[currentRow.key].exchanging_buy_amount
+      // let exchanging_buy_price = nestedData[currentRow.key].exchanging_buy_price
 
       if (currentRow?.currency === 'USDT') {
         spread = countSpredForUsdt(currentRow);
         net_profit = countNetProfitForUsdt(currentRow);
+        // exchanging_buy_price = countBuyPriceFiatUsdt(currentRow)
+        // exchanging_buy_amount = countAmountUsdt(currentRow)
       } else {
         spread = countSpredForAlt(currentRow);
         net_profit = countNetProfitForAlt(currentRow);
+        // exchanging_buy_price = countBuyPriceFiatAlt(currentRow)
+        // exchanging_buy_amount = countAmountUsdt(currentRow)
       }
 
       currentRow[fieldName] = newValue;
       currentRow['spread'] = spread;
       currentRow['net_profit'] = net_profit;
+      // nestedData[currentRow.key].exchanging_buy_amount = exchanging_buy_amount
+      // nestedData[currentRow.key].exchanging_buy_price = exchanging_buy_price
       return newData;
     });
   }
@@ -233,6 +242,19 @@ const CustomTable = ({ tableData }) => {
     });
   };
 
+  const renderResult = (incomingResult, type = 'net_profit') => {
+    let result = ''
+
+    if (incomingResult && incomingResult !== Infinity && incomingResult !== NaN) {
+      result = incomingResult.toFixed(4)
+    }
+    if (type === 'spread') {
+      return `${result} %`
+    }
+
+    return result
+  }
+
   const countSpredForUsdt = (record, exchanging_rate = null) => {
     let result
     const sell_price = Number(record?.sell_price)
@@ -251,8 +273,7 @@ const CustomTable = ({ tableData }) => {
       result = ((sell_price / buy_price) - 1) * 100
     }
 
-    result = result.toFixed(4);
-    return `${result} %`
+    return renderResult(result, 'spread')
   }
 
   const countNetProfitForUsdt = (record, exchanging_rate = null) => {
@@ -281,7 +302,7 @@ const CustomTable = ({ tableData }) => {
       result = sell_price * buy_amount - buy_price * buy_amount
     }
 
-    return result.toFixed(4)
+    return renderResult(result)
   }
 
   const countSpredForAlt = (record, exchanging_rate = null) => {
@@ -297,9 +318,8 @@ const CustomTable = ({ tableData }) => {
       result = ((sell_price / buy_price) - 1) * 100
 
     }
-
-    result = result.toFixed(4)
-    return `${result} %`
+    
+    return renderResult(result, 'spread')
   }
 
   const countNetProfitForAlt = (record, exchanging_rate = null) => {
@@ -328,7 +348,7 @@ const CustomTable = ({ tableData }) => {
         result = sell_price * buy_amount - buy_price * buy_amount
     }
 
-    return result.toFixed(4)
+    return renderResult(result)
   }
 
   const countBuyPriceFiatUsdt = (record) => {
@@ -337,7 +357,9 @@ const CustomTable = ({ tableData }) => {
     const commission = Number(record?.commission) / 100
     const exchanging_rate = Number(record?.exchanging_rate)
     if (buy_price && commission && exchanging_rate) {
-      return result = exchanging_rate * (buy_price + (buy_price * commission))
+      result = exchanging_rate * (buy_price + (buy_price * commission))
+      
+      return result.toFixed(4)
     }
     else return result = ''
   }
@@ -348,7 +370,9 @@ const CustomTable = ({ tableData }) => {
     const commission = Number(record?.commission) / 100
     const exchanging_rate = Number(record?.exchanging_rate)
     if (buy_price && commission && exchanging_rate) {
-      return result = (buy_price + (buy_price * commission)) / exchanging_rate
+      result = (buy_price + (buy_price * commission)) / exchanging_rate
+
+      return result.toFixed(4)
     }
     else return result = ''
   }
@@ -368,7 +392,9 @@ const CustomTable = ({ tableData }) => {
       variable2 = buy_price * commission
       variable2 = variable2 + buy_price
       variable2 = variable2 * exchanging_rate
-      return result = variable1 / variable2
+      result = variable1 / variable2
+
+      return result.toFixed(4)
     } else return result = ''
   }
 
@@ -388,7 +414,9 @@ const CustomTable = ({ tableData }) => {
       variable2 = buy_price * commission
       variable2 = variable2 + buy_price
       variable2 = variable2 / exchanging_rate
-      return result = variable1 / variable2
+      result = variable1 / variable2
+
+      return result.toFixed(4)
     } else return result = ''
   }
 
@@ -616,8 +644,6 @@ const CustomTable = ({ tableData }) => {
     },
   ]);
 
-  console.log('data :>> ', data);
-
   const [columnsExtra, setColumnsExtra] = useState([
     {
       title: "Меняемая валюта",
@@ -692,22 +718,6 @@ const CustomTable = ({ tableData }) => {
           />
         );
       },
-      // render: (text, record) => (
-
-      //   <Input
-      //     type="number"
-      //     value={text}
-      //     onChange={(event) =>
-      //       handleChangeNested(
-      //         record.key.split("-")[0],
-      //         record.key,
-      //         "exchanging_buy_price",
-      //         event.target.value,
-      //         true
-      //       )
-      //     }
-      //   />
-      // ),
     },
     {
       title: "Количество",
@@ -735,21 +745,6 @@ const CustomTable = ({ tableData }) => {
           />
         );
       },
-      // render: (text, record) => (
-      //   <Input
-      //     type="number"
-      //     value={text}
-      //     onChange={(event) =>
-      //       handleChangeNested(
-      //         record.key.split("-")[0],
-      //         record.key,
-      //         "exchanging_buy_amount",
-      //         event.target.value,
-      //         true
-      //       )
-      //     }
-      //   />
-      // ),
     },
   ]);
 
