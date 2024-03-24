@@ -161,26 +161,40 @@ const CustomTable = ({ tableData }) => {
 
       let spread = currentRow.spread
       let net_profit = currentRow.net_profit
-      // let exchanging_buy_amount = nestedData[currentRow.key].exchanging_buy_amount
-      // let exchanging_buy_price = nestedData[currentRow.key].exchanging_buy_price
+      let exchanging_buy_amount = nestedData[currentRow.key].exchanging_buy_amount
+      let exchanging_buy_price = nestedData[currentRow.key].exchanging_buy_price
 
       if (currentRow?.currency === 'USDT') {
         spread = countSpredForUsdt(currentRow);
         net_profit = countNetProfitForUsdt(currentRow);
-        // exchanging_buy_price = countBuyPriceFiatUsdt(currentRow)
-        // exchanging_buy_amount = countAmountUsdt(currentRow)
+        exchanging_buy_price = countBuyPriceFiatUsdt(currentRow)
+        exchanging_buy_amount = countAmountUsdt(currentRow)
       } else {
         spread = countSpredForAlt(currentRow);
         net_profit = countNetProfitForAlt(currentRow);
-        // exchanging_buy_price = countBuyPriceFiatAlt(currentRow)
-        // exchanging_buy_amount = countAmountUsdt(currentRow)
+        exchanging_buy_price = countBuyPriceFiatAlt(currentRow)
+        exchanging_buy_amount = countAmountUsdt(currentRow)
       }
 
       currentRow[fieldName] = newValue;
       currentRow['spread'] = spread;
       currentRow['net_profit'] = net_profit;
-      // nestedData[currentRow.key].exchanging_buy_amount = exchanging_buy_amount
-      // nestedData[currentRow.key].exchanging_buy_price = exchanging_buy_price
+      setNestedData(prevNestedData => {
+        // Клонируем предыдущее состояние, чтобы не мутировать его напрямую
+        const updatedData = { ...prevNestedData };
+        
+        // Проверяем, существует ли уже объект для этого ключа, и если нет, создаем новый
+        if (!updatedData[currentRow.key]) {
+          updatedData[currentRow.key] = {};
+        }
+        
+        // Обновляем необходимые поля для конкретного ключа
+        // updatedData[currentRow.key]?.exchanging_buy_amount = exchanging_buy_amount;
+        // updatedData[currentRow.key]?.exchanging_buy_price = exchanging_buy_price;
+      
+        // Возвращаем обновленное состояние
+        return updatedData;
+      });
       return newData;
     });
   }
