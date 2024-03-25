@@ -57,9 +57,15 @@ const CustomTable = ({ tableData }) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const [filter, setFilter] = useState({});
 
+  const dataRef = useRef(data);
   const tableRef = useRef(null);
   const autoCompleteRef = useRef(null);
   const dropdownRefs = useRef([]);
+
+  // Обновляем ref каждый раз, когда data изменяется
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   useEffect(() => {
     setData(tableData);
@@ -111,7 +117,17 @@ const CustomTable = ({ tableData }) => {
       if (nestedObjIndex === -1) return prevNestedData; // если объект не найден, вернем неизмененное состояние
 
       const newNestedArray = [...nestedArray];
-      newNestedArray[nestedObjIndex][fieldName] = newValue;
+      const record = newNestedArray[nestedObjIndex]
+      record[fieldName] = newValue;
+
+      if (record.currency === 'USDT') {
+        newNestedArray[nestedObjIndex]['exchanging_buy_amount'] = Number(countAmountUsdt(record))
+        newNestedArray[nestedObjIndex]['exchanging_buy_price'] = Number(countBuyPriceFiatUsdt(record))
+      }
+      if (record.currency && record.currency !== 'USDT') {
+        newNestedArray[nestedObjIndex]['exchanging_buy_amount'] = Number(countAmountAlt(record))
+        newNestedArray[nestedObjIndex]['exchanging_buy_price'] = Number(countBuyPriceFiatAlt(record))
+      }
 
       return { ...prevNestedData, [parentKey]: newNestedArray };
     });
@@ -122,7 +138,7 @@ const CustomTable = ({ tableData }) => {
         if (parentRow && parentRow.currency === 'USDT') {
           const spread = countSpredForUsdt(parentRow, newValue);
           const net_profit = countNetProfitForUsdt(parentRow, newValue);
-          
+
           return prevData.map((item) => {
             if (item.key === parentRow.key) {
               return { ...item, spread, net_profit };
@@ -161,41 +177,57 @@ const CustomTable = ({ tableData }) => {
 
       let spread = currentRow.spread
       let net_profit = currentRow.net_profit
-      let exchanging_buy_amount = nestedData[currentRow.key].exchanging_buy_amount
-      let exchanging_buy_price = nestedData[currentRow.key].exchanging_buy_price
 
       if (currentRow?.currency === 'USDT') {
         spread = countSpredForUsdt(currentRow);
         net_profit = countNetProfitForUsdt(currentRow);
-        exchanging_buy_price = countBuyPriceFiatUsdt(currentRow)
-        exchanging_buy_amount = countAmountUsdt(currentRow)
       } else {
         spread = countSpredForAlt(currentRow);
         net_profit = countNetProfitForAlt(currentRow);
-        exchanging_buy_price = countBuyPriceFiatAlt(currentRow)
-        exchanging_buy_amount = countAmountUsdt(currentRow)
       }
 
       currentRow[fieldName] = newValue;
       currentRow['spread'] = spread;
       currentRow['net_profit'] = net_profit;
-      setNestedData(prevNestedData => {
-        // Клонируем предыдущее состояние, чтобы не мутировать его напрямую
-        const updatedData = { ...prevNestedData };
-        
-        // Проверяем, существует ли уже объект для этого ключа, и если нет, создаем новый
-        if (!updatedData[currentRow.key]) {
-          updatedData[currentRow.key] = {};
-        }
-        
-        // Обновляем необходимые поля для конкретного ключа
-        // updatedData[currentRow.key]?.exchanging_buy_amount = exchanging_buy_amount;
-        // updatedData[currentRow.key]?.exchanging_buy_price = exchanging_buy_price;
-      
-        // Возвращаем обновленное состояние
-        return updatedData;
-      });
       return newData;
+    });
+
+    setNestedData(prevNestedData => {
+      const currentData = dataRef.current;
+      const newData = [...currentData];
+      const objIndex = newData.findIndex((obj) => obj.key === key);
+      const currentRow = newData[objIndex]
+
+      // Клонируем предыдущее состояние, чтобы не мутировать его напрямую
+      const updatedData = { ...prevNestedData };
+
+      currentRow[fieldName] = newValue;
+
+      let exchanging_buy_amount = updatedData[currentRow.key]?.[0]?.exchanging_buy_amount
+      let exchanging_buy_price = updatedData[currentRow.key]?.[0]?.exchanging_buy_price
+      const exchanging_rate = updatedData[currentRow.key]?.[0]?.exchanging_rate
+
+      if (currentRow?.currency === 'USDT') {
+        exchanging_buy_price = countBuyPriceFiatUsdt({ ...currentRow, exchanging_rate })
+        exchanging_buy_amount = countAmountUsdt({ ...currentRow, exchanging_rate })
+      } else {
+        exchanging_buy_price = countBuyPriceFiatAlt({ ...currentRow, exchanging_rate })
+        exchanging_buy_amount = countAmountUsdt({ ...currentRow, exchanging_rate })
+      }
+
+      // Проверяем, существует ли уже объект для этого ключа, и если нет, создаем новый
+      if (!updatedData[currentRow.key]) {
+        updatedData[currentRow.key] = {};
+      }
+
+      // Обновляем необходимые поля для конкретного ключа
+      if (updatedData[currentRow.key]?.[0]) {
+        updatedData[currentRow.key][0].exchanging_buy_amount = exchanging_buy_amount;
+        updatedData[currentRow.key][0].exchanging_buy_price = exchanging_buy_price;
+      }
+
+      // Возвращаем обновленное состояние
+      return updatedData;
     });
   }
 
@@ -238,11 +270,16 @@ const CustomTable = ({ tableData }) => {
 
   const handleRowExpand = (record) => {
     setNestedData((prevNestedData) => {
-      if (prevNestedData[record.key]) return prevNestedData;
+      if (prevNestedData[record.key] && prevNestedData[record.key]?.length > 0) return prevNestedData;
 
       return {
         ...prevNestedData,
-        [record.key]: [{ ...record, key: `${record.key}-1` }],
+        [record.key]: [{
+          ...record,
+          key: `${record.key}-1`,
+          exchanging_buy_price: '',
+          exchanging_buy_amount: ''
+        }],
       };
     });
 
@@ -332,7 +369,7 @@ const CustomTable = ({ tableData }) => {
       result = ((sell_price / buy_price) - 1) * 100
 
     }
-    
+
     return renderResult(result, 'spread')
   }
 
@@ -359,7 +396,7 @@ const CustomTable = ({ tableData }) => {
       variable1 = variable1 - variable3
       result = variable1
     } else {
-        result = sell_price * buy_amount - buy_price * buy_amount
+      result = sell_price * buy_amount - buy_price * buy_amount
     }
 
     return renderResult(result)
@@ -372,7 +409,7 @@ const CustomTable = ({ tableData }) => {
     const exchanging_rate = Number(record?.exchanging_rate)
     if (buy_price && commission && exchanging_rate) {
       result = exchanging_rate * (buy_price + (buy_price * commission))
-      
+
       return result.toFixed(4)
     }
     else return result = ''
