@@ -320,8 +320,11 @@ const CustomTable = ({ tableData }) => {
       variable1 = sell_price / variable1
       variable1 = variable1 - 1
       result = variable1 * 100
-    } else {
+    } 
+    if (record?.sell_price && record?.buy_price) {
       result = ((sell_price / buy_price) - 1) * 100
+    } else {
+      result = ''
     }
 
     return renderResult(result, 'spread')
