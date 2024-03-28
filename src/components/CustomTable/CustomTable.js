@@ -320,7 +320,7 @@ const CustomTable = ({ tableData }) => {
       variable1 = sell_price / variable1
       variable1 = variable1 - 1
       result = variable1 * 100
-    } 
+    }
     if (record?.sell_price && record?.buy_price) {
       result = ((sell_price / buy_price) - 1) * 100
     } else {
@@ -474,6 +474,29 @@ const CustomTable = ({ tableData }) => {
     } else return result = ''
   }
 
+  const processData = (data) => {
+    return data.map(record => {
+      const spread = record.currency === 'USDT' ?
+        countSpredForUsdt(record) :
+        countSpredForAlt(record);
+      const net_profit = record.currency === 'USDT' ?
+        countNetProfitForUsdt(record) :
+        countNetProfitForAlt(record)
+
+
+      return {
+        ...record,
+        spread, // Добавляем вычисленное значение spread в каждую запись
+        net_profit, // Аналогично для чистой прибыли
+      };
+    });
+  };
+
+  const processedData = useMemo(() => {
+    return processData(data);
+  }, [data]); // Обработка данных при изменении
+
+
   const [columns, setColumns] = useState([
     {
       title: "Монета",
@@ -583,21 +606,10 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 85,
       render: (text, record) => {
-        let resultSpread
-        if (record.currency === 'USDT') {
-          resultSpread = countSpredForUsdt(record)
-        }
-        if (record.currency && record.currency !== 'USDT') {
-          resultSpread = countSpredForAlt(record)
-        }
-        if (text) {
-          resultSpread = text
-        }
-
         return (
           <Input
             type="text"
-            value={resultSpread}
+            value={text}
             style={{
               height: 35,
               backgroundColor: "#5DE0DD",
@@ -616,21 +628,10 @@ const CustomTable = ({ tableData }) => {
       sticky: true,
       width: 110,
       render: (text, record) => {
-        let resultNetProfit
-        if (record.currency === 'USDT') {
-          resultNetProfit = countNetProfitForUsdt(record)
-        }
-        if (record.currency && record.currency !== 'USDT') {
-          resultNetProfit = countNetProfitForAlt(record)
-        }
-        if (text) {
-          resultNetProfit = text
-        }
-
         return (
           <Input
             type="text"
-            value={resultNetProfit}
+            value={text}
             style={{
               height: 35,
               backgroundColor: "#00800047",
@@ -920,7 +921,7 @@ const CustomTable = ({ tableData }) => {
           ref={tableRef}
           components={components}
           columns={resizableColumns}
-          dataSource={data}
+          dataSource={processedData}
           rowClassName={(record) =>
             expandedRowKeys.includes(record.key)
               ? "table__row__parent__expanded table__row__custom"
